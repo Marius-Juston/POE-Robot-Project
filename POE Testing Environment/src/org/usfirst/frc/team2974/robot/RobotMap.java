@@ -6,18 +6,18 @@ import edu.wpi.first.wpilibj.Talon;
 
 public class RobotMap {
 
-  public static final Talon motorLeft;
-  public static final Talon motorRight;
+  public static final Talon leftMotor;
+  public static final Talon rightMotor;
 
-  public static final Encoder encoderLeft;
-  public static final Encoder encoderRight;
+  public static final Encoder leftEncoder;
+  public static final Encoder rightEncoder;
 
 
   static {
-    motorLeft = new Talon(0);
-    motorRight = new Talon(1);
+    leftMotor = new Talon(0);
+    rightMotor = new Talon(1);
 
-    encoderLeft = new Encoder(new DigitalInput(0), new DigitalInput(1));
-    encoderRight = new Encoder(new DigitalInput(2), new DigitalInput(3));
+    leftEncoder = new Encoder(new DigitalInput(0), new DigitalInput(1));
+    rightEncoder = new Encoder(new DigitalInput(2), new DigitalInput(3));
   }
 }

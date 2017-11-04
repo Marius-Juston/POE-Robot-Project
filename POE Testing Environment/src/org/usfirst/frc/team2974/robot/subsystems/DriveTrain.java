@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2974.robot.subsystems;
 
+import org.usfirst.frc.team2974.robot.RobotMap;
 import org.usfirst.frc.team2974.robot.commands.Drive;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -8,6 +9,11 @@ public class DriveTrain extends Subsystem {
 
   private Talon rightMotor;
   private Talon leftMotor;
+  
+  public DriveTrain() {
+    rightMotor = RobotMap.rightMotor;
+    leftMotor = RobotMap.leftMotor;
+  }
 
   @Override
   protected void initDefaultCommand() {
