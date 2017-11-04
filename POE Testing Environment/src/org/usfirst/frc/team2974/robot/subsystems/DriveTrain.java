@@ -31,8 +31,7 @@ public class DriveTrain extends Subsystem {
    * @return left motor speed
    */
   public synchronized double getLeftMotorPower() {
-    // TODO -> check what method to use to get the power either .get() or .getSpeed()
-    return leftMotor.getSpeed();
+    return leftMotor.get();
   }
 
   /**
@@ -41,7 +40,6 @@ public class DriveTrain extends Subsystem {
    * @return right motor speed
    */
   public synchronized double getLRightMotorPower() {
-    // TODO -> check what method to use to get the power either .get() or .getSpeed()
-    return rightMotor.getSpeed();
+    return rightMotor.get();
   }
 }
