@@ -54,6 +54,8 @@ public class Robot extends IterativeRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    update();
+
     switch (autoSelected) {
       case customAuto:
         // Put custom auto code here
@@ -69,12 +71,20 @@ public class Robot extends IterativeRobot {
    * This function is called periodically during operator control
    */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    update();
+  }
 
   /**
    * This function is called periodically during test mode
    */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    update();
+  }
+
+  public void update() {
+    SmartDashboardManager.update();
+  }
 }
 

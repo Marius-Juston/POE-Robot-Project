@@ -30,6 +30,7 @@ public class DriveTrain extends Subsystem {
     // TODO -> check what values go which direction
   }
 
+  // TODO!! remember to check what values go which direction!
 
   /**
    * Gets the speed for the left motor
@@ -45,7 +46,8 @@ public class DriveTrain extends Subsystem {
    * 
    * @return right motor speed
    */
-  public synchronized double getLRightMotorPower() {
+  public synchronized double getRightMotorPower() {
     return rightMotor.get();
   }
+
 }
