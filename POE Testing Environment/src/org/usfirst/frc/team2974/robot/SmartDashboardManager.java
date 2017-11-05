@@ -5,7 +5,9 @@ public class SmartDashboardManager {
   public static <T extends Number> SmartDashboardKey<T> createBindKey(String KEY, T value,
       T defaultValue) {
 
-    // TODO make it add a listener to value and if he value changes update the smartdashboard value. Either force the programmer to pass in a lamda expression as the value so that when the returned value changes update?
+    // TODO make it add a listener to value and if he value changes update the smartdashboard value.
+    // Either force the programmer to pass in a lamda expression as the value so that when the
+    // returned value changes update?
     return new SmartDashboardKey<T>(KEY, value, defaultValue);
   }
 
