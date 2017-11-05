@@ -9,7 +9,7 @@ public class DriveTrain extends Subsystem {
 
   private final Talon rightMotor;
   private final Talon leftMotor;
-  
+
   public DriveTrain() {
     rightMotor = RobotMap.rightMotor;
     leftMotor = RobotMap.leftMotor;
