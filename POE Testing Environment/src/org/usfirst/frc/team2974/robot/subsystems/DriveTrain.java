@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveTrain extends Subsystem {
 
-  private Talon rightMotor;
-  private Talon leftMotor;
+  private final Talon rightMotor;
+  private final Talon leftMotor;
   
   public DriveTrain() {
     rightMotor = RobotMap.rightMotor;
