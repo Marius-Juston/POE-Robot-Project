@@ -6,6 +6,7 @@ import java.util.List;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public final class SubsystemManager {
+
   private static final List<Subsystem> SUBSYSTEM_LIST = new ArrayList<>();
 
   /**
@@ -40,19 +41,8 @@ public final class SubsystemManager {
    * 
    * @param subsystems to add to the subsystem list
    */
-  // FIXME? change name from addSubsystem to add
-  public static void addSubsystems(Subsystem... subsystems) {
+  public static void addSubsystem(Subsystem... subsystems) {
     Collections.addAll(SUBSYSTEM_LIST, subsystems);
   }
 
-  /**
-   * Adds the subsystem to the list of subsystems making it available for retrieval using the
-   * getSubsystem method
-   * 
-   * @param subsystem to add to the subsystem list
-   */
-  // FIXME? change name from addSubsystem to add
-  public static void addSubsystem(Subsystem subsystem) {
-    SUBSYSTEM_LIST.add(subsystem);
-  }
 }
