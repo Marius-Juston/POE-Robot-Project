@@ -21,3 +21,5 @@ Go to [this](https://guides.github.com/features/mastering-markdown/) link to rea
 To use the Google java formatter in eclipse open eclipse naviagte to Windows -> Preferences -> Java -> Code Style -> Formatter then press import and navigate to the eclipse-java-google-style.xml file included in this repository. 
 
 To format a file in eclipse you can press the Ctrl + Shift + F.
+
+To use with IntelliJ you can add the wpilib library at %USER%/wpilib/java/current/lib as a library.
