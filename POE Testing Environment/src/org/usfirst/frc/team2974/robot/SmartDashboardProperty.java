@@ -21,12 +21,12 @@ public class SmartDashboardProperty<T> {
     this.valueSupplier = valueSupplier;
 
     onValueChange = () -> {
-      if(value instanceof String)
-        SmartDashboard.putString(key, (String) value);
-      else if(value instanceof Number)
+      if(value instanceof Number)
         SmartDashboard.putNumber(key, (double) value);
       else if(value instanceof Boolean)
         SmartDashboard.putBoolean(key, (boolean) value);
+      else 
+        SmartDashboard.putString(key, value.toString());
     };
   }
 
