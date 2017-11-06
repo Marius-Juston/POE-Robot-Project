@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2974.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Sendable;
 
 import java.util.function.Supplier;
 
