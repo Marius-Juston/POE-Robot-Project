@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.function.Supplier;
 
+/**
+ * Readonly Property.
+ */
 public class SmartDashboardProperty<T> {
 
   private final String key;
