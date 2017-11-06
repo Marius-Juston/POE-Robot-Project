@@ -28,6 +28,8 @@ public class SmartDashboardProperty<T> {
         SmartDashboard.putNumber(key, (double) value);
       else if(value instanceof Boolean)
         SmartDashboard.putBoolean(key, (boolean) value);
+      else if (value instanceof Sendable)
+        SmartDashboard.putData(key, (Sendable) value);
       else 
         SmartDashboard.putString(key, value.toString());
     };
