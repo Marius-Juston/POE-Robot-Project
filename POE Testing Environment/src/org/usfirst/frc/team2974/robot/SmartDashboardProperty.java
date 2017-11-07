@@ -1,9 +1,13 @@
 package org.usfirst.frc.team2974.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Sendable;
 
 import java.util.function.Supplier;
 
+/**
+ * Readonly Property.
+ */
 public class SmartDashboardProperty<T> {
 
   private final String key;
@@ -21,12 +25,14 @@ public class SmartDashboardProperty<T> {
     this.valueSupplier = valueSupplier;
 
     onValueChange = () -> {
-      if(value instanceof String)
-        SmartDashboard.putString(key, (String) value);
-      else if(value instanceof Number)
+      if(value instanceof Number)
         SmartDashboard.putNumber(key, (double) value);
       else if(value instanceof Boolean)
         SmartDashboard.putBoolean(key, (boolean) value);
+      else if (value instanceof Sendable)
+        SmartDashboard.putData(key, (Sendable) value);
+      else 
+        SmartDashboard.putString(key, value.toString());
     };
   }
 
