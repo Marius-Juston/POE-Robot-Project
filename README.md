@@ -13,6 +13,7 @@ This is an POE project to further enrich our skills with using the allowable sen
 - 1 Raspberry Pi
   - 1 Raspberry Camera
 - Gyro on Robo RIO (said that it is not very accurate. Needs testing to prove)
+  - The gyro on the Robo RIO does not work correctly.
 
 ## Task List to Pick
 

@@ -28,7 +28,11 @@ public class Robot extends IterativeRobot {
     chooser.addObject("My Auto", customAuto);
     SmartDashboard.putData("Auto choices", chooser);
 
+    RobotMap.gyroscope.calibrate();
+
     SubsystemManager.addSubsystem(new DriveTrain());
+
+    // SmartDashboardManager.addBind("Gyroscope Angle", 0, RobotMap.gyroscope::getAngle);
   }
 
   /**

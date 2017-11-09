@@ -26,9 +26,9 @@ public class SmartDashboardProperty<T> {
 
     onValueChange = () -> {
       if(value instanceof Number)
-        SmartDashboard.putNumber(key, (double) value);
+        SmartDashboard.putNumber(key, (Double) value);
       else if(value instanceof Boolean)
-        SmartDashboard.putBoolean(key, (boolean) value);
+        SmartDashboard.putBoolean(key, (Boolean) value);
       else if (value instanceof Sendable)
         SmartDashboard.putData(key, (Sendable) value);
       else 
