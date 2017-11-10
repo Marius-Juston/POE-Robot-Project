@@ -2,6 +2,7 @@ package org.usfirst.frc.team2974.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.usfirst.frc.team2974.robot.Driver;
 import org.usfirst.frc.team2974.robot.RobotMap;
 import org.usfirst.frc.team2974.robot.commands.Drive;
 
@@ -17,7 +18,13 @@ public class DriveTrain extends Subsystem {
 
   @Override
   protected void initDefaultCommand() {
-    setDefaultCommand(new Drive());
+    Driver doNothingDriver = new Driver("Do Nothing Driver") {
+      @Override
+      public void initButtons() { 
+      }
+    };
+    
+    setDefaultCommand(new Drive(doNothingDriver));
   }
 
   /**

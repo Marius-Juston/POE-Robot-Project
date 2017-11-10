@@ -32,12 +32,6 @@ public class Robot extends IterativeRobot {
 
     SubsystemManager.addSubsystem(new DriveTrain());
 
-    Drive drive = new Drive(new Driver() {
-      @Override
-      public void initButtons() {
-      }
-    });
-
     // SmartDashboardManager.addBind("Gyroscope Angle", 0, RobotMap.gyroscope::getAngle);
   }
 
