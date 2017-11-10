@@ -14,7 +14,7 @@
       <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
     </src_description>
   </component>
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
+  <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/bin" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -24,44 +24,44 @@
     <orderEntry type="module-library">
       <library name="wpilib">
         <CLASSES>
-          <root url="file://$wpilib$" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/WPILib.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="file://$wpilib.sources$" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/WPILib-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library name="networktables">
         <CLASSES>
-          <root url="file://$networktables$" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/NetworkTables.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="file://$networktables.sources$" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/NetworkTables-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library name="opencv">
         <CLASSES>
-          <root url="file://$opencv$" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/opencv.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="file://$opencv.sources$" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/opencv-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library name="cscore">
         <CLASSES>
-          <root url="file://$cscore$" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/cscore.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="file://$cscore.sources$" />
+          <root url="jar://$USER_HOME$/wpilib/java/current/lib/cscore-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
@@ -69,7 +69,7 @@
     <orderEntry type="module-library">
       <library name="CTRLib.jar">
         <CLASSES>
-          <root url="file://$USERLIBS_DIR$/CTRLib.jar" />
+          <root url="jar://$USER_HOME$/wpilib/user/java/lib/CTRLib.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
