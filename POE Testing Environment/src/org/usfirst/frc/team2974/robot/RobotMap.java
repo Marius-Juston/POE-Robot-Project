@@ -1,8 +1,17 @@
 package org.usfirst.frc.team2974.robot;
 
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
+/**
+ * This class is where you initialize every motor, talon, soleanoid, digital inputs, analog inputs
+ * etc... There variables should all be static final
+ */
 public class RobotMap {
 
   public static final Talon leftMotor;

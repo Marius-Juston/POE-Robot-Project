@@ -1,18 +1,18 @@
 package org.usfirst.frc.team2974.robot.subsystems;
 
-import org.usfirst.frc.team2974.robot.RobotMap;
-import org.usfirst.frc.team2974.robot.commands.Drive;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.usfirst.frc.team2974.robot.RobotMap;
+import org.usfirst.frc.team2974.robot.commands.Drive;
 
 public class DriveTrain extends Subsystem {
 
-  private final Talon rightMotor;
-  private final Talon leftMotor;
+  private final Talon rightPair;
+  private final Talon leftPair;
 
   public DriveTrain() {
-    rightMotor = RobotMap.rightMotor;
-    leftMotor = RobotMap.leftMotor;
+    rightPair = RobotMap.rightMotor;
+    leftPair = RobotMap.leftMotor;
   }
 
   @Override
@@ -22,7 +22,7 @@ public class DriveTrain extends Subsystem {
 
   /**
    * Sets the power of the wheels, pointing forward.
-   * 
+   *
    * @param left left motor power
    * @param right right motor power
    */
@@ -34,20 +34,20 @@ public class DriveTrain extends Subsystem {
 
   /**
    * Gets the speed for the left motor
-   * 
+   *
    * @return left motor speed
    */
   public synchronized double getLeftMotorPower() {
-    return leftMotor.get();
+    return leftPair.get();
   }
 
   /**
    * Gets the speed for the right motor
-   * 
+   *
    * @return right motor speed
    */
   public synchronized double getRightMotorPower() {
-    return rightMotor.get();
+    return rightPair.get();
   }
 
 }
