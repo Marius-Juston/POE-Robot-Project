@@ -3,17 +3,18 @@ package org.usfirst.frc.team2974.robot.subsystems;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team2974.robot.Driver;
+import org.usfirst.frc.team2974.robot.JoystickButtonKey;
 import org.usfirst.frc.team2974.robot.RobotMap;
 import org.usfirst.frc.team2974.robot.commands.Drive;
 
 public class DriveTrain extends Subsystem {
 
-  private final Talon rightPair;
-  private final Talon leftPair;
+  private final Talon rightMotor;
+  private final Talon leftMotor;
 
   public DriveTrain() {
-    rightPair = RobotMap.rightMotor;
-    leftPair = RobotMap.leftMotor;
+    rightMotor = RobotMap.rightMotor;
+    leftMotor = RobotMap.leftMotor;
   }
 
   @Override
@@ -21,9 +22,11 @@ public class DriveTrain extends Subsystem {
     Driver doNothingDriver = new Driver("Do Nothing Driver") {
       @Override
       public void initButtons() { 
+        addJoystick("Left Joystick", 0);
+        createAndAddJoystickButton("Left Joystick", "Kicker Button", );
       }
     };
-    
+     
     setDefaultCommand(new Drive(doNothingDriver));
   }
 
@@ -45,7 +48,7 @@ public class DriveTrain extends Subsystem {
    * @return left motor speed
    */
   public synchronized double getLeftMotorPower() {
-    return leftPair.get();
+    return leftMotor.get();
   }
 
   /**
@@ -54,7 +57,7 @@ public class DriveTrain extends Subsystem {
    * @return right motor speed
    */
   public synchronized double getRightMotorPower() {
-    return rightPair.get();
+    return rightMotor.get();
   }
 
 }

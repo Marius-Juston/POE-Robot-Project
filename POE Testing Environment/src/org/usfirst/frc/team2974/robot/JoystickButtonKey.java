@@ -3,12 +3,11 @@ package org.usfirst.frc.team2974.robot;
 
 /**
  * This enum is used to map what the button number is mapped to what on the joysticks all the while
- * giving them meaningful names instead of numbers.
+ * giving them meaningful names instead of numbers. Note this is for Logitech Attack 3
  */
 public enum JoystickButtonKey {
-  A(1), B(2), X(3), Y(4), L(5), R(6), BACK(7), START(
-      8); //FIXME Add rest of the buttons and verify that these are correct
-
+  TRIGGER(1), _2(2), _3(3), _4(4), _5(5), _6(6), _7(7), _8(8), _9(9), _10(10);
+  
   private int index;
 
   /**
