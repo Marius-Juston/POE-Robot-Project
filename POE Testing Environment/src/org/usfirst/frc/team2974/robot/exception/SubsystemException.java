@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2974.robot.exceptions;
+package org.usfirst.frc.team2974.robot.exception;
 
 /**
  * Use when there is a major exception in a subsystem.

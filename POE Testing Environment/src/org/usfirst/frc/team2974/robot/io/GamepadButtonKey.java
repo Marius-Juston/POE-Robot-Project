@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2974.robot;
+package org.usfirst.frc.team2974.robot.io;
 
 /**
  * This enum is used to map what the button number is mapped to what on the gamepad all the while

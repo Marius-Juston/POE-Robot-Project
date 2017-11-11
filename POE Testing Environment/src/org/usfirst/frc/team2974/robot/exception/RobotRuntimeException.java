@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2974.robot.exceptions;
+package org.usfirst.frc.team2974.robot.exception;
 
 /**
  * Exception meant to be used for problems such as dividing by zero and such

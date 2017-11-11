@@ -2,7 +2,9 @@ package org.usfirst.frc.team2974.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import org.usfirst.frc.team2974.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2974.robot.manager.SmartDashboardManager;
+import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
+import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -27,11 +29,11 @@ public class Robot extends IterativeRobot {
     chooser.addObject("My Auto", customAuto);
     SmartDashboardManager.addBind("Auto choices", defaultAuto, () -> chooser);
 
-    RobotMap.gyroscope.calibrate();
+    HardwareMap.gyroscope.calibrate();
 
     SubsystemManager.addSubsystem(new DriveTrain());
 
-    // SmartDashboardManager.addBind("Gyroscope Angle", 0, RobotMap.gyroscope::getAngle);
+    // SmartDashboardManager.addBind("Gyroscope Angle", 0, HardwareMap.gyroscope::getAngle);
   }
 
   /**

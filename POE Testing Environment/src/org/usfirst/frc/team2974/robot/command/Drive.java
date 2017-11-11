@@ -1,13 +1,13 @@
-package org.usfirst.frc.team2974.robot.commands;
+package org.usfirst.frc.team2974.robot.command;
 
 import edu.wpi.first.wpilibj.command.Command;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import org.usfirst.frc.team2974.robot.Driver;
-import org.usfirst.frc.team2974.robot.SubsystemManager;
-import org.usfirst.frc.team2974.robot.exceptions.RobotRuntimeException;
-import org.usfirst.frc.team2974.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2974.robot.io.Driver;
+import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
+import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
+import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
 public class Drive extends Command {
 
@@ -20,6 +20,10 @@ public class Drive extends Command {
     drivers = new HashSet<>();
 
     setCurrentDriver(initialDriver);
+  }
+
+  public Drive() {
+    this(Driver.DEFAULT_DRIVER);
   }
 
   /**
@@ -37,14 +41,12 @@ public class Drive extends Command {
    * @param driver the new current driver
    */
   public void setCurrentDriver(Driver driver) {
-    if (driver == null || !driver.equals(currentDriver)) {
+    if (driver != null && !driver.equals(currentDriver)) {
       currentDriver = driver;
 
-      if (driver != null) {
-        driver.initButtons();
-      } else {
-        throw new RobotRuntimeException("Driver to be set is null.");
-      }
+      driver.initButtons();
+    }else {
+      throw new RobotRuntimeException("Driver to be set is null.");
     }
   }
 

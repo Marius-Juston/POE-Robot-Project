@@ -1,11 +1,11 @@
-package org.usfirst.frc.team2974.robot.subsystems;
+package org.usfirst.frc.team2974.robot.subsystem;
 
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.usfirst.frc.team2974.robot.Driver;
-import org.usfirst.frc.team2974.robot.JoystickButtonKey;
-import org.usfirst.frc.team2974.robot.RobotMap;
-import org.usfirst.frc.team2974.robot.commands.Drive;
+import org.usfirst.frc.team2974.robot.HardwareMap;
+import org.usfirst.frc.team2974.robot.io.Driver;
+import org.usfirst.frc.team2974.robot.io.JoystickButtonKey;
+import org.usfirst.frc.team2974.robot.command.Drive;
 
 public class DriveTrain extends Subsystem {
 
@@ -13,21 +13,13 @@ public class DriveTrain extends Subsystem {
   private final Talon leftMotor;
 
   public DriveTrain() {
-    rightMotor = RobotMap.rightMotor;
-    leftMotor = RobotMap.leftMotor;
+    rightMotor = HardwareMap.rightMotor;
+    leftMotor = HardwareMap.leftMotor;
   }
 
   @Override
   protected void initDefaultCommand() {
-    Driver doNothingDriver = new Driver("Do Nothing Driver") {
-      @Override
-      public void initButtons() { 
-        addJoystick("Left Joystick", 0);
-        createAndAddJoystickButton("Left Joystick", "Kicker Button", JoystickButtonKey.TRIGGER);
-      }
-    };
-     
-    setDefaultCommand(new Drive(doNothingDriver));
+    setDefaultCommand(new Drive());
   }
 
   /**

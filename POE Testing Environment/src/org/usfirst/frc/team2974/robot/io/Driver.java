@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2974.robot;
+package org.usfirst.frc.team2974.robot.io;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -6,9 +6,11 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import org.usfirst.frc.team2974.robot.exceptions.RobotRuntimeException;
+import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 
 public abstract class Driver {
+
+  public static final Driver DEFAULT_DRIVER = new Driver("Default Driver") {@Override public void initButtons() {}};
 
   private final HashMap<String, ButtonMap> buttons;
   private final HashMap<String, Joystick> joysticks;

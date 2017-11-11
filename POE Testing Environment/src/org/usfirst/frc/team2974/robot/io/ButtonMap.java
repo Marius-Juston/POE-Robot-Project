@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2974.robot;
+package org.usfirst.frc.team2974.robot.io;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 

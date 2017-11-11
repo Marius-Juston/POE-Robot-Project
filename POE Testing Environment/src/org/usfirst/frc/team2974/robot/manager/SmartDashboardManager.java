@@ -1,11 +1,11 @@
-package org.usfirst.frc.team2974.robot;
+package org.usfirst.frc.team2974.robot.manager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
-import org.usfirst.frc.team2974.robot.exceptions.RobotRuntimeException;
-import org.usfirst.frc.team2974.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
+import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
 public class SmartDashboardManager {
 
@@ -21,8 +21,14 @@ public class SmartDashboardManager {
   }
 
   /**
-   * Creates a SmartDashboard Property that will update automatically when the update method of
-   * SmartDashboardManager is called
+   * <p>Creates a SmartDashboard Property that will update automatically when the update method of
+   * SmartDashboardManager is called.</p>
+   *
+   * <p>
+   *   Example: <pre>{@code
+   *   addBind("Left Motor Power", 0, () -> SubsystemManager.getSubsystem(DriveTrain.class).getLeftMotorPower());
+   *   }</pre>
+   * </p>
    *
    * @param key SmartDashboard key
    * @param defaultValue Default value that SmartDashboard will returns if it cannot find the value

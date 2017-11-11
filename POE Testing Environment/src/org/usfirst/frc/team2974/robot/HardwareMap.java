@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
  * This class is where you initialize every motor, talon, solenoid, digital inputs, analog inputs
  * etc... There variables should all be static final
  */
-public class RobotMap {
+public class HardwareMap {
 
   public static final Talon leftMotor;
   public static final Talon rightMotor;
