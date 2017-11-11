@@ -23,7 +23,7 @@ public class DriveTrain extends Subsystem {
       @Override
       public void initButtons() { 
         addJoystick("Left Joystick", 0);
-        createAndAddJoystickButton("Left Joystick", "Kicker Button", );
+        createAndAddJoystickButton("Left Joystick", "Kicker Button", JoystickButtonKey.TRIGGER);
       }
     };
      
