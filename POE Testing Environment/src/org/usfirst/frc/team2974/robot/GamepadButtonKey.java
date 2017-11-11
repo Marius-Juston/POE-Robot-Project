@@ -8,7 +8,7 @@ public enum GamepadButtonKey {
   _1(1), _2(2), _3(3), _4(4), _5(5), _6(6), _7(7), _8(8), _9(9), _10(10), LEFT_THUMB_STICK(11), RIGHT_THUMB_STICK(12); 
   //FIXME Add rest of the buttons and verify that these are correct
 
-  private int index;
+  private final int index;
 
   /**
    * Initializes the variables

@@ -29,7 +29,7 @@ public class SmartDashboardProperty<T> {
 
     this.valueSupplier = valueSupplier;
 
-//    onValueChange is the interface that is run if the valueSupplier (the value that you want to put into SmartDashboard) changes. It tells the update method how it should pass in the valueSupllier into SmartDashboard
+//    onValueChange is the interface that is run if the valueSupplier (the value that you want to put into SmartDashboard) changes. It tells the update method how it should pass in the valueSupplier into SmartDashboard
     onValueChange = () -> {
       if (value instanceof Number) { // if the value you are going to put in is a number (double, float, int, byte)
         SmartDashboard.putNumber(key, (Double) value);

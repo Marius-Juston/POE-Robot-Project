@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
  */
 public class ButtonMap {
 
-  private Enum assignedKey;
-  private Button button;
+  private final Enum assignedKey;
+  private final Button button;
 
   public <T extends Enum> ButtonMap(T assignedKey, Button button) {
 

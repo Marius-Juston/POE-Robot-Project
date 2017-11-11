@@ -63,7 +63,7 @@ public class Drive extends Command {
   }
 
   /**
-   * Retusn the driver given his name
+   * Return the driver given his name
    *
    * @param driverName the name to search for
    * @return the driver who has the driverName

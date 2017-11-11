@@ -22,7 +22,7 @@ public final class SubsystemManager {
    * @param type the Class.class type of subsystem. ex -> DriveTrain.class
    * @param <T> The type of subsystem to get, unused in <> sense.
    * @return The specified subsystem of type type, <b>null</b> otherwise.
-   * @throws RobotRuntimeException throws runtime exception if the subsystem does not exisit
+   * @throws RobotRuntimeException throws runtime exception if the subsystem does not exist
    */
   public synchronized static <T extends Subsystem> T getSubsystem(Class<T> type) {
     T subsystem = SUBSYSTEM_LIST.stream()

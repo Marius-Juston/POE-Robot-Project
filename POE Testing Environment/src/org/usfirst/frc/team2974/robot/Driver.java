@@ -21,7 +21,7 @@ public abstract class Driver {
   }
 
   /**
-   * Method used to initialze the button map. Assigning the button tasks.
+   * Method used to initialize the button map. Assigning the button tasks.
    */
   public abstract void initButtons();
 
@@ -86,14 +86,14 @@ public abstract class Driver {
       }
     } else {
       throw new RobotRuntimeException("The joystick " + joystickName
-          + " is already defined in the list of avaliable joysticks.");
+          + " is already defined in the list of available joysticks.");
     }
   }
 
   /**
    * Creates a button assigned to the given joystick for the given Joystick button
    *
-   * @param joysickName name of the joystick that you want to use. Joystick must have been added
+   * @param joystickName name of the joystick that you want to use. Joystick must have been added
    * using the addJoystick method
    * @param buttonName name the button will be assigned
    * @param joystickButtonKey the key to map the button to on the joystick
@@ -102,7 +102,7 @@ public abstract class Driver {
    * @throws RobotRuntimeException throws exception when a button has already been assigned to the
    * button key
    */
-  public Button createAndAddJoystickButton(String joysickName, String buttonName,
+  public Button createAndAddJoystickButton(String joystickName, String buttonName,
       JoystickButtonKey joystickButtonKey) {
     if (buttons.containsKey(buttonName)) {
       throw new RobotRuntimeException("The button name " + buttonName + " has already been used");
@@ -118,7 +118,7 @@ public abstract class Driver {
               + " key. Be sure to add to the HashMap using the addJoystick method");
     }
 
-    Button button = new JoystickButton(joysticks.get(joysickName), joystickButtonKey.getIndex());
+    Button button = new JoystickButton(joysticks.get(joystickName), joystickButtonKey.getIndex());
     buttons.put(buttonName, new ButtonMap(joystickButtonKey, button));
 
     return button;
@@ -129,7 +129,7 @@ public abstract class Driver {
    * Gets the button given its assigned name when created through the createGamepadButton and
    * createJoystickButton methods
    *
-   * @param buttonName the name of the button that yoou want returned
+   * @param buttonName the name of the button that you want returned
    * @return The button given its button name
    * @throws RobotRuntimeException throws an exception if the button is not present inside of the
    * buttons HashMap

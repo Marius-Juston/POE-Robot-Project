@@ -21,7 +21,7 @@ public class SmartDashboardManager {
   }
 
   /**
-   * Creates a SmartDashboard Property that will update automaticall when the update method of
+   * Creates a SmartDashboard Property that will update automatically when the update method of
    * SmartDashboardManager is called
    *
    * @param key SmartDashboard key
@@ -49,7 +49,7 @@ public class SmartDashboardManager {
   }
 
   /**
-   * Retrievs the wanted property given it key.
+   * Retrieves the wanted property given it key.
    *
    * @param key the key of the property
    * @param <T> the data type of value being updated to SmartDashboard
@@ -75,7 +75,7 @@ public class SmartDashboardManager {
   /**
    * Iterates through the PROPERTIES list and calls the update method for each individual property.
    * The update method in the property uses its supplier to get the latest value and if the value
-   * changes it will update the value by doing whatevery the Runnable object onValueChange tells it
+   * changes it will update the value by doing whatever the Runnable object onValueChange tells it
    * to do
    */
   public static void update() {
