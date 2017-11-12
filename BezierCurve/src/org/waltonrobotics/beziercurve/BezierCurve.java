@@ -1,14 +1,13 @@
 package org.waltonrobotics.beziercurve;
 
-import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Point2D;
 
-public class BezierCurve implements Serializable {
+public class BezierCurve {
 
-  private static final long serialVersionUID = -4267911601533053275L;
-  private final int numberOfSteps;
+  private int numberOfSteps;
   private List<Point2D> points;
   private double[] coefficients;
 
@@ -40,6 +39,22 @@ public class BezierCurve implements Serializable {
     return r;
   }
 
+  public double[] getXs() {
+    return points.stream().mapToDouble(Point2D::getX).toArray();
+  }
+
+  public double[] getYs() {
+    return points.stream().mapToDouble(Point2D::getY).toArray();
+  }
+
+  public int getNumberOfSteps() {
+    return numberOfSteps;
+  }
+
+  public void setNumberOfSteps(int numberOfSteps) {
+    this.numberOfSteps = numberOfSteps;
+  }
+
   public List<Point2D> getCurvePoints() {
     List<Point2D> point2DList = new ArrayList<>(numberOfSteps + 1);
 
@@ -57,6 +72,16 @@ public class BezierCurve implements Serializable {
 
   public void addAllPoints(List<Point2D> point2D) {
     points.addAll(point2D);
+    updateCoefficients();
+  }
+
+  public void removePoint(Point2D point2D) {
+    points.remove(point2D);
+    updateCoefficients();
+  }
+
+  public void removeAllPoints(List<Point2D> point2D) {
+    points.removeAll(point2D);
     updateCoefficients();
   }
 

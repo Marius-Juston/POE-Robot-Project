@@ -15,8 +15,7 @@ public abstract class Point extends Circle {
   public Point(double centerX, double centerY, BezierTabContentController bezierTabController,
       Color color) {
     super(centerX, centerY, Config.ControlPointSetting.RADIUS, color);
-
-    name = "Point hello";
+    setName("Point");
 
     Tooltip tooltip = new Tooltip();
     tooltip.setText(String.format("X:%-3.3f Y:%-3.3f", getCenterX(), getCenterY()));
