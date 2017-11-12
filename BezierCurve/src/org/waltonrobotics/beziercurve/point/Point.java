@@ -10,23 +10,32 @@ import org.waltonrobotics.beziercurve.controller.BezierTabContentController;
 
 public abstract class Point extends Circle {
 
+  private String name;
+
   public Point(double centerX, double centerY, BezierTabContentController bezierTabController,
       Color color) {
-
     super(centerX, centerY, Config.ControlPointSetting.RADIUS, color);
 
-    select();
+    name = "Point hello";
 
     Tooltip tooltip = new Tooltip();
-//    Tooltip.install(this, tooltip);
-//    tooltip.setAutoHide(true);
-    tooltip.setText(String.format("X:%-3.0f Y:%-3.0f", getCenterX(), getCenterY()));
+    tooltip.setText(String.format("X:%-3.3f Y:%-3.3f", getCenterX(), getCenterY()));
+
+    centerXProperty().addListener(
+        (observable, oldValue, newValue) -> {
+          bezierTabController.drawBezierCurve();
+          tooltip.setText(String.format("X:%-3.3f Y:%-3.3f", getCenterX(), getCenterY()));
+        });
+    centerYProperty().addListener(
+        (observable, oldValue, newValue) -> {
+          bezierTabController.drawBezierCurve();
+          tooltip.setText(String.format("X:%-3.3f Y:%-3.3f", getCenterX(), getCenterY()));
+        });
+
     setOnMouseEntered(event ->
-    {
-      tooltip.show(this.getScene().getWindow(),
-          event.getX() + getScene().getWindow().getX() - tooltip.getWidth() / 2.0,
-          event.getY() + getScene().getWindow().getY());
-    });
+        tooltip.show(this.getScene().getWindow(),
+            event.getX() + getScene().getWindow().getX() - tooltip.getWidth() / 2.0,
+            event.getY() + getScene().getWindow().getY()));
 
     final boolean[] dragging = {false};
     setOnMouseExited(
@@ -37,9 +46,7 @@ public abstract class Point extends Circle {
         }
     );
 
-    setOnMouseReleased(event -> {
-      dragging[0] = false;
-    });
+    setOnMouseReleased(event -> dragging[0] = false);
 
     setOnMouseDragged(event -> {
       dragging[0] = true;
@@ -49,9 +56,6 @@ public abstract class Point extends Circle {
 
       tooltip.setX(event.getX() + getScene().getWindow().getX() - tooltip.getWidth() / 2.0);
       tooltip.setY(event.getY() + getScene().getWindow().getY());
-
-      tooltip.setText(String.format("X:%-3.0f Y:%-3.0f", getCenterX(), getCenterY()));
-      bezierTabController.drawBezierCurve();
     });
 
 //    hoverProperty().add;
@@ -62,10 +66,10 @@ public abstract class Point extends Circle {
     this(centerX, centerY, bezierTabController, ControlPointSetting.COLOR);
   }
 
-
   public Point(Point2D point2D, BezierTabContentController bezierTabController, Color color) {
     this(point2D.getX(), point2D.getY(), bezierTabController, color);
   }
+
 
   public Point(Point2D point2D, BezierTabContentController bezierTabController) {
     this(point2D, bezierTabController, ControlPointSetting.COLOR);
@@ -86,12 +90,19 @@ public abstract class Point extends Circle {
     return new Point2D(getCenterX(), getCenterY());
   }
 
-
   public void select() {
-
+    setStyle(null);
   }
 
   public void unselect() {
     setStyle(null);
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 }

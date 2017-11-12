@@ -10,7 +10,7 @@ public class Helper {
     return createLine(Config.InBetweenLineSetting.STROKE_COLOR);
   }
 
-  public static Line createLine(Color color) {
+  private static Line createLine(Color color) {
     Line line = new Line();
     line.setStroke(color);
     line.setStrokeWidth(Config.InBetweenLineSetting.STROK_WIDTH);

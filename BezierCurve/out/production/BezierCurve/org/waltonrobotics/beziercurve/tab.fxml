@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" style="-fx-background-color: white;" onMouseClicked="#createPoint"
-  xmlns="http://javafx.com/javafx/8" fx:controller="org.waltonrobotics.beziercurve.controller.BezierTabContentController"
-  fx:id="anchorPane">
-
-</AnchorPane>
+<SplitPane xmlns:fx="http://javafx.com/fxml/1" dividerPositions="0.5" xmlns="http://javafx.com/javafx/8"
+  fx:controller="org.waltonrobotics.beziercurve.controller.BezierTabContentController"
+  fx:id="splitPane">
+  <AnchorPane onMouseClicked="#createPoint" fx:id="anchorPane"/>
+  <TableView editable="true" prefHeight="400.0" prefWidth="443.0" fx:id="pointTable">
+    <columns>
+      <TableColumn prefWidth="75.0" text="Point" fx:id="pointNameColumn"/>
+      <TableColumn prefWidth="75.0" text="X" fx:id="pointCenterXColumn"/>
+      <TableColumn prefWidth="75.0" text="Y" fx:id="pointCenterYColumn"/>
+    </columns>
+    <columnResizePolicy>
+      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+    </columnResizePolicy>
+  </TableView>
+</SplitPane>

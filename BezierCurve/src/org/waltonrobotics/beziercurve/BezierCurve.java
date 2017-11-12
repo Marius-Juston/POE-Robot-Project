@@ -1,14 +1,16 @@
 package org.waltonrobotics.beziercurve;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Point2D;
 
-public class BezierCurve {
+public class BezierCurve implements Serializable {
 
+  private static final long serialVersionUID = -4267911601533053275L;
+  private final int numberOfSteps;
   private List<Point2D> points;
   private double[] coefficients;
-  private int numberOfSteps;
 
   public BezierCurve(int numberOfSteps) {
     this.numberOfSteps = numberOfSteps;
@@ -19,7 +21,7 @@ public class BezierCurve {
   /**
    * n! / i!(n-i)!
    */
-  public static double findNumberOfCombination(double n, double i) {
+  private static double findNumberOfCombination(double n, double i) {
     double n_factorial = factorial(n);
     double i_factorial = factorial(i);
     double n_minus_i_factorial = factorial(n - i);
@@ -30,7 +32,7 @@ public class BezierCurve {
   /**
    * for decimal number and integers
    */
-  public static double factorial(double d) {
+  private static double factorial(double d) {
     double r = d - Math.floor(d) + 1;
     for (; d > 1; d -= 1) {
       r *= d;
@@ -93,7 +95,7 @@ public class BezierCurve {
     return new Point2D(tX, tY);
   }
 
-  public int getDegree() {
+  private int getDegree() {
     return points.size() - 1;
   }
 }
