@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2974.robot;
+package org.usfirst.frc.team2974.robot.manager;
 
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,19 +29,9 @@ public class SmartDashboardProperty<T> {
 
     this.valueSupplier = valueSupplier;
 
-//    onValueChange is the interface that is run if the valueSupplier (the value that you want to put into SmartDashboard) changes. It tells the update method how it should pass in the valueSupllier into SmartDashboard
-    onValueChange = () -> {
-      if (value instanceof Number) { // if the value you are going to put in is a number (double, float, int, byte)
-        SmartDashboard.putNumber(key, (Double) value);
-      } else if (value instanceof Boolean) { // if the value is a boolean
-        SmartDashboard.putBoolean(key, (Boolean) value);
-      } else if (value instanceof Sendable) { // if the value is a Sendable object (SendableChooser, etc...)
-        SmartDashboard.putData(key, (Sendable) value);
-      } else {
-        SmartDashboard.putString(key, value
-            .toString()); // if it is something else it uses its toSting method to display it on SmartDashboard
-      }
-    };
+//    onValueChange is the interface that is run if the value
+//  (the value that you want to put into SmartDashboard) changes.
+    onValueChange = () -> {};
   }
 
   /**
@@ -72,7 +62,10 @@ public class SmartDashboardProperty<T> {
     if (!value.equals(this.value)) { // will update SmartDashboard value if the value changes
       this.value = value;
 
-      onValueChange.run();
+      updateSmartDashboard();
+      if(onValueChange != null) {
+        onValueChange.run();
+      }
     }
   }
 
@@ -121,6 +114,19 @@ public class SmartDashboardProperty<T> {
    */
   public void setOnValueChange(Runnable onValueChange) {
     this.onValueChange = onValueChange;
+  }
+
+  public final void updateSmartDashboard() {
+    if (value instanceof Number) { // if the value you are going to put in is a number (double, float, int, byte, etc.)
+      SmartDashboard.putNumber(key, (Double) value);
+    } else if (value instanceof Boolean) { // if the value is a boolean
+      SmartDashboard.putBoolean(key, (Boolean) value);
+    } else if (value instanceof Sendable) { // if the value is a Sendable object (SendableChooser, etc...)
+      SmartDashboard.putData(key, (Sendable) value);
+    } else {
+      SmartDashboard.putString(key, value
+              .toString()); // if it is something else it uses its toSting method to display it on SmartDashboard
+    }
   }
 
   /**

@@ -43,6 +43,7 @@ public class RobotMap {
 
     compressor = new Compressor();
 
-    gyroscope = new AnalogGyro(0);
+    // gyro is trash, but it is there.
+    gyroscope = new AnalogGyro(1);
   }
 }

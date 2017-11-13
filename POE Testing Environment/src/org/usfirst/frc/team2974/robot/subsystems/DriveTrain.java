@@ -8,6 +8,9 @@ import org.usfirst.frc.team2974.robot.commands.Drive;
 
 public class DriveTrain extends Subsystem {
 
+  public static final double WHEEL_DIAMETER = 1; // in meters
+  public static final double GEAR_RATIO = 1; // gear ratio from gear train to wheel axle
+
   private final Talon rightPair;
   private final Talon leftPair;
 
@@ -33,8 +36,9 @@ public class DriveTrain extends Subsystem {
    * @param left left motor power
    * @param right right motor power
    */
-  public synchronized void setSpeeds(double left, double right) {
-    // TODO -> check what values go which direction
+  public synchronized void setPowers(double left, double right) {
+    leftPair.set(left);
+    rightPair.set(right);
   }
 
   // TODO!! remember to check what values go which direction!
@@ -44,7 +48,7 @@ public class DriveTrain extends Subsystem {
    *
    * @return left motor speed
    */
-  public synchronized double getLeftMotorPower() {
+  public double getLeftMotorPower() {
     return leftPair.get();
   }
 
@@ -53,8 +57,24 @@ public class DriveTrain extends Subsystem {
    *
    * @return right motor speed
    */
-  public synchronized double getRightMotorPower() {
+  public double getRightMotorPower() {
     return rightPair.get();
+  }
+
+  /**
+   * Uses the encoder paired with the left motor to get the velocity of the left wheels.
+   * @return left wheel velocity in m/s
+   */
+  public double getLeftWheelVelocity() {
+
+  }
+
+  /**
+   * Uses the encoder paired with the right motor to get the velocity of the right wheels.
+   * @return right wheel velocity in m/s
+   */
+  public double getRightWheelVelocity() {
+
   }
 
 }

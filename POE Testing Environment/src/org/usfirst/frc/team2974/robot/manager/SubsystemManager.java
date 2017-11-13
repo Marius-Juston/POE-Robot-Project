@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2974.robot;
+package org.usfirst.frc.team2974.robot.manager;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import java.util.ArrayList;
