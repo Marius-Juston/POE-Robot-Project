@@ -4,17 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-<<<<<<< HEAD:POE Testing Environment/src/org/usfirst/frc/team2974/robot/commands/Drive.java
-import org.usfirst.frc.team2974.robot.Driver;
 import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
-import org.usfirst.frc.team2974.robot.exceptions.RobotRuntimeException;
-import org.usfirst.frc.team2974.robot.subsystems.DriveTrain;
-=======
 import org.usfirst.frc.team2974.robot.io.Driver;
 import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
 import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
->>>>>>> 02807f16f637f1622be5be9a73a9fd4aac7ea02f:POE Testing Environment/src/org/usfirst/frc/team2974/robot/command/Drive.java
 
 public class Drive extends Command {
 

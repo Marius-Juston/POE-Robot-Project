@@ -10,9 +10,11 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * This class is where you initialize every motor, talon, solenoid, digital inputs, analog inputs
- * etc... There variables should all be static final
+ * etc... The variables should all be static final.
+ *
+ * This is the Hardware Map of the robot.
  */
-public class HardwareMap {
+public class RobotMap {
 
   public static final Talon leftMotor;
   public static final Talon rightMotor;
@@ -36,6 +38,11 @@ public class HardwareMap {
 
     leftEncoder = new Encoder(new DigitalInput(0), new DigitalInput(1));
     rightEncoder = new Encoder(new DigitalInput(2), new DigitalInput(3));
+
+    rightEncoder.setReverseDirection(true);
+
+    // leftEncoder.setDistancePerPulse(); // check what this is and how it works, comment it afterwards
+    // rightEncoder.setDistancePerPulse();
 
     gearIntakeSolenoid = new Solenoid(2);
 

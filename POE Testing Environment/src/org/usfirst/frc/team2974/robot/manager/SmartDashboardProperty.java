@@ -29,26 +29,11 @@ public class SmartDashboardProperty<T> {
 
     this.valueSupplier = valueSupplier;
 
-<<<<<<< HEAD:POE Testing Environment/src/org/usfirst/frc/team2974/robot/manager/SmartDashboardProperty.java
-//    onValueChange is the interface that is run if the value
+//  onValueChange is the interface that is run if the value
 //  (the value that you want to put into SmartDashboard) changes.
     onValueChange = () -> {};
-=======
-//    onValueChange is the interface that is run if the valueSupplier (the value that you want to put into SmartDashboard) changes. It tells the update method how it should pass in the valueSupplier into SmartDashboard
-    onValueChange = () -> {
-      if (value instanceof Number) { // if the value you are going to put in is a number (double, float, int, byte)
-        SmartDashboard.putNumber(key, (Double) value);
-      } else if (value instanceof Boolean) { // if the value is a boolean
-        SmartDashboard.putBoolean(key, (Boolean) value);
-      } else if (value instanceof Sendable) { // if the value is a Sendable object (SendableChooser, etc...)
-        SmartDashboard.putData(key, (Sendable) value);
-      } else {
-        SmartDashboard.putString(key, value
-            .toString()); // if it is something else it uses its toSting method to display it on SmartDashboard
-      }
-    };
->>>>>>> 02807f16f637f1622be5be9a73a9fd4aac7ea02f:POE Testing Environment/src/org/usfirst/frc/team2974/robot/manager/SmartDashboardProperty.java
   }
+
 
   /**
    * Returns the key to retrieve the SmartDashboard value
@@ -134,7 +119,7 @@ public class SmartDashboardProperty<T> {
 
   public final void updateSmartDashboard() {
     if (value instanceof Number) { // if the value you are going to put in is a number (double, float, int, byte, etc.)
-      SmartDashboard.putNumber(key, (Double) value);
+      SmartDashboard.putNumber(key, ((Number)value).doubleValue());
     } else if (value instanceof Boolean) { // if the value is a boolean
       SmartDashboard.putBoolean(key, (Boolean) value);
     } else if (value instanceof Sendable) { // if the value is a Sendable object (SendableChooser, etc...)
