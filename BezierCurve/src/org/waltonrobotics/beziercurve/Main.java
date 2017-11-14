@@ -22,7 +22,7 @@ public class Main extends Application {
     tabPane = FXMLLoader.load(getClass().getResource(
         "menu.fxml"));
 
-    primaryStage.setTitle("Hello World");
+    primaryStage.setTitle("Bezier Curve Creator");
     primaryStage.setScene(new Scene(tabPane));
     primaryStage.show();
 

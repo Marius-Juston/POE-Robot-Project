@@ -1,7 +1,10 @@
 package org.waltonrobotics.beziercurve.controller;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.tables.IRemote;
+import edu.wpi.first.wpilibj.tables.IRemoteConnectionListener;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -33,10 +36,14 @@ import org.waltonrobotics.beziercurve.point.WayPoint;
 
 public class BezierTabContentController implements Initializable {
 
-  private final String ipAddress = "10.29.74.2";
+  public static final String NETWORK_TABLE = "SmartDashboard";
+  private final int teamNumber = 2974;
   public SplitPane splitPane;
   public TextField smartDashboardKeyField;
   public Button sendButton;
+
+  public TextField ipAddressTextField;
+  private String[] ipAddresses;
   @FXML
   private Pane anchorPane;
   @FXML
@@ -52,8 +59,47 @@ public class BezierTabContentController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    NetworkTable.setIPAddress(ipAddress); //TODO check if it works either this or 10.29.74.1
-    networkTable = NetworkTable.getTable("SmartDashboard");
+    ipAddresses = new String[6];
+    ipAddresses[0] = "10." + teamNumber / 100 + "." + teamNumber % 100 + ".2";
+    ipAddresses[1] = "172.22.11.2";
+    ipAddresses[2] = "roboRIO-" + teamNumber + "-FRC.local";
+    ipAddresses[3] = "roboRIO-" + teamNumber + "-FRC.lan";
+    ipAddresses[4] = "roboRIO-" + teamNumber + "-FRC.frc-field.local";
+    ipAddresses[5] = "10.12.34.187";
+
+    NetworkTable.setIPAddress(ipAddresses);
+
+    networkTable = NetworkTable.getTable(NETWORK_TABLE);
+    networkTable.addConnectionListener(new IRemoteConnectionListener() {
+      @Override
+      public void connected(IRemote iRemote) {
+        ipAddressTextField.setDisable(true);
+
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setContentText("Managed to connect to " + NETWORK_TABLE);
+        alert.showAndWait();
+      }
+
+      @Override
+      public void disconnected(IRemote iRemote) {
+        ipAddressTextField.setDisable(false);
+
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setContentText("Disconnected from " + NETWORK_TABLE);
+        alert.showAndWait();
+
+      }
+    }, true);
+
+    if (!ipAddresses[ipAddresses.length - 1].isEmpty()) {
+      ipAddressTextField.setText(ipAddresses[ipAddresses.length - 1]);
+    }
+    ipAddressTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+      if (!newValue.isEmpty()) {
+        ipAddresses[ipAddresses.length - 1] = newValue;
+        NetworkTable.setIPAddress(ipAddresses);
+      }
+    });
 
     bezierCurve = new BezierCurve(50);
 
@@ -175,7 +221,9 @@ public class BezierTabContentController implements Initializable {
             bezierCurve.getYs()); // use the SmartDashboard Manager to do this
       } else {
         Alert alert = new Alert(AlertType.WARNING);
-        alert.setContentText("Unable to connect to SmartDashboard at ip " + ipAddress);
+        alert.setContentText(
+            "Unable to connect to SmartDashboard using these Ip Addresses:\n" + Arrays
+                .toString(ipAddresses));
         alert.showAndWait();
       }
     }
