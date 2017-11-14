@@ -20,6 +20,8 @@ public class Drive extends Command {
   public Drive(Driver initialDriver) {
     super("Drive");
 
+    requires(SubsystemManager.getSubsystem(DriveTrain.class));
+
     drivers = new HashSet<>();
 
     setCurrentDriver(initialDriver);
@@ -93,7 +95,7 @@ public class Drive extends Command {
   }
 
   public double getLeftThrottle() {
-    double leftY = Input.leftJoystick.getY();
+    double leftY = -Input.leftJoystick.getY();
     if(Math.abs(leftY) < .3) {
       return 0;
     }
@@ -102,7 +104,7 @@ public class Drive extends Command {
   }
 
   public double getRightThrottle() {
-    double rightY = Input.rightJoystick.getY();
+    double rightY = -Input.rightJoystick.getY();
     if(Math.abs(rightY) < .3) {
       return 0;
     }

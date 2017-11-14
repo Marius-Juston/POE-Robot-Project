@@ -31,6 +31,8 @@ public class RobotMap {
 
   public static final Gyro gyroscope;
 
+  private static final double DISTANCE_PER_PULSE = 0.0005652;
+
   static {
     // the front is where the camera is now. deal with it.
     rightMotor = new Talon(0);
@@ -43,8 +45,8 @@ public class RobotMap {
 
     rightEncoder.setReverseDirection(true);
 
-    // leftEncoder.setDistancePerPulse(); // check what this is and how it works, comment it afterwards
-    // rightEncoder.setDistancePerPulse();
+     leftEncoder.setDistancePerPulse(DISTANCE_PER_PULSE); // check what this is and how it works, comment it afterwards
+     rightEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
 
     pneumaticsShifter = new Solenoid(0);
     gearIntakeSolenoid = new Solenoid(2);
