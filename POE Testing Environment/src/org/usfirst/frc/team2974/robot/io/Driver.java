@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
+import org.usfirst.frc.team2974.robot.io.logitech.GamepadButton;
 
 public abstract class Driver {
 
@@ -34,30 +35,30 @@ public abstract class Driver {
    * @param gamepadName name of the gamepad that you want to use. Gamepad must have been added using
    * the addJoystick method
    * @param buttonName name the button will be assigned
-   * @param gamepadButtonKey the key to map the button to on the gamepad
+   * @param gamepadButton the key to map the button to on the gamepad
    * @return the created button
    * @throws RobotRuntimeException throws exception when the button name has already been used
    * @throws RobotRuntimeException throws exception when a button has already been assigned to the
    * button key
    */
   public Button createAndAddGamepadButton(String gamepadName, String buttonName,
-      GamepadButtonKey gamepadButtonKey) {
+      GamepadButton gamepadButton) {
     if (buttons.containsKey(buttonName)) {
       throw new RobotRuntimeException("The button name " + buttonName + " has already been used");
     }
 
     boolean alreadyAssigned = buttons.entrySet().stream().anyMatch(
         stringButtonMapEntry -> stringButtonMapEntry.getValue().getAssignedKey()
-            .equals(gamepadButtonKey));
+            .equals(gamepadButton));
 
     if (alreadyAssigned) { //checks if the buttons HashMap contains the button
       throw new RobotRuntimeException(
-          "A Button has already been assigned the " + gamepadButtonKey.name()
+          "A Button has already been assigned the " + gamepadButton.name()
               + " key. Be sure to add to the HashMap using the addJoystick method");
     }
 
-    Button button = new JoystickButton(joysticks.get(gamepadName), gamepadButtonKey.getIndex());
-    buttons.put(buttonName, new ButtonMap(gamepadButtonKey, button));
+    Button button = new JoystickButton(joysticks.get(gamepadName), gamepadButton.getIndex());
+    buttons.put(buttonName, new ButtonMap(gamepadButton, button));
 
     return button;
   }

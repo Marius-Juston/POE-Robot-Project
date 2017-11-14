@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2974.robot.subsystem;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team2974.robot.RobotMap;
@@ -13,9 +14,13 @@ public class DriveTrain extends Subsystem {
   private final Talon rightPair;
   private final Talon leftPair;
 
+  private final Solenoid shifter;
+
   public DriveTrain() {
     rightPair = RobotMap.rightMotor;
     leftPair = RobotMap.leftMotor;
+
+    shifter = RobotMap.pneumaticsShifter;
   }
 
   @Override
@@ -51,15 +56,15 @@ public class DriveTrain extends Subsystem {
    * @return right motor speed
    */
   public double getRightMotorPower() {
-    return rightPair.get();}
-
+    return rightPair.get();
+  }
 
   /**
    * Uses the encoder paired with the left motor to get the velocity of the left wheels.
    * @return left wheel velocity in m/s
    */
   public double getLeftWheelVelocity() {
-    return 0;
+    return 0; // TODO
   }
 
   /**
@@ -67,7 +72,18 @@ public class DriveTrain extends Subsystem {
    * @return right wheel velocity in m/s
    */
   public double getRightWheelVelocity() {
-    return 0;
+    return 0; // TODO
   }
 
+  public void shiftUp() {
+    if(shifter.get()) {
+      shifter.set(false);
+    }
+  }
+
+  public void shiftDown() {
+    if(!shifter.get()) {
+      shifter.set(true);
+    }
+  }
 }

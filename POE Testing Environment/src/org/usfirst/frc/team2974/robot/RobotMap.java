@@ -22,6 +22,8 @@ public class RobotMap {
   public static final Encoder leftEncoder;
   public static final Encoder rightEncoder;
 
+  public static final Solenoid pneumaticsShifter;
+
   public static final Solenoid gearIntakeSolenoid;
   public static final Talon climberMotor;
 
@@ -44,6 +46,7 @@ public class RobotMap {
     // leftEncoder.setDistancePerPulse(); // check what this is and how it works, comment it afterwards
     // rightEncoder.setDistancePerPulse();
 
+    pneumaticsShifter = new Solenoid(0);
     gearIntakeSolenoid = new Solenoid(2);
 
     climberMotor = new Talon(4);

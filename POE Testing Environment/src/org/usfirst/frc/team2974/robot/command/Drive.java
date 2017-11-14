@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import org.usfirst.frc.team2974.robot.Input;
 import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
 import org.usfirst.frc.team2974.robot.io.Driver;
-import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
 import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
@@ -15,12 +15,16 @@ public class Drive extends Command {
   private final Set<Driver> drivers;
   private Driver currentDriver;
 
+  private DriveTrain driveTrain;
+
   public Drive(Driver initialDriver) {
     super("Drive");
 
     drivers = new HashSet<>();
 
     setCurrentDriver(initialDriver);
+
+    driveTrain = SubsystemManager.getSubsystem(DriveTrain.class);
   }
 
   public Drive() {
@@ -88,9 +92,37 @@ public class Drive extends Command {
     requires(SubsystemManager.getSubsystem(DriveTrain.class));
   }
 
+  public double getLeftThrottle() {
+    double leftY = Input.leftJoystick.getY();
+    if(Math.abs(leftY) < .3) {
+      return 0;
+    }
+
+    return leftY;
+  }
+
+  public double getRightThrottle() {
+    double rightY = Input.rightJoystick.getY();
+    if(Math.abs(rightY) < .3) {
+      return 0;
+    }
+
+    return rightY;
+  }
+
+  public void tankDrive() {
+    driveTrain.setPowers(getLeftThrottle(), getRightThrottle());
+  }
+
+  @Override
+  protected void execute() {
+    // if() shifter code
+
+    tankDrive();
+  }
+
   @Override
   protected boolean isFinished() {
-    // TODO Auto-generated method stub
     return false;
   }
 

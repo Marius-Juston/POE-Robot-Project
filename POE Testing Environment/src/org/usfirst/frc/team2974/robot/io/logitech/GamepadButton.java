@@ -1,10 +1,10 @@
-package org.usfirst.frc.team2974.robot.io;
+package org.usfirst.frc.team2974.robot.io.logitech;
 
 /**
  * This enum is used to map what the button number is mapped to what on the gamepad all the while
  * giving them meaningful names instead of numbers. Note: This is not for a XBox controller but for a Logitech Dual Action Controller
  */
-public enum GamepadButtonKey {
+public enum GamepadButton {
   _1(1), _2(2), _3(3), _4(4), _5(5), _6(6), _7(7), _8(8), _9(9), _10(10), LEFT_THUMB_STICK(11), RIGHT_THUMB_STICK(12); 
   //FIXME Add rest of the buttons and verify that these are correct
 
@@ -15,7 +15,7 @@ public enum GamepadButtonKey {
    *
    * @param index index of the button as it depicted on the driver station
    */
-  GamepadButtonKey(int index) {
+  GamepadButton(int index) {
     this.index = index;
   }
 
@@ -26,6 +26,15 @@ public enum GamepadButtonKey {
    */
   public int getIndex() {
     return index;
+  }
+
+  /**
+   *
+   * @param g the gamepad to check
+   * @return <b>true</b> if the button is pressed, <b>false</b> otherwise
+   */
+  public boolean isPressed(Gamepad g) {
+    return g.getRawButton(index);
   }
 }
 
