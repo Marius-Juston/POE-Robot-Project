@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team2974.robot.RobotMap;
-import org.usfirst.frc.team2974.robot.command.Drive;
+import org.usfirst.frc.team2974.robot.command.DriveCommand;
 
 public class DriveTrain extends Subsystem {
 
@@ -25,7 +25,7 @@ public class DriveTrain extends Subsystem {
 
   @Override
   protected void initDefaultCommand() {
-    setDefaultCommand(new Drive());
+    setDefaultCommand(new DriveCommand());
   }
 
   /**
