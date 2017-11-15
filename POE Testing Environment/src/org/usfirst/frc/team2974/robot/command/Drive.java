@@ -25,6 +25,8 @@ public class Drive extends Command {
     setCurrentDriver(initialDriver);
 
     driveTrain = SubsystemManager.getSubsystem(DriveTrain.class);
+
+    requires(driveTrain);
   }
 
   public Drive() {

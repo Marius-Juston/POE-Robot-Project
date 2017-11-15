@@ -1,10 +1,12 @@
 package org.usfirst.frc.team2974.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import org.usfirst.frc.team2974.robot.manager.SmartDashboardManager;
 import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
+import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -32,15 +34,13 @@ public class Robot extends IterativeRobot {
     RobotMap.gyroscope.calibrate();
 
     SubsystemManager.addSubsystem(new DriveTrain());
+    SubsystemManager.addSubsystem(new GearIntake());
 
     SmartDashboardManager.addBind("Left Motor Power", 0, RobotMap.leftMotor::get);
     SmartDashboardManager.addBind("Right Motor Power", 0, RobotMap.rightMotor::get);
 
     SmartDashboardManager.addBind("Left Encoder Raw", 0, RobotMap.leftEncoder::getRaw);
     SmartDashboardManager.addBind("Right Encoder Raw", 0, RobotMap.rightEncoder::getRaw);
-
-    RobotMap.leftMotor.set(.25);
-    RobotMap.rightMotor.set(.25);
   }
 
   /**

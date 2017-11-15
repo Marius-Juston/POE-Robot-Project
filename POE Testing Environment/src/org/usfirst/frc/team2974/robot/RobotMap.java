@@ -31,6 +31,8 @@ public class RobotMap {
 
   public static final Gyro gyroscope;
 
+  public static final DigitalInput gearSensor;
+
   static {
     // the front is where the camera is now. deal with it.
     rightMotor = new Talon(0);
@@ -55,5 +57,7 @@ public class RobotMap {
 
     // gyro is trash, but it is there.
     gyroscope = new AnalogGyro(1);
+
+    gearSensor = new DigitalInput(4);
   }
 }

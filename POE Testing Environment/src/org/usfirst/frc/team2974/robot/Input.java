@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import org.usfirst.frc.team2974.robot.io.logitech.Gamepad;
 
 /**
- *
+ *  Input Manager
  */
 public class Input {
 
