@@ -10,15 +10,15 @@ import org.usfirst.frc.team2974.robot.io.Driver;
 import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
-public class Drive extends Command {
+public class DriveCommand extends Command {
 
   private final Set<Driver> drivers;
   private Driver currentDriver;
 
   private DriveTrain driveTrain;
 
-  public Drive(Driver initialDriver) {
-    super("Drive");
+  public DriveCommand(Driver initialDriver) {
+    super("DriveCommand");
 
     drivers = new HashSet<>();
 
@@ -29,7 +29,7 @@ public class Drive extends Command {
     requires(driveTrain);
   }
 
-  public Drive() {
+  public DriveCommand() {
     this(Driver.DEFAULT_DRIVER);
   }
 
@@ -95,7 +95,7 @@ public class Drive extends Command {
   }
 
   public double getLeftThrottle() {
-    double leftY = Input.leftJoystick.getY();
+    double leftY = -Input.leftJoystick.getY();
     if(Math.abs(leftY) < .3) {
       return 0;
     }
@@ -104,7 +104,7 @@ public class Drive extends Command {
   }
 
   public double getRightThrottle() {
-    double rightY = Input.rightJoystick.getY();
+    double rightY = -Input.rightJoystick.getY();
     if(Math.abs(rightY) < .3) {
       return 0;
     }
