@@ -2,7 +2,6 @@ package org.usfirst.frc.team2974.robot.io;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +56,7 @@ public abstract class Driver {
               + " key. Be sure to add to the HashMap using the addJoystick method");
     }
 
-    Button button = new JoystickButton(joysticks.get(gamepadName), gamepadButton.getIndex());
+    Button button = new edu.wpi.first.wpilibj.buttons.JoystickButton(joysticks.get(gamepadName), gamepadButton.getIndex());
     buttons.put(buttonName, new ButtonMap(gamepadButton, button));
 
     return button;
@@ -99,30 +98,31 @@ public abstract class Driver {
    * @param joystickName name of the joystick that you want to use. Joystick must have been added
    * using the addJoystick method
    * @param buttonName name the button will be assigned
-   * @param joystickButtonKey the key to map the button to on the joystick
+   * @param joystickButton the key to map the button to on the joystick
    * @return the created button
    * @throws RobotRuntimeException throws exception when the button name has already been used
    * @throws RobotRuntimeException throws exception when a button has already been assigned to the
    * button key
    */
   public Button createAndAddJoystickButton(String joystickName, String buttonName,
-      JoystickButtonKey joystickButtonKey) {
+      JoystickButton joystickButton) {
     if (buttons.containsKey(buttonName)) {
       throw new RobotRuntimeException("The button name " + buttonName + " has already been used");
     }
 
     boolean alreadyAssigned = buttons.entrySet().stream().anyMatch(
         stringButtonMapEntry -> stringButtonMapEntry.getValue().getAssignedKey()
-            .equals(joystickButtonKey));
+            .equals(joystickButton));
 
     if (alreadyAssigned) { //checks if the buttons HashMap contains the button
       throw new RobotRuntimeException(
-          "A Button has already been assigned the " + joystickButtonKey.name()
+          "A Button has already been assigned the " + joystickButton.name()
               + " key. Be sure to add to the HashMap using the addJoystick method");
     }
 
-    Button button = new JoystickButton(joysticks.get(joystickName), joystickButtonKey.getIndex());
-    buttons.put(buttonName, new ButtonMap(joystickButtonKey, button));
+    Button button = new edu.wpi.first.wpilibj.buttons.JoystickButton(joysticks.get(joystickName), joystickButton
+        .getIndex());
+    buttons.put(buttonName, new ButtonMap(joystickButton, button));
 
     return button;
   }
