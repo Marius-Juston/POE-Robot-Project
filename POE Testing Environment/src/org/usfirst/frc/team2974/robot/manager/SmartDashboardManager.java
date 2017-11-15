@@ -11,15 +11,6 @@ public class SmartDashboardManager {
 
   private static final List<SmartDashboardProperty> PROPERTIES = new ArrayList<>(); // Properties list where all the SmartDashboard  Properties are stored
 
-  //  Example of how to use the bind method
-  static {
-    addBind(
-        "Left Motor Power",
-        0,
-        () -> SubsystemManager.getSubsystem(DriveTrain.class).getLeftMotorPower()
-    );
-  }
-
   /**
    * <p>Creates a SmartDashboard Property that will update automatically when the update method of
    * SmartDashboardManager is called.</p>

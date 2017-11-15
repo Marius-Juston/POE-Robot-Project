@@ -20,13 +20,14 @@ public abstract class Driver {
     this.driverName = driverName;
     joysticks = new HashMap<>();
     buttons = new HashMap<>();
+
+    initButtons();
   }
 
   /**
    * Method used to initialize the button map. Assigning the button tasks.
    */
   public abstract void initButtons();
-
 
   /**
    * Creates a button assigned to the given gamepad for the given Joystick button

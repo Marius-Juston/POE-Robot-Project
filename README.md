@@ -1,6 +1,26 @@
 # POE Robot Project
 
-This is an POE project to further enrich our skills with using the allowable sensors
+This is an POE project to further enrich our skills with using the allowable sensors.
+
+The task chosen is (drumroll please): Use the Bezier curve program to send a spline to the robot and the robot will execute/follow the spline.
+- Deliverables
+  - Test plan (how we are going to show the consumer that it works and how to use it)
+  - Code library useable
+  - Bezier curve program that can send values to the robot
+  - Autonomous robot with teleop functionalities
+- Constraints
+  - Due by Dec 13
+  - Parts available below
+  - Code is commented and well documented (jdocs)
+  
+Challenge: Make the robot follow a curve with any number of control points.
+
+### Test Plan
+1. Test that it can go forwards 10 meters in a straight line (margin of error of +/-10cm)
+2. Test that it can rotate a full 180 degrees (margin of error +/-5 degrees)
+3. Test that it can rotate any number of degrees.
+4. Test it with a two point curve, three point curve, and four point curve. 
+  - Challenge: Make it work with x# of points.
 
 ## Robot
 ### Parts available to us

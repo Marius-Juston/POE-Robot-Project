@@ -9,6 +9,9 @@ import java.util.function.Supplier;
  */
 public class SmartDashboardProperty<T> {
 
+  // TODO: MAKE WRITEONLY PROPERTY, THIS AS A BASE CLASS
+  // FIXME?: TEMPTED TO REMOVE defaultValue BECAUSE IT DOESN'T DO ANYTHING
+
   private final String key; // SmartDashboard key
   private final T defaultValue; // Default value
   private T value; // Current value

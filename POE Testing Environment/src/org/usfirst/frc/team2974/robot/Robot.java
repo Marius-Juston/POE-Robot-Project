@@ -19,6 +19,8 @@ public class Robot extends IterativeRobot {
   final String defaultAuto = "Default";
   final String customAuto = "My Auto";
   String autoSelected;
+
+  private int testValue;
   SendableChooser<String> chooser = new SendableChooser<>();
 
   /**
@@ -39,8 +41,10 @@ public class Robot extends IterativeRobot {
     SmartDashboardManager.addBind("Left Motor Power", 0, RobotMap.leftMotor::get);
     SmartDashboardManager.addBind("Right Motor Power", 0, RobotMap.rightMotor::get);
 
-    SmartDashboardManager.addBind("Left Encoder Raw", 0, RobotMap.leftEncoder::getRaw);
-    SmartDashboardManager.addBind("Right Encoder Raw", 0, RobotMap.rightEncoder::getRaw);
+    SmartDashboardManager.addBind("Left Encoder Rate", 0, RobotMap.leftEncoder::getRate);
+    SmartDashboardManager.addBind("Right Encoder Rate", 0, RobotMap.rightEncoder::getRate);
+
+    SmartDashboardManager.addBind("Test Value", 0, () -> testValue);
   }
 
   /**
@@ -91,6 +95,8 @@ public class Robot extends IterativeRobot {
   public void teleopPeriodic() {
     update();
     Scheduler.getInstance().run();
+
+    testValue++;
   }
 
   /**
