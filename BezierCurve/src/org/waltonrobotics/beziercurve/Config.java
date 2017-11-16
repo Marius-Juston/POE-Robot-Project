@@ -13,7 +13,7 @@ public class Config {
   public static class WayPointSetting {
 
     public static final double RADIUS = 3;
-    public static final Color COLOR = Color.BLUE;
+    public static final Color COLOR = Color.LIMEGREEN;
   }
 
   public static class InBetweenLineSetting {

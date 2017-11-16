@@ -4,12 +4,15 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.tables.IRemote;
 import edu.wpi.first.wpilibj.tables.IRemoteConnectionListener;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -19,6 +22,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,20 +32,23 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.util.converter.NumberStringConverter;
-import org.waltonrobotics.beziercurve.BezierCurve;
 import org.waltonrobotics.beziercurve.Helper;
+import org.waltonrobotics.beziercurve.curve.BezierCurve;
 import org.waltonrobotics.beziercurve.point.ControlPoint;
 import org.waltonrobotics.beziercurve.point.Point;
 import org.waltonrobotics.beziercurve.point.WayPoint;
 
 public class BezierTabContentController implements Initializable {
 
+  public static final HashMap<Point, BezierTabContentController> points = new HashMap<>();
+
   public static final String NETWORK_TABLE = "SmartDashboard";
   private final int teamNumber = 2974;
+  private final Alert warningAlert = new Alert(AlertType.WARNING);
+  private final Alert confirmationAlert = new Alert(AlertType.CONFIRMATION);
   public SplitPane splitPane;
   public TextField smartDashboardKeyField;
   public Button sendButton;
-
   public TextField ipAddressTextField;
   private String[] ipAddresses;
   @FXML
@@ -54,79 +61,101 @@ public class BezierTabContentController implements Initializable {
   private TableColumn<Point, Number> pointCenterXColumn;
   @FXML
   private TableColumn<Point, Number> pointCenterYColumn;
-  private BezierCurve bezierCurve;
+  private List<BezierCurve> bezierCurves;
   private NetworkTable networkTable;
 
-  @Override
-  public void initialize(URL location, ResourceBundle resources) {
-    ipAddresses = new String[6];
+  private String[] setIpAddresses(String... extraIpAddresses) {
+    String[] ipAddresses = new String[5 + extraIpAddresses.length];
     ipAddresses[0] = "10." + teamNumber / 100 + "." + teamNumber % 100 + ".2";
     ipAddresses[1] = "172.22.11.2";
     ipAddresses[2] = "roboRIO-" + teamNumber + "-FRC.local";
     ipAddresses[3] = "roboRIO-" + teamNumber + "-FRC.lan";
     ipAddresses[4] = "roboRIO-" + teamNumber + "-FRC.frc-field.local";
-    ipAddresses[5] = "10.12.34.187";
+
+    System.arraycopy(extraIpAddresses, 0, ipAddresses,
+        ipAddresses.length - extraIpAddresses.length, extraIpAddresses.length);
 
     NetworkTable.setIPAddress(ipAddresses);
+    return ipAddresses;
+  }
 
-    networkTable = NetworkTable.getTable(NETWORK_TABLE);
+  private NetworkTable getNetworkTable(String networkTableName) {
+    NetworkTable networkTable = NetworkTable.getTable(networkTableName);
     networkTable.addConnectionListener(new IRemoteConnectionListener() {
       @Override
       public void connected(IRemote iRemote) {
         ipAddressTextField.setDisable(true);
-
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setContentText("Managed to connect to " + NETWORK_TABLE);
-        alert.showAndWait();
+        confirmationAlert.setContentText("Managed to connect to " + NETWORK_TABLE);
+        confirmationAlert.showAndWait();
       }
 
       @Override
       public void disconnected(IRemote iRemote) {
         ipAddressTextField.setDisable(false);
 
-        Alert alert = new Alert(AlertType.WARNING);
-        alert.setContentText("Disconnected from " + NETWORK_TABLE);
-        alert.showAndWait();
+        warningAlert.setContentText("Disconnected from " + NETWORK_TABLE);
+        warningAlert.showAndWait();
 
       }
     }, true);
 
+    return networkTable;
+  }
+
+
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    bezierCurves = new ArrayList<>();
+    bezierCurves.add(new BezierCurve());
+    bezierCurves.add(new BezierCurve());
+
+    NetworkTable.setTeam(teamNumber);
+    NetworkTable.setClientMode();
+    ipAddresses = setIpAddresses("10.12.34.19");
+
+    networkTable = getNetworkTable(NETWORK_TABLE);
+
     if (!ipAddresses[ipAddresses.length - 1].isEmpty()) {
       ipAddressTextField.setText(ipAddresses[ipAddresses.length - 1]);
     }
+
     ipAddressTextField.textProperty().addListener((observable, oldValue, newValue) -> {
       if (!newValue.isEmpty()) {
-        ipAddresses[ipAddresses.length - 1] = newValue;
-        NetworkTable.setIPAddress(ipAddresses);
+        ipAddresses = setIpAddresses(newValue);
       }
     });
 
-    bezierCurve = new BezierCurve(50);
+    smartDashboardKeyField.textProperty()
+        .addListener((observable, oldValue, newValue) -> sendButton.setDisable(newValue.isEmpty()));
 
-    smartDashboardKeyField.textProperty().addListener((observable, oldValue, newValue) -> {
-      if (newValue.isEmpty()) {
-        sendButton.setDisable(true);
-      } else {
-        sendButton.setDisable(false);
-      }
-    });
+    initializeStringColumn(pointNameColumn, "name",
+        cellEditEvent -> cellEditEvent.getTableView().getItems().get(
+            cellEditEvent.getTablePosition().getRow()).setName(cellEditEvent.getNewValue()));
 
-    pointNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-    pointNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-    pointNameColumn.setOnEditCommit(t -> t.getTableView().getItems().get(
-        t.getTablePosition().getRow()).setName(t.getNewValue()));
+    initializeNumberColumn(pointCenterXColumn, "centerX",
+        cellEditEvent -> cellEditEvent.getTableView().getItems().get(
+            cellEditEvent.getTablePosition().getRow())
+            .setCenterX(cellEditEvent.getNewValue().doubleValue()));
 
-    pointCenterXColumn.setCellValueFactory(new PropertyValueFactory<>("centerX"));
-    pointCenterXColumn
+    initializeNumberColumn(pointCenterYColumn, "centerY",
+        cellEditEvent -> cellEditEvent.getTableView().getItems().get(
+            cellEditEvent.getTablePosition().getRow())
+            .setCenterY(cellEditEvent.getNewValue().doubleValue()));
+  }
+
+  private void initializeNumberColumn(TableColumn<Point, Number> column, String property,
+      EventHandler<CellEditEvent<Point, Number>> eventHandler) {
+    column.setCellValueFactory(new PropertyValueFactory<>(property));
+    column
         .setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
-    pointCenterXColumn.setOnEditCommit(t -> t.getTableView().getItems().get(
-        t.getTablePosition().getRow()).setCenterX(t.getNewValue().doubleValue()));
+    column.setOnEditCommit(eventHandler);
+  }
 
-    pointCenterYColumn.setCellValueFactory(new PropertyValueFactory<>("centerY"));
-    pointCenterYColumn
-        .setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
-    pointCenterYColumn.setOnEditCommit(t -> t.getTableView().getItems().get(
-        t.getTablePosition().getRow()).setCenterY(t.getNewValue().doubleValue()));
+  private void initializeStringColumn(TableColumn<Point, String> column, String property,
+      EventHandler<CellEditEvent<Point, String>> eventHandler) {
+    column.setCellValueFactory(new PropertyValueFactory<>(property));
+    column.setCellFactory(TextFieldTableCell.forTableColumn());
+    column.setOnEditCommit(eventHandler);
   }
 
   private List<ControlPoint> getControlPoints() {
@@ -146,22 +175,24 @@ public class BezierTabContentController implements Initializable {
     if (mouseButton == MouseButton.PRIMARY) {
       ControlPoint controlPoint = createControlPoint(mouseEvent.getX(), mouseEvent.getY());
 
-      addPointIfDoesNotExist(controlPoint);
+      addPointIfDoesNotExist(controlPoint, bezierCurves.get(0));
     } else if (mouseButton == MouseButton.MIDDLE) {
       WayPoint wayPoint = createWayPoint(mouseEvent.getX(), mouseEvent.getY());
-      addPointIfDoesNotExist(wayPoint);
+      addPointIfDoesNotExist(wayPoint, bezierCurves.get(1));
     }
 
     drawBezierCurve();
   }
 
-  private void addPointIfDoesNotExist(Point point) {
+  private void addPointIfDoesNotExist(Point point, BezierCurve bezierCurve) {
     ObservableList<Node> children = anchorPane.getChildren();
 
     if (!children.contains(point)) {
       children.add(point);
 
       pointTable.getItems().add(point);
+      bezierCurve.addPoint(point);
+      Helper.initPoint(point, this);
     }
   }
 
@@ -173,15 +204,18 @@ public class BezierTabContentController implements Initializable {
   public void drawBezierCurve() {
     clearLines();
 
-    bezierCurve.setPoints(getControlCenters());
-    List<Point2D> point2DS = bezierCurve.getCurvePoints();
+    for (BezierCurve bezierCurve : bezierCurves) {
+      if (bezierCurve.getXs().length > 1) {
+        List<Point> point2DS = bezierCurve.getCurvePoints(50);
 
-    if (point2DS.size() > 1) {
-      for (int i = 0; i < point2DS.size() - 1; i++) {
-        Line line = Helper.createLine();
-        Helper.setLineLocation(line, point2DS.get(i), point2DS.get(i + 1));
+        if (point2DS.size() > 1) {
+          for (int i = 0; i < point2DS.size() - 1; i++) {
+            Line line = Helper.createLine();
+            Helper.setLineLocation(line, point2DS.get(i), point2DS.get(i + 1));
 
-        anchorPane.getChildren().add(0, line);
+            anchorPane.getChildren().add(0, line);
+          }
+        }
       }
     }
   }
@@ -195,7 +229,7 @@ public class BezierTabContentController implements Initializable {
   }
 
   private ControlPoint createControlPoint(double x, double y) {
-    return new ControlPoint(x, y, this);
+    return new ControlPoint(x, y);
   }
 
   private List<Point2D> getControlCenters() {
@@ -203,7 +237,7 @@ public class BezierTabContentController implements Initializable {
   }
 
   private WayPoint createWayPoint(double x, double y) {
-    return new WayPoint(x, y, this);
+    return new WayPoint(x, y);
   }
 
   private List<Line> getLines() {
@@ -214,17 +248,18 @@ public class BezierTabContentController implements Initializable {
   public void sendBezierCurveToSmartDashboard(ActionEvent actionEvent) {
     if (!smartDashboardKeyField.getText().isEmpty()) {
       if (networkTable.isConnected()) {
-
         networkTable.putNumberArray(smartDashboardKeyField.getText() + "_X_Values",
-            bezierCurve.getXs()); // use the SmartDashboard Manager to do this
+            bezierCurves.get(0)
+                .getXs()); // use the SmartDashboard Manager to do this // TODO fix the fact that the bezier curve sent is only the first one
         networkTable.putNumberArray(smartDashboardKeyField.getText() + "_Y_Values",
-            bezierCurve.getYs()); // use the SmartDashboard Manager to do this
+            bezierCurves.get(0)
+                .getYs()); // use the SmartDashboard Manager to do this // TODO fix the fact that the bezier curve sent is only the first one
       } else {
-        Alert alert = new Alert(AlertType.WARNING);
-        alert.setContentText(
+
+        warningAlert.setContentText(
             "Unable to connect to SmartDashboard using these Ip Addresses:\n" + Arrays
                 .toString(ipAddresses));
-        alert.showAndWait();
+        warningAlert.showAndWait();
       }
     }
   }
