@@ -40,7 +40,13 @@ public abstract class Curve {
     points.removeAll(point2D);
   }
 
+  public ObservableList<Point> getPoints() {
+    return points;
+  }
+
   public void setPoints(List<Point> point2D) {
     points.setAll(point2D);
   }
+
+  public abstract List<Point> getCurvePoints(int numberOfSteps);
 }

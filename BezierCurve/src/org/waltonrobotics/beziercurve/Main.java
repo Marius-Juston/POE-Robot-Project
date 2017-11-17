@@ -1,5 +1,6 @@
 package org.waltonrobotics.beziercurve;
 
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +35,8 @@ public class Main extends Application {
         System.out.println("SAVED");
       }
     });
+
+    primaryStage.setOnCloseRequest(event -> NetworkTable.shutdown());
 
     addTab(createBezierTab("Bezier Test"));
   }

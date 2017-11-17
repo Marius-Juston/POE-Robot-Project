@@ -20,6 +20,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
@@ -34,6 +37,7 @@ import javafx.scene.shape.Line;
 import javafx.util.converter.NumberStringConverter;
 import org.waltonrobotics.beziercurve.Helper;
 import org.waltonrobotics.beziercurve.curve.BezierCurve;
+import org.waltonrobotics.beziercurve.curve.Curve;
 import org.waltonrobotics.beziercurve.point.ControlPoint;
 import org.waltonrobotics.beziercurve.point.Point;
 import org.waltonrobotics.beziercurve.point.WayPoint;
@@ -41,8 +45,9 @@ import org.waltonrobotics.beziercurve.point.WayPoint;
 public class BezierTabContentController implements Initializable {
 
   public static final HashMap<Point, BezierTabContentController> points = new HashMap<>();
-
-  public static final String NETWORK_TABLE = "SmartDashboard";
+  private static final String NETWORK_TABLE = "SmartDashboard";
+  public final ContextMenu POINT_CONTEXT_MENU = Helper.createTemplateContextMenu();
+  public final ContextMenu TABLE_CONTEXT_MENU = Helper.createTemplateContextMenu();
   private final int teamNumber = 2974;
   private final Alert warningAlert = new Alert(AlertType.WARNING);
   private final Alert confirmationAlert = new Alert(AlertType.CONFIRMATION);
@@ -61,8 +66,9 @@ public class BezierTabContentController implements Initializable {
   private TableColumn<Point, Number> pointCenterXColumn;
   @FXML
   private TableColumn<Point, Number> pointCenterYColumn;
-  private List<BezierCurve> bezierCurves;
+  private List<Curve> curves;
   private NetworkTable networkTable;
+  private MenuItem removePoint = new MenuItem("Remove Point");
 
   private String[] setIpAddresses(String... extraIpAddresses) {
     String[] ipAddresses = new String[5 + extraIpAddresses.length];
@@ -102,13 +108,57 @@ public class BezierTabContentController implements Initializable {
     return networkTable;
   }
 
+  public List<Curve> getCurves() {
+    return curves;
+  }
 
-  @Override
-  public void initialize(URL location, ResourceBundle resources) {
-    bezierCurves = new ArrayList<>();
-    bezierCurves.add(new BezierCurve());
-    bezierCurves.add(new BezierCurve());
+  public void setRemovePointOnAction(EventHandler<ActionEvent> event) {
+    removePoint.setOnAction(event);
+  }
 
+  private void initContextMenus() {
+    POINT_CONTEXT_MENU.getItems().add(removePoint);
+
+    MenuItem addPoint = new MenuItem("Add point");
+    addPoint.setOnAction(event -> {
+      addPointIfDoesNotExist(
+          createControlPoint(anchorPane.getWidth() / 2, anchorPane.getHeight() / 2), curves.get(0));
+      drawCurves();
+    });
+
+    MenuItem removePoint = new MenuItem("Remove Points");
+    removePoint.setOnAction(event -> {
+      List<Point> points = new ArrayList<>();
+
+      List<Integer> integerList = new ArrayList<>(
+          pointTable.getSelectionModel().getSelectedIndices());
+
+      List<Point> items = pointTable.getItems();
+
+      for (int i = integerList.size() - 1; i >= 0; i--) {
+        int index = integerList.get(i);
+
+        points.add(items.get(index));
+        items.remove(items.get(index));
+      }
+
+      getCurves().forEach(curve -> curve.getPoints().removeAll(points));
+
+      anchorPane.getChildren().removeAll(points);
+
+      drawCurves();
+    });
+
+    MenuItem moveUp = new MenuItem("Move Up");
+
+    MenuItem moveDown = new MenuItem("Move Down");
+
+    TABLE_CONTEXT_MENU.getItems().addAll(addPoint, removePoint, moveUp, moveDown);
+
+    pointTable.setContextMenu(TABLE_CONTEXT_MENU);
+  }
+
+  private void initSmartDashboard() {
     NetworkTable.setTeam(teamNumber);
     NetworkTable.setClientMode();
     ipAddresses = setIpAddresses("10.12.34.19");
@@ -127,6 +177,22 @@ public class BezierTabContentController implements Initializable {
 
     smartDashboardKeyField.textProperty()
         .addListener((observable, oldValue, newValue) -> sendButton.setDisable(newValue.isEmpty()));
+
+  }
+
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    curves = new ArrayList<>();
+    curves.add(new BezierCurve());
+    curves.add(new BezierCurve());
+
+    initSmartDashboard();
+    initTable();
+    initContextMenus();
+  }
+
+  private void initTable() {
+    pointTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
     initializeStringColumn(pointNameColumn, "name",
         cellEditEvent -> cellEditEvent.getTableView().getItems().get(
@@ -174,17 +240,17 @@ public class BezierTabContentController implements Initializable {
 
     if (mouseButton == MouseButton.PRIMARY) {
       ControlPoint controlPoint = createControlPoint(mouseEvent.getX(), mouseEvent.getY());
+      addPointIfDoesNotExist(controlPoint, curves.get(0));
 
-      addPointIfDoesNotExist(controlPoint, bezierCurves.get(0));
+      drawCurves();
+
     } else if (mouseButton == MouseButton.MIDDLE) {
       WayPoint wayPoint = createWayPoint(mouseEvent.getX(), mouseEvent.getY());
-      addPointIfDoesNotExist(wayPoint, bezierCurves.get(1));
+      addPointIfDoesNotExist(wayPoint, curves.get(1));
     }
-
-    drawBezierCurve();
   }
 
-  private void addPointIfDoesNotExist(Point point, BezierCurve bezierCurve) {
+  private void addPointIfDoesNotExist(Point point, Curve bezierCurve) {
     ObservableList<Node> children = anchorPane.getChildren();
 
     if (!children.contains(point)) {
@@ -201,11 +267,11 @@ public class BezierTabContentController implements Initializable {
         .map(Point.class::cast).collect(Collectors.toList());
   }
 
-  public void drawBezierCurve() {
+  public void drawCurves() {
     clearLines();
 
-    for (BezierCurve bezierCurve : bezierCurves) {
-      if (bezierCurve.getXs().length > 1) {
+    for (Curve bezierCurve : curves) {
+      if (bezierCurve.getPoints().size() > 1) {
         List<Point> point2DS = bezierCurve.getCurvePoints(50);
 
         if (point2DS.size() > 1) {
@@ -248,12 +314,14 @@ public class BezierTabContentController implements Initializable {
   public void sendBezierCurveToSmartDashboard(ActionEvent actionEvent) {
     if (!smartDashboardKeyField.getText().isEmpty()) {
       if (networkTable.isConnected()) {
-        networkTable.putNumberArray(smartDashboardKeyField.getText() + "_X_Values",
-            bezierCurves.get(0)
-                .getXs()); // use the SmartDashboard Manager to do this // TODO fix the fact that the bezier curve sent is only the first one
-        networkTable.putNumberArray(smartDashboardKeyField.getText() + "_Y_Values",
-            bezierCurves.get(0)
-                .getYs()); // use the SmartDashboard Manager to do this // TODO fix the fact that the bezier curve sent is only the first one
+        String pointsString = Helper.toString(curves.get(0), true);
+
+        networkTable.putString(smartDashboardKeyField.getText(), pointsString);
+
+        confirmationAlert.setContentText(
+            "Sent points to SmartDashboard retrive them using the " + smartDashboardKeyField
+                .getText());
+        confirmationAlert.showAndWait();
       } else {
 
         warningAlert.setContentText(

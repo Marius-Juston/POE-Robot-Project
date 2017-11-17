@@ -91,6 +91,7 @@ public class BezierCurve extends Curve {
     return new ArrowPoint(xCoordinateAtPercentage, yCoordinateAtPercentage);
   }
 
+
   private int getDegree() {
     return points.size() - 1;
   }
