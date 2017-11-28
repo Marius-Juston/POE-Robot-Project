@@ -16,12 +16,10 @@ import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
  */
 public class Robot extends IterativeRobot {
 
-  final String defaultAuto = "Default";
-  final String customAuto = "My Auto";
-  String autoSelected;
-
-  private int testValue;
-  SendableChooser<String> chooser = new SendableChooser<>();
+  private final String defaultAuto = "Default";
+  private final String customAuto = "My Auto";
+  private String autoSelected;
+  private SendableChooser<String> autonChooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -29,40 +27,32 @@ public class Robot extends IterativeRobot {
    */
   @Override
   public void robotInit() {
-    chooser.addDefault("Default Auto", defaultAuto);
-    chooser.addObject("My Auto", customAuto);
-    SmartDashboardManager.addBind("Auto choices", defaultAuto, () -> chooser);
-
-    RobotMap.gyroscope.calibrate();
+    autonChooser.addDefault("Default Auto", defaultAuto);
+    autonChooser.addObject("My Auto", customAuto);
+    SmartDashboardManager.addBind("Auto choices", defaultAuto, () -> autonChooser);
 
     SubsystemManager.addSubsystem(new DriveTrain());
     SubsystemManager.addSubsystem(new GearIntake());
 
-    SmartDashboardManager.addBind("Left Motor Power", 0, RobotMap.leftMotor::get);
-    SmartDashboardManager.addBind("Right Motor Power", 0, RobotMap.rightMotor::get);
-
     SmartDashboardManager.addBind("Left Encoder Rate", 0, RobotMap.leftEncoder::getRate);
     SmartDashboardManager.addBind("Right Encoder Rate", 0, RobotMap.rightEncoder::getRate);
 
-    SmartDashboardManager.addBind("Test Value", 0, () -> testValue);
+    SmartDashboardManager.addBind("Gear Sensor", 0, RobotMap.gearSensor::get);
   }
 
   /**
-   * This autonomous (along with the chooser code above) shows how to select between different
-   * autonomous modes using the dashboard. The sendable chooser code works with the Java
-   * SmartDashboard. If you prefer the LabVIEW Dashboard, remove all of the chooser code and
+   * This autonomous (along with the autonChooser code above) shows how to select between different
+   * autonomous modes using the dashboard. The sendable autonChooser code works with the Java
+   * SmartDashboard. If you prefer the LabVIEW Dashboard, remove all of the autonChooser code and
    * uncomment the getString line to get the auto name from the text box below the Gyro
    *
    * You can add additional auto modes by adding additional comparisons to the switch structure
    * below with additional strings. If using the SendableChooser make sure to add them to the
-   * chooser code above as well.
+   * autonChooser code above as well.
    */
   @Override
   public void autonomousInit() {
-    autoSelected = chooser.getSelected();
-    // autoSelected = SmartDashboard.getString("Auto Selector",
-    // defaultAuto);
-    System.out.println("Auto selected: " + autoSelected);
+    autoSelected = autonChooser.getSelected();
   }
 
   /**
@@ -95,8 +85,6 @@ public class Robot extends IterativeRobot {
   public void teleopPeriodic() {
     update();
     Scheduler.getInstance().run();
-
-    testValue++;
   }
 
   /**

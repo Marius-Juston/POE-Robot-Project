@@ -91,7 +91,7 @@ public class DriveCommand extends Command {
 
   @Override
   protected void initialize() {
-    requires(SubsystemManager.getSubsystem(DriveTrain.class));
+
   }
 
   public double getLeftThrottle() {

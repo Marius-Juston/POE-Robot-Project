@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 
-
 /**
  * Class meant to manage the subsystem for easy access and retrieval.
  */

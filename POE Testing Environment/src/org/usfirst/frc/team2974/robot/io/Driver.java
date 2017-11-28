@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import org.usfirst.frc.team2974.robot.Robot;
 import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 import org.usfirst.frc.team2974.robot.io.logitech.GamepadButton;
 

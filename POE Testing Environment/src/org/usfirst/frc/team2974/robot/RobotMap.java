@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2974.robot;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -60,6 +61,6 @@ public class RobotMap {
     // gyro is trash, but it is there.
     gyroscope = new AnalogGyro(1);
 
-    gearSensor = new DigitalInput(4);
+    gearSensor = new DigitalInput(5);
   }
 }
