@@ -10,14 +10,14 @@ import org.usfirst.frc.team2974.robot.exception.RobotException;
 public class MotionPath {
 
   /**
-   * These are the motions it will take.
-   * The end of motions[i] HAVE to be the same as motions[i + 1].
+   * These are the motions it will take. The end of motions[i] HAVE to be the same as motions[i +
+   * 1].
    */
   private MotionProvider[] motions;
 
   public MotionPath(MotionProvider... motions) {
     try {
-      checkMotions(motions);
+      MotionPath.checkMotions(motions);
       this.motions = motions;
     } catch (RobotException r) {
       r.printStackTrace();
@@ -27,16 +27,18 @@ public class MotionPath {
   }
 
   public static void checkMotions(MotionProvider... motions) throws RobotException {
-    for(int i = 1; i < motions.length; i++) {
-      if(!motions[i].getInitialPose().equals(motions[i - 1].getFinalPose()))
-        throw new RobotException("Motion " + i + " initial pose does not equal Motion " + (i + 1) + " final pose.");
+    for (int i = 1; i < motions.length; i++) {
+      if (!motions[i].getInitialPose().equals(motions[i - 1].getFinalPose())) {
+        throw new RobotException(
+            "Motion " + i + " initial pose does not equal Motion " + (i + 1) + " final pose.");
+      }
     }
   }
 
   @Override
   public String toString() {
     return "MotionPath{" +
-        "motions=" + Arrays.toString(motions) +
+        "motions=" + Arrays.toString(this.motions) +
         '}';
   }
 }

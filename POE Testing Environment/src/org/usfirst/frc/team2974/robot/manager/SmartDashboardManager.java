@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
-import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
 public class SmartDashboardManager {
 
@@ -16,7 +15,7 @@ public class SmartDashboardManager {
    * SmartDashboardManager is called.</p>
    *
    * <p>
-   *   Example: <pre>{@code
+   * Example: <pre>{@code
    *   addBind("Left Motor Power", 0, () -> SubsystemManager.getSubsystem(DriveTrain.class).getLeftMotorPower());
    *   }</pre>
    * </p>
@@ -31,7 +30,7 @@ public class SmartDashboardManager {
       Supplier<T> valueSupplier) {
     SmartDashboardProperty<T> prop = new SmartDashboardProperty<>(key, defaultValue, valueSupplier);
 
-    PROPERTIES.add(prop);
+    SmartDashboardManager.PROPERTIES.add(prop);
 
     return prop;
   }
@@ -42,7 +41,7 @@ public class SmartDashboardManager {
    * @return returns the PROPERTIES list
    */
   public static List<SmartDashboardProperty> getProperties() {
-    return PROPERTIES;
+    return SmartDashboardManager.PROPERTIES;
   }
 
   /**
@@ -55,7 +54,7 @@ public class SmartDashboardManager {
    */
   @SuppressWarnings("unchecked")
   public static <T> SmartDashboardProperty<T> getProperty(String key) {
-    Optional<SmartDashboardProperty> smartDashboardProperty = PROPERTIES.stream()
+    Optional<SmartDashboardProperty> smartDashboardProperty = SmartDashboardManager.PROPERTIES.stream()
         .filter(p -> p.getKey()
             .equals(key)) // gts the properties with the same key as the one searching for
         .findFirst();  /// gets the first SmartDashboard property
@@ -76,6 +75,6 @@ public class SmartDashboardManager {
    * to do
    */
   public static void update() {
-    PROPERTIES.forEach(SmartDashboardProperty::update);
+    SmartDashboardManager.PROPERTIES.forEach(SmartDashboardProperty::update);
   }
 }

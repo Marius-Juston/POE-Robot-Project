@@ -14,12 +14,12 @@ import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
  * or the package after creating this project, you must also update the manifest file in the
  * resource directory.
  */
-public class Robot extends IterativeRobot {
+class Robot extends IterativeRobot {
 
   private final String defaultAuto = "Default";
   private final String customAuto = "My Auto";
+  private final SendableChooser<String> autonChooser = new SendableChooser<>();
   private String autoSelected;
-  private SendableChooser<String> autonChooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -27,9 +27,9 @@ public class Robot extends IterativeRobot {
    */
   @Override
   public void robotInit() {
-    autonChooser.addDefault("Default Auto", defaultAuto);
-    autonChooser.addObject("My Auto", customAuto);
-    SmartDashboardManager.addBind("Auto choices", defaultAuto, () -> autonChooser);
+    this.autonChooser.addDefault("Default Auto", this.defaultAuto);
+    this.autonChooser.addObject("My Auto", this.customAuto);
+    SmartDashboardManager.addBind("Auto choices", this.defaultAuto, () -> this.autonChooser);
 
     SubsystemManager.addSubsystem(new DriveTrain());
     SubsystemManager.addSubsystem(new GearIntake());
@@ -52,7 +52,7 @@ public class Robot extends IterativeRobot {
    */
   @Override
   public void autonomousInit() {
-    autoSelected = autonChooser.getSelected();
+    this.autoSelected = this.autonChooser.getSelected();
   }
 
   /**
@@ -60,13 +60,13 @@ public class Robot extends IterativeRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    update();
+    this.update();
 
-    switch (autoSelected) {
-      case customAuto:
+    switch (this.autoSelected) {
+      case this.customAuto:
         // Put custom auto code here
         break;
-      case defaultAuto:
+      case this.defaultAuto:
       default:
         // Put default auto code here
         break;
@@ -83,7 +83,7 @@ public class Robot extends IterativeRobot {
    */
   @Override
   public void teleopPeriodic() {
-    update();
+    this.update();
     Scheduler.getInstance().run();
   }
 
@@ -92,10 +92,10 @@ public class Robot extends IterativeRobot {
    */
   @Override
   public void testPeriodic() {
-    update();
+    this.update();
   }
 
-  public void update() {
+  private void update() {
     SmartDashboardManager.update();
   }
 }
