@@ -18,10 +18,10 @@ public class ButtonMap {
   }
 
   public Enum getAssignedKey() {
-    return assignedKey;
+    return this.assignedKey;
   }
 
   public Button getButton() {
-    return button;
+    return this.button;
   }
 }

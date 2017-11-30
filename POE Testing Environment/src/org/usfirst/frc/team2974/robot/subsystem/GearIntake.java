@@ -1,6 +1,5 @@
 package org.usfirst.frc.team2974.robot.subsystem;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -12,31 +11,31 @@ import org.usfirst.frc.team2974.robot.command.GearIntakeCommand;
  */
 public class GearIntake extends Subsystem {
 
-  private Solenoid piston;
+  private final Solenoid piston;
 
-  private DigitalInput gearSensor;
+  private final DigitalInput gearSensor;
 
   public GearIntake() {
     super("Gear Intake");
 
-    piston = RobotMap.gearIntakeSolenoid;
-    gearSensor = RobotMap.gearSensor;
+    this.piston = RobotMap.gearIntakeSolenoid;
+    this.gearSensor = RobotMap.gearSensor;
   }
 
   @Override
   protected void initDefaultCommand() {
-    setDefaultCommand(new GearIntakeCommand());
+    this.setDefaultCommand(new GearIntakeCommand());
   }
 
   public void setDeployed(boolean deployed) {
-    piston.set(deployed);
+    this.piston.set(deployed);
   }
 
   public void toggleDeployed() {
-    piston.set(!piston.get());
+    this.piston.set(!this.piston.get());
   }
 
   public boolean hasGear() {
-    return !gearSensor.get();
+    return !this.gearSensor.get();
   }
 }

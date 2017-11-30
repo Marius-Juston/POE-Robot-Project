@@ -11,19 +11,20 @@ import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
  */
 public class GearIntakeCommand extends Command {
 
-  private GearIntake gearIntake;
+  private final GearIntake gearIntake;
 
   public GearIntakeCommand() {
     super("Gear Intake");
-    gearIntake = SubsystemManager.getSubsystem(GearIntake.class);
+    this.gearIntake = SubsystemManager.getSubsystem(GearIntake.class);
 
-    requires(gearIntake);
+    this.requires(this.gearIntake);
   }
 
   @Override
   protected void execute() {
-    if(Input.gamepad.buttonPressed(GamepadButton._1))
-      gearIntake.toggleDeployed();
+    if (Input.gamepad.buttonPressed(GamepadButton._1)) {
+      this.gearIntake.toggleDeployed();
+    }
   }
 
   @Override

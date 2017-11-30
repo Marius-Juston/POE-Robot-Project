@@ -7,7 +7,7 @@ package org.usfirst.frc.team2974.robot.io;
  */
 public enum JoystickButton {
   TRIGGER(1), _2(2), _3(3), _4(4), _5(5), _6(6), _7(7), _8(8), _9(9), _10(10);
-  
+
   private final int index;
 
   /**
@@ -20,6 +20,6 @@ public enum JoystickButton {
   }
 
   public int getIndex() {
-    return index;
+    return this.index;
   }
 }

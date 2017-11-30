@@ -1,34 +1,25 @@
 package org.usfirst.frc.team2974.robot.command.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
-
-import edu.wpi.first.wpilibj.command.PIDCommand;
-import org.usfirst.frc.team2974.robot.RobotMap;
 import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
-/**
- * @author Evan Tichenor (evan.tichenor@gmail.com)
- * @version 1.0, 11/16/2017
- */
 public class DriveForwardCommand extends Command {
-
-  private DriveTrain driveTrain;
 
   // in meters
   private final double distance;
-
-  private double currentDistance;
+  private final DriveTrain driveTrain;
+  private final double currentDistance;
 
   public DriveForwardCommand(double distance) {
     super("Drive Forward Auton");
 
     this.distance = distance;
-    currentDistance = 0;
+    this.currentDistance = 0;
 
-    driveTrain = SubsystemManager.getSubsystem(DriveTrain.class);
+    this.driveTrain = SubsystemManager.getSubsystem(DriveTrain.class);
 
-    requires(driveTrain);
+    this.requires(this.driveTrain);
   }
 
   @Override
@@ -43,16 +34,16 @@ public class DriveForwardCommand extends Command {
 
   @Override
   protected boolean isFinished() {
-    return Math.abs(distance - currentDistance) < 1e-3;
+    return Math.abs(this.distance - this.currentDistance) < 1e-3;
   }
 
   @Override
   protected void interrupted() {
-    end();
+    this.end();
   }
 
   @Override
   protected void end() {
-    driveTrain.setPowers(0, 0);
+    this.driveTrain.setPowers(0, 0);
   }
 }

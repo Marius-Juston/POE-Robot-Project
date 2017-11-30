@@ -27,14 +27,15 @@ public class SmartDashboardProperty<T> {
    */
   public SmartDashboardProperty(String key, T defaultValue, Supplier<T> valueSupplier) {
     this.key = key;
-    this.value = defaultValue;
+    value = defaultValue;
     this.defaultValue = defaultValue;
 
     this.valueSupplier = valueSupplier;
 
 //  onValueChange is the interface that is run if the value
 //  (the value that you want to put into SmartDashboard) changes.
-    onValueChange = () -> {};
+    this.onValueChange = () -> {
+    };
   }
 
 
@@ -44,7 +45,7 @@ public class SmartDashboardProperty<T> {
    * @return the key meant to be used to retrieved the SmartDashboard value
    */
   public String getKey() {
-    return key;
+    return this.key;
   }
 
   /**
@@ -53,7 +54,7 @@ public class SmartDashboardProperty<T> {
    * @return returns the current value
    */
   public T getValue() {
-    return value;
+    return this.value;
   }
 
   /**
@@ -66,9 +67,9 @@ public class SmartDashboardProperty<T> {
     if (!value.equals(this.value)) { // will update SmartDashboard value if the value changes
       this.value = value;
 
-      updateSmartDashboard();
-      if(onValueChange != null) {
-        onValueChange.run();
+      this.updateSmartDashboard();
+      if (this.onValueChange != null) {
+        this.onValueChange.run();
       }
     }
   }
@@ -79,7 +80,7 @@ public class SmartDashboardProperty<T> {
    * @return returns the default value
    */
   public T getDefaultValue() {
-    return defaultValue;
+    return this.defaultValue;
   }
 
   /**
@@ -89,7 +90,7 @@ public class SmartDashboardProperty<T> {
    * @return returns valueSupplier
    */
   public Supplier<T> getValueSupplier() {
-    return valueSupplier;
+    return this.valueSupplier;
   }
 
   /**
@@ -108,7 +109,7 @@ public class SmartDashboardProperty<T> {
    * @return returns onValueChange
    */
   public Runnable getOnValueChange() {
-    return onValueChange;
+    return this.onValueChange;
   }
 
   /**
@@ -121,15 +122,15 @@ public class SmartDashboardProperty<T> {
   }
 
   public final void updateSmartDashboard() {
-    if (value instanceof Number) { // if the value you are going to put in is a number (double, float, int, byte, etc.)
-      SmartDashboard.putNumber(key, ((Number)value).doubleValue());
-    } else if (value instanceof Boolean) { // if the value is a boolean
-      SmartDashboard.putBoolean(key, (Boolean) value);
-    } else if (value instanceof Sendable) { // if the value is a Sendable object (SendableChooser, etc...)
-      SmartDashboard.putData(key, (Sendable) value);
+    if (this.value instanceof Number) { // if the value you are going to put in is a number (double, float, int, byte, etc.)
+      SmartDashboard.putNumber(this.key, ((Number) this.value).doubleValue());
+    } else if (this.value instanceof Boolean) { // if the value is a boolean
+      SmartDashboard.putBoolean(this.key, (Boolean) this.value);
+    } else if (this.value instanceof Sendable) { // if the value is a Sendable object (SendableChooser, etc...)
+      SmartDashboard.putData(this.key, (Sendable) this.value);
     } else {
-      SmartDashboard.putString(key, value
-              .toString()); // if it is something else it uses its toSting method to display it on SmartDashboard
+      SmartDashboard.putString(this.key, this.value
+          .toString()); // if it is something else it uses its toSting method to display it on SmartDashboard
     }
   }
 
@@ -138,6 +139,6 @@ public class SmartDashboardProperty<T> {
    * use the onValueChange Runnable object to update SmartDashboard
    */
   public void update() {
-    setValue(valueSupplier.get());
+    this.setValue(this.valueSupplier.get());
   }
 }

@@ -1,7 +1,6 @@
 package org.usfirst.frc.team2974.robot;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -41,15 +40,16 @@ public class RobotMap {
     rightMotor = new Talon(0);
     leftMotor = new Talon(1);
 
-    leftMotor.setInverted(true);
+    RobotMap.leftMotor.setInverted(true);
 
     leftEncoder = new Encoder(new DigitalInput(0), new DigitalInput(1));
     rightEncoder = new Encoder(new DigitalInput(2), new DigitalInput(3));
 
-    rightEncoder.setReverseDirection(true);
+    RobotMap.rightEncoder.setReverseDirection(true);
 
-    leftEncoder.setDistancePerPulse(DISTANCE_PER_PULSE); // check what this is and how it works, comment it afterwards
-    rightEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
+    RobotMap.leftEncoder.setDistancePerPulse(
+        RobotMap.DISTANCE_PER_PULSE); // check what this is and how it works, comment it afterwards
+    RobotMap.rightEncoder.setDistancePerPulse(RobotMap.DISTANCE_PER_PULSE);
 
     pneumaticsShifter = new Solenoid(0);
     gearIntakeSolenoid = new Solenoid(2);

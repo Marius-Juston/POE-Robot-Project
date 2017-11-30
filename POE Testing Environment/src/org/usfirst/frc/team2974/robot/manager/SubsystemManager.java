@@ -23,8 +23,8 @@ public final class SubsystemManager {
    * @return The specified subsystem of type type, <b>null</b> otherwise.
    * @throws RobotRuntimeException throws runtime exception if the subsystem does not exist
    */
-  public synchronized static <T extends Subsystem> T getSubsystem(Class<T> type) {
-    T subsystem = SUBSYSTEM_LIST.stream()
+  public static synchronized <T extends Subsystem> T getSubsystem(Class<T> type) {
+    T subsystem = SubsystemManager.SUBSYSTEM_LIST.stream()
         .filter(type::isInstance) /* filters out the subsystem that are not instances of the class that type comes from */
         .findFirst() // finds the first instance of class that we are searching for
         .map(type::cast) /* casts the subsystem instance to the more specific sub class of Subsystem */
@@ -46,7 +46,7 @@ public final class SubsystemManager {
    * @param subsystems to add to the subsystem list
    */
   public static void addSubsystem(Subsystem... subsystems) {
-    Collections.addAll(SUBSYSTEM_LIST, subsystems);
+    Collections.addAll(SubsystemManager.SUBSYSTEM_LIST, subsystems);
   }
 
 }
