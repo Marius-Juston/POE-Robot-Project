@@ -7,6 +7,7 @@ import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
 public class TurnCommand extends Command {
+
   private final double turnAngle; // angle to turn by in degrees
   private double maxVelocity;
   private double maxAcceleration;
@@ -26,7 +27,8 @@ public class TurnCommand extends Command {
 
     Pose start = driveTrain.getPose();
 
-    MotionPathTurn motionPathTurn = new MotionPathTurn(start, Math.toRadians(turnAngle), maxVelocity, maxAcceleration);
+    MotionPathTurn motionPathTurn = new MotionPathTurn(start, Math.toRadians(turnAngle),
+        maxVelocity, maxAcceleration);
 
     driveTrain.addControllerMotion(motionPathTurn);
     driveTrain.startMotion();

@@ -5,14 +5,6 @@ public class Point2D {
   private double x;
   private double y;
 
-  public double getX() {
-    return x;
-  }
-
-  public double getY() {
-    return y;
-  }
-
   public Point2D(double x, double y) {
     this.x = x;
     this.y = y;
@@ -27,6 +19,14 @@ public class Point2D {
    */
   public static Point2D interpolate(Point2D pose0, double p, Point2D pose1, double q) {
     return new Point2D(pose0.x * p + pose1.x * q, pose0.y * p + pose1.y * q);
+  }
+
+  public double getX() {
+    return x;
+  }
+
+  public double getY() {
+    return y;
   }
 
   //Calculates distance between two points

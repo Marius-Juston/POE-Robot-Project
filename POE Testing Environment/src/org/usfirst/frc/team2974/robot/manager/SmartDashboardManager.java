@@ -10,7 +10,7 @@ public class SmartDashboardManager {
 
   private static final List<SmartDashboardProperty> PROPERTIES = new ArrayList<>(); // Properties list where all the SmartDashboard  Properties are stored
 
-  private static boolean isDebug = true;
+
 
   /**
    * <p>Creates a SmartDashboard Property that will update automatically when the update method of
@@ -56,7 +56,8 @@ public class SmartDashboardManager {
    */
   @SuppressWarnings("unchecked")
   public static <T> SmartDashboardProperty<T> getProperty(String key) {
-    Optional<SmartDashboardProperty> smartDashboardProperty = SmartDashboardManager.PROPERTIES.stream()
+    Optional<SmartDashboardProperty> smartDashboardProperty = SmartDashboardManager.PROPERTIES
+        .stream()
         .filter(p -> p.getKey()
             .equals(key)) // gts the properties with the same key as the one searching for
         .findFirst();  /// gets the first SmartDashboard property
