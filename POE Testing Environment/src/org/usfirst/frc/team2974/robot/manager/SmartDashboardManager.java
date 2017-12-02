@@ -84,7 +84,8 @@ public class SmartDashboardManager {
    */
   @SuppressWarnings("unchecked")
   public static <T> SmartDashboardProperty<T> getProperty(String key) {
-    Optional<SmartDashboardProperty> smartDashboardProperty = SmartDashboardManager.PROPERTIES.stream()
+    Optional<SmartDashboardProperty> smartDashboardProperty = SmartDashboardManager.PROPERTIES
+        .stream()
         .filter(p -> p.getKey()
             .equals(key)) // gts the properties with the same key as the one searching for
         .findFirst();  /// gets the first SmartDashboard property

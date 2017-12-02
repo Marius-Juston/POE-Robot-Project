@@ -8,7 +8,6 @@ public class MotionPathSpline extends MotionProvider {
   private final double angle0; // start angle
   private final double angle1; // end angle
   private final boolean isForwards;
-  Motion goal;
 
   public MotionPathSpline(Pose initial, double l0, Pose final_, double l1, double vCruise,
       double aMax, boolean isForwards) {

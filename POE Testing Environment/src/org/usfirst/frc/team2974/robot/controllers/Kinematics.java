@@ -1,9 +1,8 @@
 package org.usfirst.frc.team2974.robot.controllers;
 
-class Kinematics {
+import static org.usfirst.frc.team2974.robot.RobotConfiguration.ROBOT_WIDTH;
 
-  // The width of the robot in meters.
-  private static final double robotWidth = .70485;
+class Kinematics {
 
   private final MotionProvider motion;
   private final double v0;
@@ -76,8 +75,8 @@ class Kinematics {
     double dAngle = MotionProvider.boundAngle(pose.angle - this.lastPose.angle);
 
     //estimate lengths each wheel will turn
-    double dlLeft = (dl - dAngle * Kinematics.robotWidth / 2);
-    double dlRight = (dl + dAngle * Kinematics.robotWidth / 2);
+    double dlLeft = (dl - dAngle * ROBOT_WIDTH / 2);
+    double dlRight = (dl + dAngle * ROBOT_WIDTH / 2);
 
     //assuming one of the wheels will limit motion, calculate time this step will take
     double dt = Math.max(Math.abs(dlLeft), Math.abs(dlRight)) / this.motion.vCruise;
@@ -92,7 +91,8 @@ class Kinematics {
 
         double vAccel = Math.sqrt(this.v0 * this.v0 + this.motion.aMax * Math.abs(lMidpoint));
         double vDecel = Math
-            .sqrt(this.v1 * this.v1 + this.motion.aMax * (Math.abs(this.motion.getLength() - lMidpoint)));
+            .sqrt(this.v1 * this.v1 + this.motion.aMax * (Math
+                .abs(this.motion.getLength() - lMidpoint)));
 
         if (vAccel < v && vAccel < vDecel) {
           a = this.motion.aMax;
@@ -108,7 +108,7 @@ class Kinematics {
         break;
       case LimitRotationalAcceleration:
         //assuming constant angular acceleration from/to zero angular speed
-        double omega = Math.abs(dlRight - dlLeft) / dt / Kinematics.robotWidth;
+        double omega = Math.abs(dlRight - dlLeft) / dt / ROBOT_WIDTH;
         double thetaMidpoint = this.lastPose.angle + .5 * dAngle;
 
         double omegaAccel = Math.sqrt(this.motion.aMax * Math
@@ -117,12 +117,12 @@ class Kinematics {
             .abs(MotionProvider.boundAngle(thetaMidpoint - this.motion.getFinalTheta())));
         //	  System.out.println("OmegaAccel=" + omegaAccel);
         if (omegaAccel < omega && omegaAccel < omegaDecel) {
-          dt = Math.abs(dlRight - dlLeft) / omegaAccel / Kinematics.robotWidth;
+          dt = Math.abs(dlRight - dlLeft) / omegaAccel / ROBOT_WIDTH;
         }
 
         //	  System.out.println("OmegaDecel=" + omegaDecel);
         if (omegaDecel < omega && omegaDecel < omegaAccel) {
-          dt = Math.abs(dlRight - dlLeft) / omegaDecel / Kinematics.robotWidth;
+          dt = Math.abs(dlRight - dlLeft) / omegaDecel / ROBOT_WIDTH;
         }
         break;
     }

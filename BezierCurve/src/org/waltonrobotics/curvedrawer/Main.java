@@ -1,4 +1,4 @@
-package org.waltonrobotics.beziercurve;
+package org.waltonrobotics.curvedrawer;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import java.io.IOException;
@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
+import org.waltonrobotics.curvedrawer.util.Config.Resources;
 
 public class Main extends Application {
 
@@ -21,7 +22,7 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     tabPane = FXMLLoader.load(getClass().getResource(
-        "menu.fxml"));
+        Resources.MENU));
 
     primaryStage.setTitle("Bezier Curve Creator");
     primaryStage.setScene(new Scene(tabPane));
@@ -38,16 +39,16 @@ public class Main extends Application {
 
     primaryStage.setOnCloseRequest(event -> NetworkTable.shutdown());
 
-    addTab(createBezierTab("Bezier Test"));
+    addTab(createCurveTab("Bezier Test"));
   }
 
   private void addTab(Tab tab) {
     tabPane.getTabs().add(tab);
   }
 
-  private Tab createBezierTab(String name) throws IOException {
+  private Tab createCurveTab(String name) throws IOException {
 
-    Parent tabContentController = FXMLLoader.load(getClass().getResource("tab.fxml"));
+    Parent tabContentController = FXMLLoader.load(getClass().getResource(Resources.TAB));
 
     Tab tab = new Tab(name);
     tab.setContent(tabContentController);

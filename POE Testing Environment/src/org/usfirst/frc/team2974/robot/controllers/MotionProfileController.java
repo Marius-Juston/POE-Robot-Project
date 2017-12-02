@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2974.robot.controllers;
 
+import static org.usfirst.frc.team2974.robot.RobotConfiguration.N_POINTS;
+
 import edu.wpi.first.wpilibj.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.BlockingDeque;
@@ -9,7 +11,6 @@ import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
 public class MotionProfileController {
 
-  private final int nPoints = 50; // number of motions
   private final BlockingDeque<MotionProvider> motions = new LinkedBlockingDeque<>(); // motions that we want to do
   private final PoseProvider poseProvider; // wheel positions and pose
   private final java.util.Timer controller; // schedules all of the motions to be run, TIMER
@@ -49,12 +50,13 @@ public class MotionProfileController {
   }
 
   public synchronized void enable() {
-    System.out.println(String.format("kK=%f, kV=%f, kA=%f, kP=%f", this.kK, this.kV, this.kA, this.kP));
+    System.out
+        .println(String.format("kK=%f, kV=%f, kA=%f, kP=%f", this.kK, this.kV, this.kA, this.kP));
     MotionProvider newMotion = this.motions.poll();
     if (newMotion != null) {
-      this.currentKinematics = new Kinematics(newMotion, this.poseProvider.getWheelPositions(),
-          Timer.getFPGATimestamp(), 0, 0, this.nPoints);
 //			System.out.println("starting new motion:" + currentKinematics.toString());
+      this.currentKinematics = new Kinematics(newMotion, this.poseProvider.getWheelPositions(),
+          Timer.getFPGATimestamp(), 0, 0, N_POINTS);
       this.isEnabled = true;
     }
   }
@@ -134,9 +136,11 @@ public class MotionProfileController {
 //			System.out.println("time:" + time+ " " + wheelPositions + " " + kinematicPose);
       synchronized (this) {
         //feed forward
-        leftPower += (this.kV * kinematicPose.left.velocity + this.kK) + this.kA * kinematicPose.left.acceleration;
+        leftPower += (this.kV * kinematicPose.left.velocity + this.kK)
+            + this.kA * kinematicPose.left.acceleration;
         rightPower +=
-            (this.kV * kinematicPose.right.velocity + this.kK) + this.kA * kinematicPose.right.acceleration;
+            (this.kV * kinematicPose.right.velocity + this.kK)
+                + this.kA * kinematicPose.right.acceleration;
         //feed back
         leftPower += this.kP * (kinematicPose.left.length - wheelPositions.left);
         rightPower += this.kP * (kinematicPose.right.length - wheelPositions.right);
@@ -155,12 +159,14 @@ public class MotionProfileController {
       if (kinematicPose.isFinished) {
         MotionProvider newMotion = this.motions.pollFirst();
         if (newMotion != null) {
-          this.currentKinematics = new Kinematics(newMotion, this.currentKinematics.getWheelPositions(),
-              this.currentKinematics.getTime(), 0, 0, this.nPoints);
+          this.currentKinematics = new Kinematics(newMotion,
+              this.currentKinematics.getWheelPositions(),
+              this.currentKinematics.getTime(), 0, 0, N_POINTS);
 //					System.out.println("starting new motion:" + currentKinematics.toString());
         } else {
           this.staticKinematicPose = Kinematics
-              .staticPose(this.currentKinematics.getPose(), this.currentKinematics.getWheelPositions(),
+              .staticPose(this.currentKinematics.getPose(),
+                  this.currentKinematics.getWheelPositions(),
                   this.currentKinematics.getTime());
           this.currentKinematics = null;
         }

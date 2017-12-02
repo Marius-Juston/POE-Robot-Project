@@ -2,8 +2,8 @@ package org.usfirst.frc.team2974.robot.controllers;
 
 public class Point2D {
 
-  public double x;
-  public double y;
+  private double x;
+  private double y;
 
   public Point2D(double x, double y) {
     this.x = x;
@@ -19,6 +19,14 @@ public class Point2D {
    */
   public static Point2D interpolate(Point2D pose0, double p, Point2D pose1, double q) {
     return new Point2D(pose0.x * p + pose1.x * q, pose0.y * p + pose1.y * q);
+  }
+
+  public double getX() {
+    return x;
+  }
+
+  public double getY() {
+    return y;
   }
 
   //Calculates distance between two points

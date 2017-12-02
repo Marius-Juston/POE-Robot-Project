@@ -2,7 +2,6 @@ package org.usfirst.frc.team2974.robot.controllers;
 
 public abstract class MotionProvider {
 
-  protected Motion initialMotion;
   double vCruise;
   double aMax; // max acceleration to vCruise, then goes to 0
 

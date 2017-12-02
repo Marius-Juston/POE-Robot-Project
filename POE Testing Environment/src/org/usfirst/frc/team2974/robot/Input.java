@@ -1,5 +1,9 @@
 package org.usfirst.frc.team2974.robot;
 
+import static org.usfirst.frc.team2974.robot.RobotConfiguration.GAMEPAD_PORT;
+import static org.usfirst.frc.team2974.robot.RobotConfiguration.LEFT_JOYSTICK_PORT;
+import static org.usfirst.frc.team2974.robot.RobotConfiguration.RIGHT_JOYSTICK_PORT;
+
 import edu.wpi.first.wpilibj.Joystick;
 import org.usfirst.frc.team2974.robot.io.logitech.Gamepad;
 
@@ -13,8 +17,8 @@ public class Input {
   public static final Gamepad gamepad;
 
   static {
-    leftJoystick = new Joystick(0);
-    rightJoystick = new Joystick(1);
-    gamepad = new Gamepad(2);
+    leftJoystick = new Joystick(LEFT_JOYSTICK_PORT);
+    rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
+    gamepad = new Gamepad(GAMEPAD_PORT);
   }
 }
