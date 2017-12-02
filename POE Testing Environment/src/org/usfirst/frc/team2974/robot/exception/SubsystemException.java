@@ -5,7 +5,9 @@ package org.usfirst.frc.team2974.robot.exception;
  */
 public class SubsystemException extends Exception {
 
-  public SubsystemException(String message) {
+  private static final long serialVersionUID = -6544008222983180372L;
+
+  public SubsystemException(final String message) {
     super(message);
   }
 }

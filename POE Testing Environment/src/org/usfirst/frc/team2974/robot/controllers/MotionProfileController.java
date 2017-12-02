@@ -15,21 +15,21 @@ public class MotionProfileController {
   private final PoseProvider poseProvider; // wheel positions and pose
   private final java.util.Timer controller; // schedules all of the motions to be run, TIMER
   // PID values
-  private double kV, // what we want to change the voltage by to get the motion we want
-      kK, // up/down translation
-      kA, // FIXME?? WHAT IS THIS
-      kP; // what we want to change the power by to get the moton we want
+  private double kV; // what we want to change the voltage by to get the motion we want
+  private double kK; // up/down translation
+  private double kA; // FIXME?? WHAT IS THIS
+  private double kP; // what we want to change the power by to get the motion we want
   private Kinematics currentKinematics; // does all the math
   private KinematicPose staticKinematicPose; // has the vectors that we use in the calculations
   private boolean isEnabled; // yeah, this
 
-  public MotionProfileController(PoseProvider poseProvider, double period) {
+  public MotionProfileController(final PoseProvider poseProvider, final double period) {
 
     this.poseProvider = poseProvider;
 
     this.controller = new java.util.Timer();
 
-    this.controller.schedule(new MPCTask(), 0L, (long) (period * 1000));
+    this.controller.schedule(new MPCTask(), 0L, (long) (period * 1000.0));
 
     this.staticKinematicPose = Kinematics
         .staticPose(poseProvider.getPose(), poseProvider.getWheelPositions(),
@@ -39,20 +39,20 @@ public class MotionProfileController {
   /**
    * Stops the motion
    */
-  public void free() {
+  public final void free() {
     this.controller.cancel();
     //RobotLoggerManager.setFileHandlerInstance("robot.controller").info("MPCTask is destroyed.");
   }
 
-  public synchronized void addMotion(MotionProvider motion) {
+  public final synchronized void addMotion(final MotionProvider motion) {
     this.motions.addLast(motion);
-    System.out.println("added motion" + motion);
+    System.out.println("added motion " + motion);
   }
 
-  public synchronized void enable() {
+  public final synchronized void enable() {
     System.out
         .println(String.format("kK=%f, kV=%f, kA=%f, kP=%f", this.kK, this.kV, this.kA, this.kP));
-    MotionProvider newMotion = this.motions.poll();
+    final MotionProvider newMotion = this.motions.poll();
     if (newMotion != null) {
 //			System.out.println("starting new motion:" + currentKinematics.toString());
       this.currentKinematics = new Kinematics(newMotion, this.poseProvider.getWheelPositions(),
@@ -64,46 +64,46 @@ public class MotionProfileController {
   /**
    * Hard stop
    */
-  public synchronized void cancel() {
+  public final synchronized void cancel() {
     this.isEnabled = false;
     this.currentKinematics = null;
     this.motions.clear();
     SubsystemManager.getSubsystem(DriveTrain.class).setPowers(0, 0);
   }
 
-  public boolean getEnabled() {
+  public boolean isEnabled() {
     return this.isEnabled;
   }
 
-  public synchronized double getKV() {
+  public final synchronized double getKV() {
     return this.kV;
   }
 
-  public synchronized void setKV(double kV) {
+  public final synchronized void setKV(final double kV) {
     this.kV = kV;
   }
 
-  public synchronized double getKK() {
+  public final synchronized double getKK() {
     return this.kK;
   }
 
-  public synchronized void setKK(double kK) {
+  public final synchronized void setKK(final double kK) {
     this.kK = kK;
   }
 
-  public synchronized double getKA() {
+  public final synchronized double getKA() {
     return this.kA;
   }
 
-  public synchronized void setKA(double kA) {
+  public final synchronized void setKA(final double kA) {
     this.kA = kA;
   }
 
-  public synchronized double getKP() {
+  public final synchronized double getKP() {
     return this.kP;
   }
 
-  public synchronized void setKP(double kP) {
+  public final synchronized void setKP(final double kP) {
     this.kP = kP;
   }
 
@@ -114,7 +114,7 @@ public class MotionProfileController {
 
     double leftPower = 0;
     double rightPower = 0;
-    boolean enabled;
+    final boolean enabled;
 
     synchronized (this) {
       enabled = isEnabled;
@@ -122,33 +122,30 @@ public class MotionProfileController {
 
     if (enabled) {
 
-      double time = Timer.getFPGATimestamp();
+      final double time = Timer.getFPGATimestamp();
 
-      RobotPair wheelPositions = this.poseProvider.getWheelPositions();
+      final RobotPair wheelPositions = this.poseProvider.getWheelPositions();
 
-      KinematicPose kinematicPose;
-      if (this.currentKinematics != null) {
-        kinematicPose = this.currentKinematics.interpolatePose(time);
-      } else {
-        kinematicPose = this.staticKinematicPose;
-      }
+      final KinematicPose kinematicPose;
+      kinematicPose = this.currentKinematics != null ? this.currentKinematics.interpolatePose(time)
+          : this.staticKinematicPose;
 
 //			System.out.println("time:" + time+ " " + wheelPositions + " " + kinematicPose);
       synchronized (this) {
         //feed forward
-        leftPower += (this.kV * kinematicPose.left.velocity + this.kK)
-            + this.kA * kinematicPose.left.acceleration;
+        leftPower += ((this.kV * kinematicPose.left.velocity) + this.kK)
+            + (this.kA * kinematicPose.left.acceleration);
         rightPower +=
-            (this.kV * kinematicPose.right.velocity + this.kK)
-                + this.kA * kinematicPose.right.acceleration;
+            ((this.kV * kinematicPose.right.velocity) + this.kK)
+                + (this.kA * kinematicPose.right.acceleration);
         //feed back
         leftPower += this.kP * (kinematicPose.left.length - wheelPositions.left);
         rightPower += this.kP * (kinematicPose.right.length - wheelPositions.right);
 
       }
 
-      leftPower = Math.max(-1, Math.min(1, leftPower));
-      rightPower = Math.max(-1, Math.min(1, rightPower));
+      leftPower = Math.max(-1.0, Math.min(1.0, leftPower));
+      rightPower = Math.max(-1.0, Math.min(1.0, rightPower));
 
 //			System.out.println(String.format("LP=%f,RP=%f, err_l=%f, err_r=%f", leftPower,rightPower,
 //					kinematicPose.left.l - wheelPositions.left,
@@ -157,7 +154,7 @@ public class MotionProfileController {
       SubsystemManager.getSubsystem(DriveTrain.class).setPowers(leftPower, rightPower);
 
       if (kinematicPose.isFinished) {
-        MotionProvider newMotion = this.motions.pollFirst();
+        final MotionProvider newMotion = this.motions.pollFirst();
         if (newMotion != null) {
           this.currentKinematics = new Kinematics(newMotion,
               this.currentKinematics.getWheelPositions(),
@@ -174,29 +171,39 @@ public class MotionProfileController {
     }
   }
 
-  public boolean isCurrentMotionFinished(double time) {
-    KinematicPose kinematicPose;
-    if (this.currentKinematics != null) {
-      kinematicPose = this.currentKinematics.interpolatePose(time);
-    } else {
-      kinematicPose = this.staticKinematicPose;
-    }
+  public final boolean isCurrentMotionFinished(final double time) {
+    final KinematicPose kinematicPose;
+    kinematicPose = this.currentKinematics != null ? this.currentKinematics.interpolatePose(time)
+        : this.staticKinematicPose;
 
     return kinematicPose.isFinished;
   }
 
-  public synchronized boolean isFinished() {
+  public final boolean isFinished() {
     return this.currentKinematics == null;
   }
 
-  public MotionProvider getCurrentMotion() {
+  public final MotionProvider getCurrentMotion() {
     return currentKinematics.getMotion();
+  }
+
+  @Override
+  public final String toString() {
+    return "MotionProfileController{" +
+        "motions=" + motions +
+        ", kV=" + kV +
+        ", kK=" + kK +
+        ", kA=" + kA +
+        ", kP=" + kP +
+        ", currentKinematics=" + currentKinematics +
+        ", isEnabled=" + isEnabled +
+        '}';
   }
 
   private class MPCTask extends TimerTask {
 
     @Override
-    public void run() {
+    public final void run() {
       MotionProfileController.this.calculate();
     }
 

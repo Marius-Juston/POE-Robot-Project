@@ -21,7 +21,7 @@ public class SmartDashboardProperty<T> {
    * @param key the key that SmartDashboard will take in to find or update the value
    * @param defaultValue the default value that SmartDashboard will take in to retrieve a value
    */
-  public SmartDashboardProperty(String key, T defaultValue) {
+  public SmartDashboardProperty(final String key, final T defaultValue) {
     this(key, defaultValue, null);
   }
 
@@ -33,7 +33,8 @@ public class SmartDashboardProperty<T> {
    * @param valueSupplier the value that you wish to place into SmartDashboard, can be null for a
    * static value
    */
-  public SmartDashboardProperty(String key, T defaultValue, Supplier<T> valueSupplier) {
+  public SmartDashboardProperty(final String key, final T defaultValue,
+      final Supplier<T> valueSupplier) {
     this.key = key;
     value = defaultValue;
     this.defaultValue = defaultValue;
@@ -51,7 +52,7 @@ public class SmartDashboardProperty<T> {
    *
    * @return the key meant to be used to retrieved the SmartDashboard value
    */
-  public String getKey() {
+  public final String getKey() {
     return this.key;
   }
 
@@ -60,7 +61,7 @@ public class SmartDashboardProperty<T> {
    *
    * @return returns the current value
    */
-  public T getValue() {
+  public final T getValue() {
     return this.value;
   }
 
@@ -70,7 +71,7 @@ public class SmartDashboardProperty<T> {
    *
    * @param value the value you want value to be
    */
-  public void setValue(T value) {
+  public final void setValue(final T value) {
     if (!value.equals(this.value)) { // will update SmartDashboard value if the value changes
       this.value = value;
 
@@ -86,7 +87,7 @@ public class SmartDashboardProperty<T> {
    *
    * @return returns the default value
    */
-  public T getDefaultValue() {
+  public final T getDefaultValue() {
     return this.defaultValue;
   }
 
@@ -96,7 +97,7 @@ public class SmartDashboardProperty<T> {
    *
    * @return returns valueSupplier
    */
-  public Supplier<T> getValueSupplier() {
+  public final Supplier<T> getValueSupplier() {
     return this.valueSupplier;
   }
 
@@ -106,7 +107,7 @@ public class SmartDashboardProperty<T> {
    * @param valueSupplier the new valueSupplier that should return what value should be placed in
    * SmartDashboard
    */
-  public void setValueSupplier(Supplier<T> valueSupplier) {
+  public final void setValueSupplier(final Supplier<T> valueSupplier) {
     this.valueSupplier = valueSupplier;
   }
 
@@ -115,7 +116,7 @@ public class SmartDashboardProperty<T> {
    *
    * @return returns onValueChange
    */
-  public Runnable getOnValueChange() {
+  public final Runnable getOnValueChange() {
     return this.onValueChange;
   }
 
@@ -124,7 +125,7 @@ public class SmartDashboardProperty<T> {
    *
    * @param onValueChange the new onValueChange to say how SmartDashboard will be updated
    */
-  public void setOnValueChange(Runnable onValueChange) {
+  public final void setOnValueChange(final Runnable onValueChange) {
     this.onValueChange = onValueChange;
   }
 
@@ -149,5 +150,14 @@ public class SmartDashboardProperty<T> {
     if (valueSupplier != null) {
       setValue(valueSupplier.get());
     }
+  }
+
+  @Override
+  public final String toString() {
+    return "SmartDashboardProperty{" +
+        "key='" + key + '\'' +
+        ", defaultValue=" + defaultValue +
+        ", value=" + value +
+        '}';
   }
 }

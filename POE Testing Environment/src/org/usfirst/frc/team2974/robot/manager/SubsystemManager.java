@@ -2,8 +2,8 @@ package org.usfirst.frc.team2974.robot.manager;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 
 /**
@@ -11,7 +11,10 @@ import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
  */
 public final class SubsystemManager {
 
-  private static final List<Subsystem> SUBSYSTEM_LIST = new ArrayList<>();
+  private static final Collection<Subsystem> SUBSYSTEM_LIST = new ArrayList<>(5);
+
+  private SubsystemManager() {
+  }
 
   /**
    * Finds the first specified Subsystem on the current robot.
@@ -23,8 +26,8 @@ public final class SubsystemManager {
    * @return The specified subsystem of type type, <b>null</b> otherwise.
    * @throws RobotRuntimeException throws runtime exception if the subsystem does not exist
    */
-  public static synchronized <T extends Subsystem> T getSubsystem(Class<T> type) {
-    T subsystem = SubsystemManager.SUBSYSTEM_LIST.stream()
+  public static <T extends Subsystem> T getSubsystem(final Class<T> type) {
+    final T subsystem = SubsystemManager.SUBSYSTEM_LIST.stream()
         .filter(type::isInstance) /* filters out the subsystem that are not instances of the class that type comes from */
         .findFirst() // finds the first instance of class that we are searching for
         .map(type::cast) /* casts the subsystem instance to the more specific sub class of Subsystem */
@@ -45,7 +48,7 @@ public final class SubsystemManager {
    *
    * @param subsystems to add to the subsystem list
    */
-  public static void addSubsystem(Subsystem... subsystems) {
+  public static void addSubsystem(final Subsystem... subsystems) {
     Collections.addAll(SubsystemManager.SUBSYSTEM_LIST, subsystems);
   }
 

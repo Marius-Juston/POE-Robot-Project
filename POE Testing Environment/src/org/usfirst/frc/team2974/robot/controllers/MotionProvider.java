@@ -5,7 +5,7 @@ public abstract class MotionProvider {
   double vCruise;
   double aMax; // max acceleration to vCruise, then goes to 0
 
-  MotionProvider(double vCruise, double aMax) {
+  MotionProvider(final double vCruise, final double aMax) {
     if (vCruise == 0) {
       throw new IllegalArgumentException("vCruise cannot be 0");
     }
@@ -23,7 +23,7 @@ public abstract class MotionProvider {
    * @param angle angle to put in bounds
    * @return angle in bounds [-PI, PI]
    */
-  public static double boundAngle(double angle) {
+  public static double boundAngle(final double angle) {
     if (angle > Math.PI) {
       return angle - Math.PI;
     }
@@ -62,19 +62,26 @@ public abstract class MotionProvider {
   /**
    * @return position the robot should end at
    */
-  public Pose getFinalPose() {
-    return this.evaluatePose(1);
+  public final Pose getFinalPose() {
+    return this.evaluatePose(1.0);
   }
 
   /**
    * @return position the robot starts at
    */
-  public Pose getInitialPose() {
+  public final Pose getInitialPose() {
     return this.evaluatePose(0);
+  }
+
+  @Override
+  public String toString() {
+    return "MotionProvider{" +
+        "vCruise=" + vCruise +
+        ", aMax=" + aMax +
+        '}';
   }
 
   public enum LimitMode {
     LimitLinearAcceleration, LimitRotationalAcceleration
   }
-
 }

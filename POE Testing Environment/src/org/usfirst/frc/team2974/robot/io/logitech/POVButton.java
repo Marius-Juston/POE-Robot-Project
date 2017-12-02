@@ -5,11 +5,18 @@ public enum POVButton {
 
   private final int angle;
 
-  POVButton(int angle) {
+  POVButton(final int angle) {
     this.angle = angle;
   }
 
-  boolean getPressed(Gamepad g) {
+  boolean getPressed(final Gamepad g) {
     return g.getPOV() == this.angle;
+  }
+
+  @Override
+  public String toString() {
+    return "POVButton{" +
+        "angle=" + angle +
+        '}';
   }
 }

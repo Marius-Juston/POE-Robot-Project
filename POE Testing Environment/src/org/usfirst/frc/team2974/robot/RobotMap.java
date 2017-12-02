@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
  *
  * This is the Hardware Map of the robot.
  */
-public class RobotMap {
+public final class RobotMap {
 
   public static final Talon leftMotor;
   public static final Talon rightMotor;
@@ -62,5 +62,8 @@ public class RobotMap {
     gyroscope = new AnalogGyro(1);
 
     gearSensor = new DigitalInput(5);
+  }
+
+  private RobotMap() {
   }
 }

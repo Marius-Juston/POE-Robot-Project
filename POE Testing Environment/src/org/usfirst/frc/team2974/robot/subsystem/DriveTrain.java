@@ -57,7 +57,7 @@ public class DriveTrain extends Subsystem implements PoseProvider {
   }
 
   @Override
-  protected void initDefaultCommand() {
+  protected final void initDefaultCommand() {
     this.setDefaultCommand(new DriveCommand());
   }
 
@@ -67,7 +67,7 @@ public class DriveTrain extends Subsystem implements PoseProvider {
    * @param left left motor power
    * @param right right motor power
    */
-  public synchronized void setPowers(double left, double right) {
+  public final synchronized void setPowers(final double left, final double right) {
     this.leftMotor.set(left);
     this.rightMotor.set(right);
   }
@@ -77,7 +77,7 @@ public class DriveTrain extends Subsystem implements PoseProvider {
    *
    * @return left motor speed
    */
-  public double getLeftMotorPower() {
+  public final double getLeftMotorPower() {
     return this.leftMotor.get();
   }
 
@@ -86,7 +86,7 @@ public class DriveTrain extends Subsystem implements PoseProvider {
    *
    * @return right motor speed
    */
-  public double getRightMotorPower() {
+  public final double getRightMotorPower() {
     return this.rightMotor.get();
   }
 
@@ -95,7 +95,7 @@ public class DriveTrain extends Subsystem implements PoseProvider {
    *
    * @return left wheel velocity in m/s
    */
-  public double getLeftWheelVelocity() {
+  public final double getLeftWheelVelocity() {
     return this.leftEncoder.getRate();
   }
 
@@ -104,66 +104,66 @@ public class DriveTrain extends Subsystem implements PoseProvider {
    *
    * @return right wheel velocity in m/s
    */
-  public double getRightWheelVelocity() {
+  public final double getRightWheelVelocity() {
     return this.rightEncoder.getRate();
   }
 
   @Override
-  public Pose getPose() {
+  public final Pose getPose() {
     return new Pose(new Point2D(0, 0), 0);
   }
 
-  public synchronized RobotPair getWheelPositions() {
+  public final RobotPair getWheelPositions() {
     return new RobotPair(this.leftEncoder.getDistance(), this.rightEncoder.getDistance());
   }
 
-  public boolean getControllerStatus() {
-    return this.motionProfileController.getEnabled();
+  public final boolean getControllerStatus() {
+    return this.motionProfileController.isEnabled();
   }
 
-  public void cancelMotion() {
+  public final void cancelMotion() {
     this.motionProfileController.cancel();
   }
 
-  public void startMotion() {
+  public final void startMotion() {
     this.motionProfileController.enable();
   }
 
-  public void addControllerMotion(MotionProvider motion) {
+  public final void addControllerMotion(final MotionProvider motion) {
     this.motionProfileController.addMotion(motion);
   }
 
-  public boolean isControllerEmpty() {
+  public final boolean isControllerEmpty() {
     return this.motionProfileController.isFinished();
   }
 
-  public boolean isCurrentMotionFinished() {
+  public final boolean isCurrentMotionFinished() {
     return this.motionProfileController.isCurrentMotionFinished(Timer.getFPGATimestamp());
   }
 
-  public MotionProvider getCurrentMotion() {
+  public final MotionProvider getCurrentMotion() {
     return this.motionProfileController.getCurrentMotion();
   }
 
 
-  public void shiftUp() {
+  public final void shiftUp() {
     if (this.shifter.get()) {
       this.shifter.set(false);
     }
   }
 
-  public void shiftDown() {
+  public final void shiftDown() {
     if (!this.shifter.get()) {
       this.shifter.set(true);
     }
   }
 
-  public void setConstants() {
-    Preferences pref = Preferences.getInstance();
-    double kV = pref.getDouble("drivetrain.kV", DEFAULT_KV);
-    double kK = pref.getDouble("drivetrain.kK", DEFAULT_KK);
-    double kA = pref.getDouble("drivetrain.kA", DEFAULT_KA);
-    double kP = pref.getDouble("drivetrain.kP", DEFAULT_KP);
+  public final void setConstants() {
+    final Preferences pref = Preferences.getInstance();
+    final double kV = pref.getDouble("drivetrain.kV", DEFAULT_KV);
+    final double kK = pref.getDouble("drivetrain.kK", DEFAULT_KK);
+    final double kA = pref.getDouble("drivetrain.kA", DEFAULT_KA);
+    final double kP = pref.getDouble("drivetrain.kP", DEFAULT_KP);
     System.out.println(String.format("kV=%f, kK=%f, kA=%f, kP=%f", kV, kK, kA, kP));
     this.motionProfileController.setKV(kV);
     this.motionProfileController.setKK(kK);

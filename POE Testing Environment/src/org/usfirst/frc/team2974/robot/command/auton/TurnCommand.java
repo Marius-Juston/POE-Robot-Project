@@ -10,20 +10,21 @@ import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 public class TurnCommand extends Command {
 
   private final double turnAngle; // angle to turn by in degrees
-  private double maxVelocity; // the velocity that the robot will try to reach and stay at.
-  private double maxAcceleration; // the acceleration that the robot will try to reach and stay at.
-  private DriveTrain driveTrain = SubsystemManager
+  private final double maxVelocity; // the velocity that the robot will try to reach and stay at.
+  private final double maxAcceleration; // the acceleration that the robot will try to reach and stay at.
+  private final DriveTrain driveTrain = SubsystemManager
       .getSubsystem(DriveTrain.class); // instance of the drivetrain instance
   private MotionPathTurn motionPathTurn;
 
   /**
-   * Initalizes the instance variables
+   * Initializes the instance variables
    *
    * @param turnAngle angle to turn by
    * @param maxVelocity the desired speed the robot should reach
    * @param maxAcceleration the desired acceleration the robot should reach
    */
-  public TurnCommand(double turnAngle, double maxVelocity, double maxAcceleration) {
+  public TurnCommand(final double turnAngle, final double maxVelocity,
+      final double maxAcceleration) {
     super();
     this.turnAngle = turnAngle;
     this.maxVelocity = maxVelocity;
@@ -31,12 +32,12 @@ public class TurnCommand extends Command {
   }
 
   @Override
-  protected void initialize() {
+  protected final void initialize() {
     // gets drivetrain instance
 
     requires(driveTrain); // tells the command that it will use the drivetrain subsystem
 
-    Pose start = driveTrain.getPose(); // gets the position (x,y, angle) of robot
+    final Pose start = driveTrain.getPose(); // gets the position (x,y, angle) of robot
 
     // creates motion by setting the start position, the angle to turn to in radians, the cruise velocity and the max acceleration
     motionPathTurn = new MotionPathTurn(start, Math.toRadians(turnAngle),
@@ -47,7 +48,7 @@ public class TurnCommand extends Command {
   }
 
   @Override
-  protected boolean isFinished() {
+  protected final boolean isFinished() {
     return driveTrain.getCurrentMotion().equals(motionPathTurn) && driveTrain
         .isCurrentMotionFinished();
   }

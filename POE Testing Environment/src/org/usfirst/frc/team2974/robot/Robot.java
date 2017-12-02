@@ -23,12 +23,16 @@ public class Robot extends IterativeRobot {
   private final SendableChooser<String> autonChooser = new SendableChooser<>();
   private String autoSelected;
 
+  private static void update() {
+    SmartDashboardManager.update();
+  }
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
-  public void robotInit() {
+  public final void robotInit() {
     this.autonChooser.addDefault("Default Auto", this.defaultAuto);
     this.autonChooser.addObject("My Auto", this.customAuto);
     SmartDashboardManager.addBind("Auto choices", this.defaultAuto, () -> this.autonChooser);
@@ -36,8 +40,8 @@ public class Robot extends IterativeRobot {
     SubsystemManager.addSubsystem(new DriveTrain());
     SubsystemManager.addSubsystem(new GearIntake());
 
-    SmartDashboard.putData("Drive forward 5 meters", new DriveForwardCommand(5, 3, .5));
-    SmartDashboardManager.addBind("Drive forward 5 meters", new DriveForwardCommand(5, 3, .5));
+    SmartDashboard.putData("Drive forward 5 meters", new DriveForwardCommand(5, 3, 0.5));
+    SmartDashboardManager.addBind("Drive forward 5 meters", new DriveForwardCommand(5, 3, 0.5));
 
     SmartDashboardManager.addBind("Left Encoder Dist", 0, RobotMap.leftEncoder::getDistance);
     SmartDashboardManager.addBind("Right Encoder Dist", 0, RobotMap.rightEncoder::getDistance);
@@ -59,7 +63,7 @@ public class Robot extends IterativeRobot {
    * autonChooser code above as well.
    */
   @Override
-  public void autonomousInit() {
+  public final void autonomousInit() {
     this.autoSelected = this.autonChooser.getSelected();
   }
 
@@ -67,8 +71,8 @@ public class Robot extends IterativeRobot {
    * This function is called periodically during autonomous
    */
   @Override
-  public void autonomousPeriodic() {
-    this.update();
+  public final void autonomousPeriodic() {
+    Robot.update();
 
     switch (this.autoSelected) {
       case customAuto:
@@ -90,8 +94,8 @@ public class Robot extends IterativeRobot {
    * This function is called periodically during operator control
    */
   @Override
-  public void teleopPeriodic() {
-    this.update();
+  public final void teleopPeriodic() {
+    Robot.update();
     Scheduler.getInstance().run();
   }
 
@@ -99,12 +103,8 @@ public class Robot extends IterativeRobot {
    * This function is called periodically during test mode
    */
   @Override
-  public void testPeriodic() {
-    this.update();
-  }
-
-  private void update() {
-    SmartDashboardManager.update();
+  public final void testPeriodic() {
+    Robot.update();
   }
 }
 

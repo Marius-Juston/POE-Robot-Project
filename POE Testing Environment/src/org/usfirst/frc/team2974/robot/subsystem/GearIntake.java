@@ -23,19 +23,19 @@ public class GearIntake extends Subsystem {
   }
 
   @Override
-  protected void initDefaultCommand() {
+  protected final void initDefaultCommand() {
     this.setDefaultCommand(new GearIntakeCommand());
   }
 
-  public void setDeployed(boolean deployed) {
+  public final void setDeployed(final boolean deployed) {
     this.piston.set(deployed);
   }
 
-  public void toggleDeployed() {
+  public final void toggleDeployed() {
     this.piston.set(!this.piston.get());
   }
 
-  public boolean hasGear() {
+  public final boolean hasGear() {
     return !this.gearSensor.get();
   }
 }

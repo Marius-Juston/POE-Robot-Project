@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class Gamepad extends Joystick {
 
-  public Gamepad(int port) {
+  public Gamepad(final int port) {
     super(port);
   }
 
@@ -18,7 +18,7 @@ public class Gamepad extends Joystick {
    *
    * @return the left thumb stick x value in range [-1, 1]
    */
-  public double getLeftStickX() {
+  public final double getLeftStickX() {
     return this.getRawAxis(0);
   }
 
@@ -27,7 +27,7 @@ public class Gamepad extends Joystick {
    *
    * @return the left thumb stick y value in range [-1, 1]
    */
-  public double getLeftStickY() {
+  public final double getLeftStickY() {
     return this.getRawAxis(1);
   }
 
@@ -36,7 +36,7 @@ public class Gamepad extends Joystick {
    *
    * @return the left trigger value in range [0, 1]
    */
-  public double getLeftTrigger() {
+  public final double getLeftTrigger() {
     return this.getRawAxis(2);
   }
 
@@ -45,7 +45,7 @@ public class Gamepad extends Joystick {
    *
    * @return the right thumb stick x value in range [-1, 1]
    */
-  public double getRightStickX() {
+  public final double getRightStickX() {
     return this.getRawAxis(4);
   }
 
@@ -54,7 +54,7 @@ public class Gamepad extends Joystick {
    *
    * @return the right thumb stick y value in range [-1, 1]
    */
-  public double getRightStickY() {
+  public final double getRightStickY() {
     return this.getRawAxis(3);
   }
 
@@ -63,7 +63,7 @@ public class Gamepad extends Joystick {
    *
    * @return the right trigger value in range [0, 1]
    */
-  public double getRightTrigger() {
+  public final double getRightTrigger() {
     return this.getRawAxis(5);
   }
 
@@ -71,7 +71,7 @@ public class Gamepad extends Joystick {
    * @param b the button to check on this gamepad
    * @return <b>true</b> if the button b is pressed, <b>false</b> otherwise
    */
-  public boolean buttonPressed(GamepadButton b) {
+  public final boolean buttonPressed(final GamepadButton b) {
     return b.isPressed(this);
   }
 
@@ -79,7 +79,7 @@ public class Gamepad extends Joystick {
    * @param p the POV to get based on compass directions N,S,E,W,NE,NW,SE,SW, or CENTER
    * @return <b>true</b> if the pov button p is pressed, <b>false</b> otherwise
    */
-  public boolean povButtonPressed(POVButton p) {
+  public final boolean povButtonPressed(final POVButton p) {
     return p.getPressed(this);
   }
 }

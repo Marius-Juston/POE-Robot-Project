@@ -5,7 +5,9 @@ package org.usfirst.frc.team2974.robot.exception;
  */
 public class RobotRuntimeException extends RuntimeException {
 
-  public RobotRuntimeException(String message) {
+  private static final long serialVersionUID = -9035041957129158861L;
+
+  public RobotRuntimeException(final String message) {
     super(message);
   }
 }

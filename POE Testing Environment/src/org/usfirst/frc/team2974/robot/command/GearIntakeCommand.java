@@ -21,14 +21,14 @@ public class GearIntakeCommand extends Command {
   }
 
   @Override
-  protected void execute() {
+  protected final void execute() {
     if (Input.gamepad.buttonPressed(GamepadButton._1)) {
       this.gearIntake.toggleDeployed();
     }
   }
 
   @Override
-  protected boolean isFinished() {
+  protected final boolean isFinished() {
     return false;
   }
 }

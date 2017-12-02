@@ -2,21 +2,26 @@ package org.usfirst.frc.team2974.robot.manager;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 
-public class SmartDashboardManager {
+public final class SmartDashboardManager {
 
   public static final NetworkTable TABLE = NetworkTable.getTable("SmartDashboard");
-  private static final List<SmartDashboardProperty> PROPERTIES = new ArrayList<>(); // Properties list where all the SmartDashboard  Properties are stored
-  public static boolean isDebug = true;
+  public static final boolean isDebug = true;
+  private static final List<SmartDashboardProperty> PROPERTIES = new ArrayList<>(
+      10); // Properties list where all the SmartDashboard  Properties are stored
+
+  private SmartDashboardManager() {
+  }
 
   /**
    * @param defaultValue {}
    */
-  public static <T> SmartDashboardProperty<T> addBind(String key, T defaultValue) {
+  public static <T> SmartDashboardProperty<T> addBind(final String key, final T defaultValue) {
     return addBind(key, defaultValue, null);
   }
 
@@ -36,9 +41,10 @@ public class SmartDashboardManager {
    * @param <T> the data type you want SmartDashboard to display
    * @return The SmartDashboard property created
    */
-  public static <T> SmartDashboardProperty<T> addBind(String key, T defaultValue,
-      Supplier<T> valueSupplier) {
-    SmartDashboardProperty<T> prop = new SmartDashboardProperty<>(key, defaultValue, valueSupplier);
+  public static <T> SmartDashboardProperty<T> addBind(final String key, final T defaultValue,
+      final Supplier<T> valueSupplier) {
+    final SmartDashboardProperty<T> prop = new SmartDashboardProperty<>(key, defaultValue,
+        valueSupplier);
 
     SmartDashboardManager.PROPERTIES.add(prop);
 
@@ -50,10 +56,11 @@ public class SmartDashboardManager {
    *
    * @param key SmartDashboard key
    */
-  public static void removeBind(String key) {
+  public static void removeBind(final String key) {
     for (int i = 0; i < PROPERTIES.size(); i++) {
       if (PROPERTIES.get(i).getKey().equals(key)) {
-        PROPERTIES.remove(i--);
+        PROPERTIES.remove(i);
+        i--;
         TABLE.delete(key);
       }
     }
@@ -65,20 +72,19 @@ public class SmartDashboardManager {
    * @return returns the PROPERTIES list
    */
   public static List<SmartDashboardProperty> getProperties() {
-    return SmartDashboardManager.PROPERTIES;
+    return Collections.unmodifiableList(SmartDashboardManager.PROPERTIES);
   }
 
   /**
    * Retrieves the wanted property given it key.
    *
-   * @param key the key of the property
    * @param <T> the data type of value being updated to SmartDashboard
+   * @param key the key of the property
    * @return the SmartDashboard property with the specified key
    * @throws RobotRuntimeException throws exception if the SmartDashboard property is not found
    */
-  @SuppressWarnings("unchecked")
-  public static <T> SmartDashboardProperty<T> getProperty(String key) {
-    Optional<SmartDashboardProperty> smartDashboardProperty = SmartDashboardManager.PROPERTIES
+  public static <T> SmartDashboardProperty getProperty(final String key) {
+    final Optional<SmartDashboardProperty> smartDashboardProperty = SmartDashboardManager.PROPERTIES
         .stream()
         .filter(p -> p.getKey()
             .equals(key)) // gts the properties with the same key as the one searching for

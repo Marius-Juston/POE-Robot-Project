@@ -15,18 +15,18 @@ public class MotionPath {
    */
   private MotionProvider[] motions;
 
-  public MotionPath(MotionProvider... motions) {
+  public MotionPath(final MotionProvider... motions) {
     try {
       MotionPath.checkMotions(motions);
       this.motions = motions;
-    } catch (RobotException r) {
+    } catch (final RobotException r) {
       r.printStackTrace();
       System.err.println("(This means that " + this + " won't run properly!!!)");
       this.motions = new MotionProvider[0];
     }
   }
 
-  public static void checkMotions(MotionProvider... motions) throws RobotException {
+  public static void checkMotions(final MotionProvider... motions) throws RobotException {
     for (int i = 1; i < motions.length; i++) {
       if (!motions[i].getInitialPose().equals(motions[i - 1].getFinalPose())) {
         throw new RobotException(
@@ -36,7 +36,7 @@ public class MotionPath {
   }
 
   @Override
-  public String toString() {
+  public final String toString() {
     return "MotionPath{" +
         "motions=" + Arrays.toString(this.motions) +
         '}';

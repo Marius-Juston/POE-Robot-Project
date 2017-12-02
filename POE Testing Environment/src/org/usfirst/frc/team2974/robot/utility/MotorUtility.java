@@ -13,7 +13,7 @@ public final class MotorUtility {
    * @param motor the motor to configure
    * @param mps m/s the motor should go
    */
-  public void setMotorSpeed(Talon motor, double mps) {
+  public void setMotorSpeed(final Talon motor, final double mps) {
     // use set because it automatically inverts if it is
     // motor.set();
   }

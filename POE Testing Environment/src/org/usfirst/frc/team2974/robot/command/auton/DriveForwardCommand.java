@@ -9,7 +9,7 @@ import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
 public class DriveForwardCommand extends Command {
 
-  private final double SETTLE_TIME = 1;
+  private final double SETTLE_TIME = 1.0;
 
   private final DriveTrain driveTrain;
 
@@ -30,7 +30,8 @@ public class DriveForwardCommand extends Command {
    * @param velocity the velocity to cruise at
    * @param acceleration the max acceleration to accelerate to velocity and decelerate to 0 m/s at.
    */
-  public DriveForwardCommand(double distance, double velocity, double acceleration) {
+  public DriveForwardCommand(final double distance, final double velocity,
+      final double acceleration) {
     super("Drive Forward Auton");
 
     this.driveTrain = SubsystemManager.getSubsystem(DriveTrain.class);
@@ -43,7 +44,7 @@ public class DriveForwardCommand extends Command {
   }
 
   @Override
-  protected void initialize() {
+  protected final void initialize() {
     motionFinished = false;
     motion = new MotionPathStraight(driveTrain.getPose(), distance, velocity, acceleration);
 
@@ -52,7 +53,7 @@ public class DriveForwardCommand extends Command {
   }
 
   @Override
-  protected void execute() {
+  protected final void execute() {
     if (!motionFinished && driveTrain.getCurrentMotion().equals(motion) && driveTrain
         .isCurrentMotionFinished()) {
       finishedTime = Timer.getFPGATimestamp();
@@ -61,17 +62,17 @@ public class DriveForwardCommand extends Command {
   }
 
   @Override
-  protected boolean isFinished() {
-    return motionFinished && (Timer.getFPGATimestamp() - finishedTime) > SETTLE_TIME;
+  protected final boolean isFinished() {
+    return motionFinished && ((Timer.getFPGATimestamp() - finishedTime) > SETTLE_TIME);
   }
 
   @Override
-  protected void interrupted() {
+  protected final void interrupted() {
     this.end();
   }
 
   @Override
-  protected void end() {
+  protected final void end() {
     driveTrain.cancelMotion();
   }
 }
