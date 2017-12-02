@@ -3,6 +3,8 @@ package org.usfirst.frc.team2974.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team2974.robot.command.auton.DriveForwardCommand;
 import org.usfirst.frc.team2974.robot.manager.SmartDashboardManager;
 import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
@@ -14,7 +16,7 @@ import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
  * or the package after creating this project, you must also update the manifest file in the
  * resource directory.
  */
-class Robot extends IterativeRobot {
+public class Robot extends IterativeRobot {
 
   private final String defaultAuto = "Default";
   private final String customAuto = "My Auto";
@@ -33,6 +35,12 @@ class Robot extends IterativeRobot {
 
     SubsystemManager.addSubsystem(new DriveTrain());
     SubsystemManager.addSubsystem(new GearIntake());
+
+    SmartDashboard.putData("Drive forward 5 meters", new DriveForwardCommand(5, 3, .5));
+    SmartDashboardManager.addBind("Drive forward 5 meters", new DriveForwardCommand(5, 3, .5));
+
+    SmartDashboardManager.addBind("Left Encoder Dist", 0, RobotMap.leftEncoder::getDistance);
+    SmartDashboardManager.addBind("Right Encoder Dist", 0, RobotMap.rightEncoder::getDistance);
 
     SmartDashboardManager.addBind("Left Encoder Rate", 0, RobotMap.leftEncoder::getRate);
     SmartDashboardManager.addBind("Right Encoder Rate", 0, RobotMap.rightEncoder::getRate);
@@ -63,10 +71,10 @@ class Robot extends IterativeRobot {
     this.update();
 
     switch (this.autoSelected) {
-      case this.customAuto:
+      case customAuto:
         // Put custom auto code here
         break;
-      case this.defaultAuto:
+      case defaultAuto:
       default:
         // Put default auto code here
         break;

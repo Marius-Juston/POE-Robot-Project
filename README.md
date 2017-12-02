@@ -16,7 +16,7 @@ The task chosen is (drumroll please): Use the Bezier curve program to send a spl
 Challenge: Make the robot follow a curve with any number of control points.
 
 ### Test Plan
-1. Test that it can go forwards 10 meters in a straight line (margin of error of +/-10cm)
+1. Test that it can go forwards 10 meters in a straight line (margin of error of +/-10cm) (CHECK)
 2. Test that it can rotate a full 180 degrees (margin of error +/-5 degrees)
 3. Test that it can rotate any number of degrees.
 4. Test it with a two point curve, three point curve, and four point curve. 

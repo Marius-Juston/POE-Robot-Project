@@ -9,9 +9,6 @@ import java.util.function.Supplier;
  */
 public class SmartDashboardProperty<T> {
 
-  // TODO: MAKE WRITEONLY PROPERTY, THIS AS A BASE CLASS
-  // FIXME?: TEMPTED TO REMOVE defaultValue BECAUSE IT DOESN'T DO ANYTHING
-
   private final String key; // SmartDashboard key
   private final T defaultValue; // Default value
   private T value; // Current value
@@ -19,11 +16,20 @@ public class SmartDashboardProperty<T> {
   private Runnable onValueChange; // Runs when value changes
 
   /**
+   * Used when you want a static value to be on SmartDashboard.
+   * @param key the key that SmartDashboard will take in to find or update the value
+   * @param defaultValue the default value that SmartDashboard will take in to retrieve a value
+   */
+  public SmartDashboardProperty(String key, T defaultValue) {
+    this(key, defaultValue, null);
+  }
+
+  /**
    * Initializes variables and sets up the onValueChange Runnable object.
    *
    * @param key the key that SmartDashboard will take in to find or update the value
    * @param defaultValue the default value that SmartDashboard will take in to retrieve a value
-   * @param valueSupplier the value that you wish to place into SmartDashboard
+   * @param valueSupplier the value that you wish to place into SmartDashboard, can be null for a static value
    */
   public SmartDashboardProperty(String key, T defaultValue, Supplier<T> valueSupplier) {
     this.key = key;
@@ -37,7 +43,6 @@ public class SmartDashboardProperty<T> {
     this.onValueChange = () -> {
     };
   }
-
 
   /**
    * Returns the key to retrieve the SmartDashboard value
@@ -121,7 +126,7 @@ public class SmartDashboardProperty<T> {
     this.onValueChange = onValueChange;
   }
 
-  public final void updateSmartDashboard() {
+  protected void updateSmartDashboard() {
     if (this.value instanceof Number) { // if the value you are going to put in is a number (double, float, int, byte, etc.)
       SmartDashboard.putNumber(this.key, ((Number) this.value).doubleValue());
     } else if (this.value instanceof Boolean) { // if the value is a boolean
@@ -139,6 +144,7 @@ public class SmartDashboardProperty<T> {
    * use the onValueChange Runnable object to update SmartDashboard
    */
   public void update() {
-    this.setValue(this.valueSupplier.get());
+    if(valueSupplier != null)
+      setValue(valueSupplier.get());
   }
 }

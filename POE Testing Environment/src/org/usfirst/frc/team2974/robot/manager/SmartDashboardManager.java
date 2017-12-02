@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2974.robot.manager;
 
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +12,20 @@ public class SmartDashboardManager {
 
   private static final List<SmartDashboardProperty> PROPERTIES = new ArrayList<>(); // Properties list where all the SmartDashboard  Properties are stored
 
-  private static boolean isDebug = true;
+  public static boolean isDebug = true;
+
+  public static final NetworkTable TABLE = NetworkTable.getTable("SmartDashboard");
+
+  /**
+   *
+   * @param key
+   * @param defaultValue {}
+   * @param <T>
+   * @return
+   */
+  public static <T> SmartDashboardProperty<T> addBind(String key, T defaultValue) {
+    return addBind(key, defaultValue, null);
+  }
 
   /**
    * <p>Creates a SmartDashboard Property that will update automatically when the update method of
@@ -35,6 +50,19 @@ public class SmartDashboardManager {
     SmartDashboardManager.PROPERTIES.add(prop);
 
     return prop;
+  }
+
+  /**
+   * Removes all binds (should be one) with key key from SmartDashboard and the manager.
+   * @param key SmartDashboard key
+   */
+  public static void removeBind(String key) {
+    for(int i = 0; i < PROPERTIES.size(); i++) {
+      if(PROPERTIES.get(i).getKey().equals(key)) {
+        PROPERTIES.remove(i--);
+        TABLE.delete(key);
+      }
+    }
   }
 
   /**
