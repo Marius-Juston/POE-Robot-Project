@@ -137,6 +137,10 @@ class Kinematics {
     System.out.println("Next Pose " + this.nextPose);
   }
 
+  public MotionProvider getMotion() {
+    return motion;
+  }
+
   //calculates the path to follow within a particular distance
   public KinematicPose interpolatePose(double t) {
 

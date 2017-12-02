@@ -9,6 +9,7 @@ public class DebugSmartDashboardProperty<T> extends SmartDashboardProperty<T> {
 
   /**
    * This creates a SmartDashboard value to show only when SmartDashboardManager.isDebug is true.
+   *
    * @param key {@inheritDoc}
    * @param defaultValue {@inheritDoc}
    * @param valueSupplier {@inheritDoc}
@@ -22,10 +23,13 @@ public class DebugSmartDashboardProperty<T> extends SmartDashboardProperty<T> {
    */
   @Override
   protected final void updateSmartDashboard() {
-    if(SmartDashboardManager.isDebug)
+    if (SmartDashboardManager.isDebug) {
       super.updateSmartDashboard();
-    else if(SmartDashboardManager.TABLE.containsKey(getKey())) // why dost thou do this to me smartdashboard
+    } else if (SmartDashboardManager.TABLE
+        .containsKey(getKey())) // why dost thou do this to me smartdashboard
+    {
       SmartDashboardManager.TABLE.delete(getKey());
+    }
   }
 
   /**

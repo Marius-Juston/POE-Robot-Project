@@ -1,8 +1,5 @@
 package org.usfirst.frc.team2974.robot.command.auton;
 
-import static org.usfirst.frc.team2974.robot.RobotMap.leftEncoder;
-import static org.usfirst.frc.team2974.robot.RobotMap.rightEncoder;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team2974.robot.controllers.MotionPathStraight;
@@ -28,6 +25,7 @@ public class DriveForwardCommand extends Command {
 
   /**
    * Drives forward with the parameters:
+   *
    * @param distance the distance to move
    * @param velocity the velocity to cruise at
    * @param acceleration the max acceleration to accelerate to velocity and decelerate to 0 m/s at.
@@ -55,7 +53,8 @@ public class DriveForwardCommand extends Command {
 
   @Override
   protected void execute() {
-    if (!motionFinished && driveTrain.isControllerFinished()) {
+    if (!motionFinished && driveTrain.getCurrentMotion().equals(motion) && driveTrain
+        .isCurrentMotionFinished()) {
       finishedTime = Timer.getFPGATimestamp();
       motionFinished = true;
     }

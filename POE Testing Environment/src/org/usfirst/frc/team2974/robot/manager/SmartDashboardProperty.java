@@ -17,6 +17,7 @@ public class SmartDashboardProperty<T> {
 
   /**
    * Used when you want a static value to be on SmartDashboard.
+   *
    * @param key the key that SmartDashboard will take in to find or update the value
    * @param defaultValue the default value that SmartDashboard will take in to retrieve a value
    */
@@ -29,7 +30,8 @@ public class SmartDashboardProperty<T> {
    *
    * @param key the key that SmartDashboard will take in to find or update the value
    * @param defaultValue the default value that SmartDashboard will take in to retrieve a value
-   * @param valueSupplier the value that you wish to place into SmartDashboard, can be null for a static value
+   * @param valueSupplier the value that you wish to place into SmartDashboard, can be null for a
+   * static value
    */
   public SmartDashboardProperty(String key, T defaultValue, Supplier<T> valueSupplier) {
     this.key = key;
@@ -144,7 +146,8 @@ public class SmartDashboardProperty<T> {
    * use the onValueChange Runnable object to update SmartDashboard
    */
   public void update() {
-    if(valueSupplier != null)
+    if (valueSupplier != null) {
       setValue(valueSupplier.get());
+    }
   }
 }

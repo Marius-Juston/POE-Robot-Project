@@ -174,8 +174,23 @@ public class MotionProfileController {
     }
   }
 
+  public boolean isCurrentMotionFinished(double time) {
+    KinematicPose kinematicPose;
+    if (this.currentKinematics != null) {
+      kinematicPose = this.currentKinematics.interpolatePose(time);
+    } else {
+      kinematicPose = this.staticKinematicPose;
+    }
+
+    return kinematicPose.isFinished;
+  }
+
   public synchronized boolean isFinished() {
     return this.currentKinematics == null;
+  }
+
+  public MotionProvider getCurrentMotion() {
+    return currentKinematics.getMotion();
   }
 
   private class MPCTask extends TimerTask {

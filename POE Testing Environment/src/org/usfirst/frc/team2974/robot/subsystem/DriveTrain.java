@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team2974.robot.RobotMap;
 import org.usfirst.frc.team2974.robot.command.DriveCommand;
@@ -132,9 +133,18 @@ public class DriveTrain extends Subsystem implements PoseProvider {
     this.motionProfileController.addMotion(motion);
   }
 
-  public boolean isControllerFinished() {
+  public boolean isControllerEmpty() {
     return this.motionProfileController.isFinished();
   }
+
+  public boolean isCurrentMotionFinished() {
+    return this.motionProfileController.isCurrentMotionFinished(Timer.getFPGATimestamp());
+  }
+
+  public MotionProvider getCurrentMotion() {
+    return this.motionProfileController.getCurrentMotion();
+  }
+
 
   public void shiftUp() {
     if (this.shifter.get()) {
