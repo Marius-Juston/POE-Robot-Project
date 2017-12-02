@@ -61,16 +61,6 @@ class Robot extends IterativeRobot {
   @Override
   public void autonomousPeriodic() {
     this.update();
-
-    switch (this.autoSelected) {
-      case this.customAuto:
-        // Put custom auto code here
-        break;
-      case this.defaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
   }
 
   @Override

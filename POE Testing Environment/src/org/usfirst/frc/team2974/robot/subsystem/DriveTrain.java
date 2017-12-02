@@ -1,5 +1,11 @@
 package org.usfirst.frc.team2974.robot.subsystem;
 
+import static org.usfirst.frc.team2974.robot.RobotConfiguration.DEFAULT_KA;
+import static org.usfirst.frc.team2974.robot.RobotConfiguration.DEFAULT_KK;
+import static org.usfirst.frc.team2974.robot.RobotConfiguration.DEFAULT_KP;
+import static org.usfirst.frc.team2974.robot.RobotConfiguration.DEFAULT_KV;
+import static org.usfirst.frc.team2974.robot.RobotConfiguration.PERIOD;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -16,11 +22,6 @@ import org.usfirst.frc.team2974.robot.controllers.RobotPair;
 
 public class DriveTrain extends Subsystem implements PoseProvider {
 
-  private static final double PERIOD = .005;
-  private static final double DEFAULT_KV = 0.5;
-  private static final double DEFAULT_KK = 0;
-  private static final double DEFAULT_KA = 0.1;
-  private static final double DEFAULT_KP = 20;
 
   private final MotionProfileController motionProfileController;
 
@@ -50,7 +51,7 @@ public class DriveTrain extends Subsystem implements PoseProvider {
 //    rightController.enable();
 //    leftController.enable();
 
-    this.motionProfileController = new MotionProfileController(this, DriveTrain.PERIOD);
+    this.motionProfileController = new MotionProfileController(this, PERIOD);
     this.setConstants();
   }
 
@@ -149,10 +150,10 @@ public class DriveTrain extends Subsystem implements PoseProvider {
 
   public void setConstants() {
     Preferences pref = Preferences.getInstance();
-    double kV = pref.getDouble("drivetrain.kV", DriveTrain.DEFAULT_KV);
-    double kK = pref.getDouble("drivetrain.kK", DriveTrain.DEFAULT_KK);
-    double kA = pref.getDouble("drivetrain.kA", DriveTrain.DEFAULT_KA);
-    double kP = pref.getDouble("drivetrain.kP", DriveTrain.DEFAULT_KP);
+    double kV = pref.getDouble("drivetrain.kV", DEFAULT_KV);
+    double kK = pref.getDouble("drivetrain.kK", DEFAULT_KK);
+    double kA = pref.getDouble("drivetrain.kA", DEFAULT_KA);
+    double kP = pref.getDouble("drivetrain.kP", DEFAULT_KP);
     System.out.println(String.format("kV=%f, kK=%f, kA=%f, kP=%f", kV, kK, kA, kP));
     this.motionProfileController.setKV(kV);
     this.motionProfileController.setKK(kK);

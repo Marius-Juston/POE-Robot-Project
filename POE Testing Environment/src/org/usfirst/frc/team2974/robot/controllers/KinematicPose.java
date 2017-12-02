@@ -37,7 +37,8 @@ public class KinematicPose extends Pose {
 
   public String toString() {
     return String
-        .format("%s, left:%s, right:%s, t=%f, isFinished=%s", super.toString(), this.left, this.right, this.t,
+        .format("%s, left:%s, right:%s, t=%f, isFinished=%s", super.toString(), this.left,
+            this.right, this.t,
             this.isFinished);
   }
 }

@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2974.robot;
 
+import static org.usfirst.frc.team2974.robot.RobotConfiguration.DISTANCE_PER_PULSE;
+
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -33,8 +35,6 @@ public class RobotMap {
 
   public static final DigitalInput gearSensor;
 
-  private static final double DISTANCE_PER_PULSE = 0.0005652;
-
   static {
     // the front is where the camera is now. deal with it.
     rightMotor = new Talon(0);
@@ -48,8 +48,8 @@ public class RobotMap {
     RobotMap.rightEncoder.setReverseDirection(true);
 
     RobotMap.leftEncoder.setDistancePerPulse(
-        RobotMap.DISTANCE_PER_PULSE); // check what this is and how it works, comment it afterwards
-    RobotMap.rightEncoder.setDistancePerPulse(RobotMap.DISTANCE_PER_PULSE);
+        DISTANCE_PER_PULSE); // check what this is and how it works, comment it afterwards
+    RobotMap.rightEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
 
     pneumaticsShifter = new Solenoid(0);
     gearIntakeSolenoid = new Solenoid(2);

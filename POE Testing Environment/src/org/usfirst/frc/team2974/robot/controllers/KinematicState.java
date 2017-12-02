@@ -2,7 +2,7 @@ package org.usfirst.frc.team2974.robot.controllers;
 
 public class KinematicState {
 
-  // The length of /FIXME/
+  // The length of
   public final double length;
 
   public final double velocity;

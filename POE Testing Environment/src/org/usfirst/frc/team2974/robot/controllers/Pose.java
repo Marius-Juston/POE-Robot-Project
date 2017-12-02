@@ -16,11 +16,12 @@ public class Pose {
   }
 
   public Point2D offsetPoint(double l) {
-    return new Point2D(this.point.x + l * Math.cos(this.angle), this.point.y + l * Math.sin(this.angle));
+    return new Point2D(this.point.getX() + l * Math.cos(this.angle),
+        this.point.getY() + l * Math.sin(this.angle));
   }
 
   public String toString() {
-    return String.format("x=%f, y=%f, angle=%f", this.point.x, this.point.y, this.angle);
+    return String.format("x=%f, y=%f, angle=%f", this.point.getX(), this.point.getY(), this.angle);
   }
 
 }

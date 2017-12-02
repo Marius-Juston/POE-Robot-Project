@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 import org.usfirst.frc.team2974.robot.io.logitech.GamepadButton;
@@ -62,7 +61,8 @@ public abstract class Driver {
               + " key. Be sure to add to the HashMap using the addJoystick method");
     }
 
-    Button button = new edu.wpi.first.wpilibj.buttons.JoystickButton(this.joysticks.get(gamepadName),
+    Button button = new edu.wpi.first.wpilibj.buttons.JoystickButton(
+        this.joysticks.get(gamepadName),
         gamepadButton.getIndex());
     this.buttons.put(buttonName, new ButtonMap(gamepadButton, button));
 
@@ -127,7 +127,8 @@ public abstract class Driver {
               + " key. Be sure to add to the HashMap using the addJoystick method");
     }
 
-    Button button = new edu.wpi.first.wpilibj.buttons.JoystickButton(this.joysticks.get(joystickName),
+    Button button = new edu.wpi.first.wpilibj.buttons.JoystickButton(
+        this.joysticks.get(joystickName),
         joystickButton
             .getIndex());
     this.buttons.put(buttonName, new ButtonMap(joystickButton, button));
