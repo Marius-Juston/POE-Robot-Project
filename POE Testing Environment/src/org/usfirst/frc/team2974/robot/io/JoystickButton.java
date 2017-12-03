@@ -15,12 +15,12 @@ public enum JoystickButton {
    *
    * @param index index of the button as it depicted on the driver station
    */
-  JoystickButton(final int index) {
+  JoystickButton(int index) {
     this.index = index;
   }
 
   public int getIndex() {
-    return this.index;
+    return index;
   }
 
   @Override

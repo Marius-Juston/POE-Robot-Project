@@ -7,7 +7,7 @@ public class SubsystemException extends Exception {
 
   private static final long serialVersionUID = -6544008222983180372L;
 
-  public SubsystemException(final String message) {
+  public SubsystemException(String message) {
     super(message);
   }
 }

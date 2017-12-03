@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class Gamepad extends Joystick {
 
-  public Gamepad(final int port) {
+  public Gamepad(int port) {
     super(port);
   }
 
@@ -19,7 +19,7 @@ public class Gamepad extends Joystick {
    * @return the left thumb stick x value in range [-1, 1]
    */
   public final double getLeftStickX() {
-    return this.getRawAxis(0);
+    return getRawAxis(0);
   }
 
   /**
@@ -28,7 +28,7 @@ public class Gamepad extends Joystick {
    * @return the left thumb stick y value in range [-1, 1]
    */
   public final double getLeftStickY() {
-    return this.getRawAxis(1);
+    return getRawAxis(1);
   }
 
   /**
@@ -37,7 +37,7 @@ public class Gamepad extends Joystick {
    * @return the left trigger value in range [0, 1]
    */
   public final double getLeftTrigger() {
-    return this.getRawAxis(2);
+    return getRawAxis(2);
   }
 
   /**
@@ -46,7 +46,7 @@ public class Gamepad extends Joystick {
    * @return the right thumb stick x value in range [-1, 1]
    */
   public final double getRightStickX() {
-    return this.getRawAxis(4);
+    return getRawAxis(4);
   }
 
   /**
@@ -55,7 +55,7 @@ public class Gamepad extends Joystick {
    * @return the right thumb stick y value in range [-1, 1]
    */
   public final double getRightStickY() {
-    return this.getRawAxis(3);
+    return getRawAxis(3);
   }
 
   /**
@@ -64,14 +64,14 @@ public class Gamepad extends Joystick {
    * @return the right trigger value in range [0, 1]
    */
   public final double getRightTrigger() {
-    return this.getRawAxis(5);
+    return getRawAxis(5);
   }
 
   /**
    * @param b the button to check on this gamepad
    * @return <b>true</b> if the button b is pressed, <b>false</b> otherwise
    */
-  public final boolean buttonPressed(final GamepadButton b) {
+  public final boolean buttonPressed(GamepadButton b) {
     return b.isPressed(this);
   }
 
@@ -79,7 +79,7 @@ public class Gamepad extends Joystick {
    * @param p the POV to get based on compass directions N,S,E,W,NE,NW,SE,SW, or CENTER
    * @return <b>true</b> if the pov button p is pressed, <b>false</b> otherwise
    */
-  public final boolean povButtonPressed(final POVButton p) {
+  public final boolean povButtonPressed(POVButton p) {
     return p.getPressed(this);
   }
 }

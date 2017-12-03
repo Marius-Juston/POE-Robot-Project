@@ -12,8 +12,9 @@ public final class SmartDashboardManager {
 
   public static final NetworkTable TABLE = NetworkTable.getTable("SmartDashboard");
   public static final boolean isDebug = true;
-  private static final List<SmartDashboardProperty> PROPERTIES = new ArrayList<>(
-      10); // Properties list where all the SmartDashboard  Properties are stored
+
+  // Properties list where all the SmartDashboard  Properties are stored
+  private static final List<SmartDashboardProperty> PROPERTIES = new ArrayList<>(10);
 
   private SmartDashboardManager() {
   }
@@ -43,9 +44,8 @@ public final class SmartDashboardManager {
    * @param <T> the data type you want SmartDashboard to display
    * @return The SmartDashboard property created
    */
-  public static <T> SmartDashboardProperty<T> addBind(final String key, final T defaultValue,
-      final Supplier<T> valueSupplier) {
-    final SmartDashboardProperty<T> prop = new SmartDashboardProperty<>(key, defaultValue,
+  public static <T> SmartDashboardProperty<T> addBind(String key, T defaultValue, Supplier<T> valueSupplier) {
+    SmartDashboardProperty<T> prop = new SmartDashboardProperty<>(key, defaultValue,
         valueSupplier);
 
     SmartDashboardManager.PROPERTIES.add(prop);
@@ -58,11 +58,10 @@ public final class SmartDashboardManager {
    *
    * @param key SmartDashboard key
    */
-  public static void removeBind(final String key) {
+  public static void removeBind(String key) {
     for (int i = 0; i < PROPERTIES.size(); i++) {
       if (PROPERTIES.get(i).getKey().equals(key)) {
-        PROPERTIES.remove(i);
-        i--;
+        PROPERTIES.remove(i--);
         TABLE.delete(key);
       }
     }
@@ -85,15 +84,14 @@ public final class SmartDashboardManager {
    * @return the SmartDashboard property with the specified key
    * @throws RobotRuntimeException throws exception if the SmartDashboard property is not found
    */
-  public static <T> SmartDashboardProperty getProperty(final String key) {
-    final Optional<SmartDashboardProperty> smartDashboardProperty = SmartDashboardManager.PROPERTIES
+  @SuppressWarnings("unchecked")
+  public static <T> SmartDashboardProperty<T> getProperty(String key) {
+    Optional<SmartDashboardProperty> smartDashboardProperty = SmartDashboardManager.PROPERTIES
         .stream()
-        .filter(p -> p.getKey()
-            .equals(key)) // gts the properties with the same key as the one searching for
+        .filter(p -> p.getKey().equals(key)) // gts the properties with the same key as the one searching for
         .findFirst();  /// gets the first SmartDashboard property
 
-    if (smartDashboardProperty.isPresent()) // if there is a SmartDashboard property
-    {
+    if (smartDashboardProperty.isPresent()) { // if there is a SmartDashboard property
       return smartDashboardProperty.get(); // returns the SmartDashboard property
     }
 
@@ -108,6 +106,6 @@ public final class SmartDashboardManager {
    * to do
    */
   public static void update() {
-    SmartDashboardManager.PROPERTIES.forEach(SmartDashboardProperty::update);
+    PROPERTIES.forEach(SmartDashboardProperty::update);
   }
 }

@@ -24,15 +24,15 @@ public abstract class Driver {
   };
 
   private final Map<String, ButtonMap> buttons;
-  private final Map<String, Joystick> joysticks;
+  private final Map<String, Joystick> joysticks; // what?
   private final String driverName;
 
-  public Driver(final String driverName) {
+  public Driver(String driverName) {
     this.driverName = driverName;
-    this.joysticks = new HashMap<>(3);
-    this.buttons = new HashMap<>(10);
+    joysticks = new HashMap<>(3);
+    buttons = new HashMap<>(10);
 
-    this.initButtons();
+    initButtons();
   }
 
   /**
@@ -44,7 +44,7 @@ public abstract class Driver {
    * Creates a button assigned to the given gamepad for the given Joystick button
    *
    * @param gamepadName name of the gamepad that you want to use. Gamepad must have been added using
-   * the addJoystick method
+   *                    the addJoystick method
    * @param buttonName name the button will be assigned
    * @param gamepadButton the key to map the button to on the gamepad
    * @return the created button
@@ -52,13 +52,12 @@ public abstract class Driver {
    * @throws RobotRuntimeException throws exception when a button has already been assigned to the
    * button key
    */
-  public Button createAndAddGamepadButton(final String gamepadName, final String buttonName,
-      final GamepadButton gamepadButton) {
-    if (this.buttons.containsKey(buttonName)) {
+  public Button createAndAddGamepadButton(String gamepadName, String buttonName, GamepadButton gamepadButton) {
+    if (buttons.containsKey(buttonName)) {
       throw new RobotRuntimeException("The button name " + buttonName + " has already been used");
     }
 
-    final boolean alreadyAssigned = this.buttons.entrySet().stream().anyMatch(
+    boolean alreadyAssigned = buttons.entrySet().stream().anyMatch(
         stringButtonMapEntry -> stringButtonMapEntry.getValue().getAssignedKey() == gamepadButton);
 
     if (alreadyAssigned) { //checks if the buttons HashMap contains the button
@@ -67,10 +66,11 @@ public abstract class Driver {
               + " key. Be sure to add to the HashMap using the addJoystick method");
     }
 
-    final Button button = new edu.wpi.first.wpilibj.buttons.JoystickButton(
-        this.joysticks.get(gamepadName),
+    Button button = new edu.wpi.first.wpilibj.buttons.JoystickButton(
+        joysticks.get(gamepadName),
         gamepadButton.getIndex());
-    this.buttons.put(buttonName, new ButtonMap(gamepadButton, button));
+
+    buttons.put(buttonName, new ButtonMap(gamepadButton, button));
 
     return button;
   }
@@ -79,28 +79,27 @@ public abstract class Driver {
    * Adds a Joystick to the list of Joysticks and attaches it on the specific usb port.
    *
    * @param joystickName The name to give the Joystick
-   * @param usbPort the usb port to attach the usb port onto
-   * @throws RobotRuntimeException throws an exception if the port is already used by another
-   * joystick
+   * @param port the port of the joystick
+   * @throws RobotRuntimeException throws exception if the port is already used by another joystick
    * @throws RobotRuntimeException throws exception if the joystick name has already been used
    */
-  public void addJoystick(final String joystickName, final int usbPort) {
-    if (this.joysticks.containsKey(joystickName)) {
+  public void addJoystick(String joystickName, int port) {
+    if (joysticks.containsKey(joystickName)) {
       throw new RobotRuntimeException("The joystick " + joystickName
           + " is already defined in the list of available joysticks.");
     } else {
-      final String[] joystickNames = this.joysticks.entrySet()
+      String[] joystickNames = joysticks.entrySet()
           .stream()
-          .filter(stringJoystickEntry -> stringJoystickEntry.getValue().getPort() == usbPort)
+          .filter(stringJoystickEntry -> stringJoystickEntry.getValue().getPort() == port)
           .map(Entry::getKey)
           .toArray(String[]::new);
 
       if (joystickNames.length > 1) {
         throw new RobotRuntimeException(
-            "The Joystick " + joystickName + " tried using the port " + usbPort
+            "The Joystick " + joystickName + " tried using the port " + port
                 + " which is already used by " + Arrays.toString(joystickNames));
       } else {
-        this.joysticks.put(joystickName, new Joystick(usbPort));
+        joysticks.put(joystickName, new Joystick(port));
       }
     }
   }
@@ -117,13 +116,12 @@ public abstract class Driver {
    * @throws RobotRuntimeException throws exception when a button has already been assigned to the
    * button key
    */
-  public Button createAndAddJoystickButton(final String joystickName, final String buttonName,
-      final JoystickButton joystickButton) {
+  public Button createAndAddJoystickButton(String joystickName, String buttonName, JoystickButton joystickButton) {
     if (this.buttons.containsKey(buttonName)) {
       throw new RobotRuntimeException("The button name " + buttonName + " has already been used");
     }
 
-    final boolean alreadyAssigned = this.buttons.entrySet().stream().anyMatch(
+    boolean alreadyAssigned = buttons.entrySet().stream().anyMatch(
         stringButtonMapEntry -> stringButtonMapEntry.getValue().getAssignedKey() == joystickButton);
 
     if (alreadyAssigned) { //checks if the buttons HashMap contains the button
@@ -132,11 +130,12 @@ public abstract class Driver {
               + " key. Be sure to add to the HashMap using the addJoystick method");
     }
 
-    final Button button = new edu.wpi.first.wpilibj.buttons.JoystickButton(
-        this.joysticks.get(joystickName),
+    Button button = new edu.wpi.first.wpilibj.buttons.JoystickButton(
+        joysticks.get(joystickName),
         joystickButton
             .getIndex());
-    this.buttons.put(buttonName, new ButtonMap(joystickButton, button));
+
+    buttons.put(buttonName, new ButtonMap(joystickButton, button));
 
     return button;
   }
@@ -152,18 +151,16 @@ public abstract class Driver {
    * buttons HashMap
    */
   public Button getButton(final String buttonName) {
-    if (!this.buttons
-        .containsKey(buttonName)) // checks if button name exists inside of the buttons HashMap
-    {
+    if (!buttons.containsKey(buttonName)) { // checks if button name exists inside of the buttons HashMap
       throw new RobotRuntimeException("The button " + buttonName
           + " does not exist in the buttons HashMap. Be sure to create it using the createGamepadButton or createJoystickButton methods");
     }
 
-    return this.buttons.get(buttonName).getButton(); // returns the button given its assigned name
+    return buttons.get(buttonName).getButton(); // returns the button given its assigned name
   }
 
   public String getDriverName() {
-    return this.driverName;
+    return driverName;
   }
 }
 

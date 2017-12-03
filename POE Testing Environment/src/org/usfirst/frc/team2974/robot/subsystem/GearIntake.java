@@ -16,26 +16,24 @@ public class GearIntake extends Subsystem {
   private final DigitalInput gearSensor;
 
   public GearIntake() {
-    super("Gear Intake");
-
-    this.piston = RobotMap.gearIntakeSolenoid;
-    this.gearSensor = RobotMap.gearSensor;
+    piston = RobotMap.gearIntakeSolenoid;
+    gearSensor = RobotMap.gearSensor;
   }
 
   @Override
   protected final void initDefaultCommand() {
-    this.setDefaultCommand(new GearIntakeCommand());
+    setDefaultCommand(new GearIntakeCommand());
   }
 
-  public final void setDeployed(final boolean deployed) {
-    this.piston.set(deployed);
+  public final void setDeployed(boolean deployed) {
+    piston.set(deployed);
   }
 
   public final void toggleDeployed() {
-    this.piston.set(!this.piston.get());
+    piston.set(!piston.get());
   }
 
   public final boolean hasGear() {
-    return !this.gearSensor.get();
+    return !gearSensor.get();
   }
 }

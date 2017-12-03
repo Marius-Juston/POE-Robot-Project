@@ -17,7 +17,7 @@ public enum GamepadButton {
    *
    * @param index index of the button as it depicted on the driver station
    */
-  GamepadButton(final int index) {
+  GamepadButton(int index) {
     this.index = index;
   }
 
@@ -27,15 +27,15 @@ public enum GamepadButton {
    * @return returns the index of the button
    */
   public int getIndex() {
-    return this.index;
+    return index;
   }
 
   /**
    * @param g the gamepad to check
    * @return <b>true</b> if the button is pressed, <b>false</b> otherwise
    */
-  public boolean isPressed(final Gamepad g) {
-    return g.getRawButton(this.index);
+  public boolean isPressed(Gamepad g) {
+    return g.getRawButton(index);
   }
 
   @Override

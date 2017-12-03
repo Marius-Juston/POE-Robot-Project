@@ -7,7 +7,7 @@ public class RobotException extends Exception {
 
   private static final long serialVersionUID = -6607692947811100039L;
 
-  public RobotException(final String message) {
+  public RobotException(String message) {
     super(message);
   }
 }
