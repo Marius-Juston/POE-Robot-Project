@@ -3,12 +3,12 @@
 This is an POE project to further enrich our skills with using the allowable sensors.
 
 The task chosen is (drumroll please): Use the Bezier curve program to send a spline to the robot and the robot will execute/follow the spline.
-- Deliverables
+#### Deliverables
   - Test plan (how we are going to show the consumer that it works and how to use it)
   - Code library useable
   - Bezier curve program that can send values to the robot
   - Autonomous robot with teleop functionalities
-- Constraints
+#### Constraints
   - Due by Dec 13
   - Parts available below
   - Code is commented and well documented (jdocs)
@@ -25,15 +25,13 @@ Challenge: Make the robot follow a curve with any number of control points.
 ## Robot
 ### Parts available to us
 
-- 4 Motors
-  - Two motor are connected to the three left wheels, the other motors are connected to the other three on the right.
-- 2 Encoders
-  - Connected the right and left motors.
-- 2 Logitech Cameras
-- 1 Raspberry Pi
-  - 1 Raspberry Camera
-- Gyro on Robo RIO (no accuracy at all)
-  - The gyro on the Robo RIO does not work correctly.
+ Parts               | Description
+ ------------------- | ---
+ 4 Motors            | Two motors are connected to the left wheels, and two motors are connected to the right wheels 
+ 2 Encoders          | Connected to the right and left motors
+ 2 Logitech Cameras  | Can be connected through usb on Pi
+ 1 Raspberry Pi      | Can analyse images and has 1 Raspberry Camera
+ Gyro on RoboRIO     | The gyro on the Robo RIO does not work correctly
 
 ## Task List to Pick
 
@@ -51,10 +49,10 @@ Challenge: Make the robot follow a curve with any number of control points.
 
 ## More
 
-Go to [this](https://guides.github.com/features/mastering-markdown/) link to read on how to format and add images, lists, code snippet, headers & quotes to a README.md file
+Go to [this](https://guides.github.com/features/mastering-markdown/) and [this](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) to read on how to format and add images, lists, code snippet, headers & quotes to a README.md file
 
 To use the Google java formatter in eclipse open eclipse naviagte to Windows -> Preferences -> Java -> Code Style -> Formatter then press import and navigate to the eclipse-java-google-style.xml file included in this repository. 
 
 To format a file in eclipse you can press the Ctrl + Shift + F.
 
-To use IntelliJ you can just add the wpilib (%USER%/wpilib/java/current/lib) library in the project settings (top right button) as a library.
+To use IntelliJ you can just add the wpilib [right here](./POE%20Testing%20Environment/build/jars) in the project settings (top right button) as a library named lib.
