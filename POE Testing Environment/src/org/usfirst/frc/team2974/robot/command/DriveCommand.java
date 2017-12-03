@@ -13,20 +13,20 @@ import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
 public class DriveCommand extends Command {
 
-  private final Set<Driver> drivers;
+  private final Set<Driver> drivers; // TODO: actually use
   private final DriveTrain driveTrain;
   private Driver currentDriver;
 
   public DriveCommand(final Driver initialDriver) {
     super("DriveCommand");
 
-    this.drivers = new HashSet<>(4);
+    drivers = new HashSet<>(4);
 
-    this.setCurrentDriver(initialDriver);
+    setCurrentDriver(initialDriver);
 
-    this.driveTrain = SubsystemManager.getSubsystem(DriveTrain.class);
+    driveTrain = SubsystemManager.getSubsystem(DriveTrain.class);
 
-    this.requires(this.driveTrain);
+    requires(driveTrain);
   }
 
   public DriveCommand() {
@@ -34,7 +34,7 @@ public class DriveCommand extends Command {
   }
 
   public static double getLeftThrottle() {
-    final double leftY = -Input.leftJoystick.getY();
+    double leftY = -Input.leftJoystick.getY();
     if (Math.abs(leftY) < RobotConfiguration.LEFT_JOYSTICK_THRESHOLD) {
       return 0;
     }
@@ -43,7 +43,7 @@ public class DriveCommand extends Command {
   }
 
   public static double getRightThrottle() {
-    final double rightY = -Input.rightJoystick.getY();
+    double rightY = -Input.rightJoystick.getY();
     if (Math.abs(rightY) < RobotConfiguration.RIGHT_JOYSTICK_THRESHOLD) {
       return 0;
     }
@@ -57,7 +57,7 @@ public class DriveCommand extends Command {
    * @return Returns current driver
    */
   public final Driver getCurrentDriver() {
-    return this.currentDriver;
+    return currentDriver;
   }
 
   /**
@@ -65,11 +65,12 @@ public class DriveCommand extends Command {
    *
    * @param driver the new current driver
    */
-  public final void setCurrentDriver(final Driver driver) {
-    if ((driver != null) && !driver.equals(this.currentDriver)) {
-      this.currentDriver = driver;
-
-      driver.initButtons();
+  public final void setCurrentDriver(Driver driver) {
+    if (driver != null) {
+      if(!driver.equals(currentDriver)) {
+        currentDriver = driver;
+        driver.initButtons();
+      }
     } else {
       throw new RobotRuntimeException("Driver to be set is null.");
     }
@@ -80,13 +81,13 @@ public class DriveCommand extends Command {
    *
    * @param driver the driver to add
    */
-  public final void addDriver(final Driver driver) {
-    if (this.drivers.stream()
+  public final void addDriver(Driver driver) {
+    if (drivers.stream()
         .anyMatch(driver1 -> driver1.getDriverName().equals(driver.getDriverName()))) {
       throw new RobotRuntimeException("Driver named " + driver.getDriverName() + " already exists");
     }
 
-    this.drivers.add(driver);
+    drivers.add(driver);
   }
 
   /**
@@ -95,8 +96,8 @@ public class DriveCommand extends Command {
    * @param driverName the name to search for
    * @return the driver who has the driverName
    */
-  public final Driver getDriver(final String driverName) {
-    final Optional<Driver> driverOptional = this.drivers.stream()
+  public final Driver getDriver(String driverName) {
+    Optional<Driver> driverOptional = drivers.stream()
         .filter(driver -> driver.getDriverName().equals(driverName)).findFirst();
 
     if (driverOptional.isPresent()) {
@@ -109,11 +110,10 @@ public class DriveCommand extends Command {
 
   @Override
   protected void initialize() {
-
   }
 
   public final void tankDrive() {
-    this.driveTrain.setPowers(DriveCommand.getLeftThrottle(), DriveCommand.getRightThrottle());
+    driveTrain.setPowers(DriveCommand.getLeftThrottle(), DriveCommand.getRightThrottle());
   }
 
   @Override
@@ -126,6 +126,16 @@ public class DriveCommand extends Command {
   @Override
   protected final boolean isFinished() {
     return false;
+  }
+
+  @Override
+  protected void end() {
+    driveTrain.setPowers(0, 0);
+  }
+
+  @Override
+  protected void interrupted() {
+    end();
   }
 
   @Override

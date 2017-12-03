@@ -30,17 +30,14 @@ public class DriveForwardCommand extends Command {
    * @param velocity the velocity to cruise at
    * @param acceleration the max acceleration to accelerate to velocity and decelerate to 0 m/s at.
    */
-  public DriveForwardCommand(final double distance, final double velocity,
-      final double acceleration) {
-    super("Drive Forward Auton");
-
-    this.driveTrain = SubsystemManager.getSubsystem(DriveTrain.class);
+  public DriveForwardCommand(double distance, double velocity, double acceleration) {
+    driveTrain = SubsystemManager.getSubsystem(DriveTrain.class);
 
     this.distance = distance;
     this.velocity = velocity;
     this.acceleration = acceleration;
 
-    this.requires(this.driveTrain);
+    requires(driveTrain);
   }
 
   @Override
@@ -68,7 +65,7 @@ public class DriveForwardCommand extends Command {
 
   @Override
   protected final void interrupted() {
-    this.end();
+    end();
   }
 
   @Override

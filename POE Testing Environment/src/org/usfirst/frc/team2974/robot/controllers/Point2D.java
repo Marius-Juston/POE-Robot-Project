@@ -5,28 +5,28 @@ public class Point2D {
   private double x;
   private double y;
 
-  public Point2D(final double x, final double y) {
+  public Point2D(double x, double y) {
     this.x = x;
     this.y = y;
-
   }
 
   /**
-   * @param pose0 initial point
+   * Interpolates pose0 and pose1.
+   * @param point0 initial point
    * @param p how far the robot has gone
-   * @param pose1 final point in the tiny sequence
+   * @param point1 final point in the tiny sequence
    * @param q how far it has yet to go
+   * @return the interpolated point
    */
-  public static Point2D interpolate(final Point2D pose0, final double p, final Point2D pose1,
-      final double q) {
-    return new Point2D((pose0.x * p) + (pose1.x * q), (pose0.y * p) + (pose1.y * q));
+  public static Point2D interpolate(Point2D point0, double p, Point2D point1, double q) {
+    return new Point2D((point0.x * p) + (point1.x * q), (point0.y * p) + (point1.y * q));
   }
 
   public final double getX() {
     return x;
   }
 
-  public final void setX(final double x) {
+  public final void setX(double x) {
     this.x = x;
   }
 
@@ -34,22 +34,32 @@ public class Point2D {
     return y;
   }
 
-  public final void setY(final double y) {
+  public final void setY(double y) {
     this.y = y;
   }
 
-  //Calculates distance between two points
-  public final double distance(final Point2D other) {
-    final double deltaX = StrictMath.pow(x - other.x, 2.0);
-    final double deltaY = StrictMath.pow(y - other.y, 2.0);
+  /**
+   * Calculates distance between two points
+   * @param other another point
+   * @return distance from this to other
+   */
+  public final double distance(Point2D other) {
+    double deltaX = Math.pow(x - other.x, 2.0);
+    double deltaY = Math.pow(y - other.y, 2.0);
     return Math.sqrt(deltaX + deltaY);
   }
 
-  public final Point2D offsetPoint(final double l, final double angle) {
-    return new Point2D(this.x + (l * StrictMath.cos(angle)), this.y + (l * StrictMath.sin(angle)));
+  /**
+   * Offsets point with {@code l} along {@code angle}.
+   * @param l distance to offset by
+   * @param angle angle to offset with
+   * @return offset point
+   */
+  public final Point2D offsetPoint(double l, double angle) {
+    return new Point2D(x + (l * Math.cos(angle)), y + (l * Math.sin(angle)));
   }
 
   public final String toString() {
-    return String.format("x=%f, y=%f", x, y);
+    return String.format("Point2D{x=%f, y=%f}", x, y);
   }
 }

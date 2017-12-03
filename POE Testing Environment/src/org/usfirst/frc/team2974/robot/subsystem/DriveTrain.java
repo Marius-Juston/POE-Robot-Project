@@ -23,7 +23,6 @@ import org.usfirst.frc.team2974.robot.controllers.RobotPair;
 
 public class DriveTrain extends Subsystem implements PoseProvider {
 
-
   private final MotionProfileController motionProfileController;
 
   private final Talon rightMotor;
@@ -34,31 +33,22 @@ public class DriveTrain extends Subsystem implements PoseProvider {
 
   private final Solenoid shifter;
 
-//  public final PIDController rightController;
-//  public final PIDController leftController;
-
   public DriveTrain() {
-    this.rightMotor = RobotMap.rightMotor;
-    this.leftMotor = RobotMap.leftMotor;
+    rightMotor = RobotMap.rightMotor;
+    leftMotor = RobotMap.leftMotor;
 
-    this.rightEncoder = RobotMap.rightEncoder;
-    this.leftEncoder = RobotMap.leftEncoder;
+    rightEncoder = RobotMap.rightEncoder;
+    leftEncoder = RobotMap.leftEncoder;
 
-    this.shifter = RobotMap.pneumaticsShifter;
+    shifter = RobotMap.pneumaticsShifter;
 
-//    rightController = new PIDController(1, 0, 0, 0, rightEncoder, rightMotor);
-//    leftController = new PIDController(1, 0, 0, 0, leftEncoder, leftMotor);
-//
-//    rightController.enable();
-//    leftController.enable();
-
-    this.motionProfileController = new MotionProfileController(this, PERIOD);
-    this.setConstants();
+    motionProfileController = new MotionProfileController(this, PERIOD);
+    setConstants();
   }
 
   @Override
   protected final void initDefaultCommand() {
-    this.setDefaultCommand(new DriveCommand());
+    setDefaultCommand(new DriveCommand());
   }
 
   /**
@@ -67,9 +57,9 @@ public class DriveTrain extends Subsystem implements PoseProvider {
    * @param left left motor power
    * @param right right motor power
    */
-  public final synchronized void setPowers(final double left, final double right) {
-    this.leftMotor.set(left);
-    this.rightMotor.set(right);
+  public final synchronized void setPowers(double left, double right) {
+    leftMotor.set(left);
+    rightMotor.set(right);
   }
 
   /**
@@ -78,7 +68,7 @@ public class DriveTrain extends Subsystem implements PoseProvider {
    * @return left motor speed
    */
   public final double getLeftMotorPower() {
-    return this.leftMotor.get();
+    return leftMotor.get();
   }
 
   /**
@@ -87,7 +77,7 @@ public class DriveTrain extends Subsystem implements PoseProvider {
    * @return right motor speed
    */
   public final double getRightMotorPower() {
-    return this.rightMotor.get();
+    return rightMotor.get();
   }
 
   /**
@@ -96,7 +86,7 @@ public class DriveTrain extends Subsystem implements PoseProvider {
    * @return left wheel velocity in m/s
    */
   public final double getLeftWheelVelocity() {
-    return this.leftEncoder.getRate();
+    return leftEncoder.getRate();
   }
 
   /**
@@ -105,7 +95,7 @@ public class DriveTrain extends Subsystem implements PoseProvider {
    * @return right wheel velocity in m/s
    */
   public final double getRightWheelVelocity() {
-    return this.rightEncoder.getRate();
+    return rightEncoder.getRate();
   }
 
   @Override
@@ -113,48 +103,48 @@ public class DriveTrain extends Subsystem implements PoseProvider {
     return new Pose(new Point2D(0, 0), 0);
   }
 
+  @Override
   public final RobotPair getWheelPositions() {
-    return new RobotPair(this.leftEncoder.getDistance(), this.rightEncoder.getDistance());
+    return new RobotPair(leftEncoder.getDistance(), rightEncoder.getDistance());
   }
 
   public final boolean getControllerStatus() {
-    return this.motionProfileController.isEnabled();
+    return motionProfileController.isEnabled();
   }
 
   public final void cancelMotion() {
-    this.motionProfileController.cancel();
+    motionProfileController.cancel();
   }
 
   public final void startMotion() {
-    this.motionProfileController.enable();
+    motionProfileController.enable();
   }
 
   public final void addControllerMotion(final MotionProvider motion) {
-    this.motionProfileController.addMotion(motion);
+    motionProfileController.addMotion(motion);
   }
 
-  public final boolean isControllerEmpty() {
-    return this.motionProfileController.isFinished();
+  public final boolean isControllerFinished() {
+    return motionProfileController.isFinished();
   }
 
   public final boolean isCurrentMotionFinished() {
-    return this.motionProfileController.isCurrentMotionFinished(Timer.getFPGATimestamp());
+    return motionProfileController.isCurrentMotionFinished(Timer.getFPGATimestamp());
   }
 
   public final MotionProvider getCurrentMotion() {
-    return this.motionProfileController.getCurrentMotion();
+    return motionProfileController.getCurrentMotion();
   }
 
-
   public final void shiftUp() {
-    if (this.shifter.get()) {
-      this.shifter.set(false);
+    if (shifter.get()) {
+      shifter.set(false);
     }
   }
 
   public final void shiftDown() {
-    if (!this.shifter.get()) {
-      this.shifter.set(true);
+    if (!shifter.get()) {
+      shifter.set(true);
     }
   }
 
@@ -165,9 +155,9 @@ public class DriveTrain extends Subsystem implements PoseProvider {
     final double kA = pref.getDouble("drivetrain.kA", DEFAULT_KA);
     final double kP = pref.getDouble("drivetrain.kP", DEFAULT_KP);
     System.out.println(String.format("kV=%f, kK=%f, kA=%f, kP=%f", kV, kK, kA, kP));
-    this.motionProfileController.setKV(kV);
-    this.motionProfileController.setKK(kK);
-    this.motionProfileController.setKA(kA);
-    this.motionProfileController.setKP(kP);
+    motionProfileController.setKV(kV);
+    motionProfileController.setKK(kK);
+    motionProfileController.setKA(kA);
+    motionProfileController.setKP(kP);
   }
 }

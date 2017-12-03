@@ -19,9 +19,11 @@ public final class SmartDashboardManager {
   }
 
   /**
-   * @param defaultValue {}
+   * Creates a static bind where Supplier is null.
+   *
+   * @see #addBind(String, Object, Supplier)
    */
-  public static <T> SmartDashboardProperty<T> addBind(final String key, final T defaultValue) {
+  public static <T> SmartDashboardProperty<T> addBind(String key, T defaultValue) {
     return addBind(key, defaultValue, null);
   }
 

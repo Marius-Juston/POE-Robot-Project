@@ -12,6 +12,9 @@ import org.usfirst.frc.team2974.robot.io.logitech.Gamepad;
  */
 public final class Input {
 
+  private Input() {
+  }
+
   public static final Joystick leftJoystick;
   public static final Joystick rightJoystick;
   public static final Gamepad gamepad;
@@ -22,6 +25,4 @@ public final class Input {
     gamepad = new Gamepad(GAMEPAD_PORT);
   }
 
-  private Input() {
-  }
 }

@@ -3,7 +3,6 @@ package org.usfirst.frc.team2974.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team2974.robot.command.auton.DriveForwardCommand;
 import org.usfirst.frc.team2974.robot.manager.SmartDashboardManager;
 import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
@@ -18,10 +17,9 @@ import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
  */
 public class Robot extends IterativeRobot {
 
-  private final String defaultAuto = "Default";
+  private final String defaultAuto = "Default Auto";
   private final String customAuto = "My Auto";
   private final SendableChooser<String> autonChooser = new SendableChooser<>();
-  private String autoSelected;
 
   private static void update() {
     SmartDashboardManager.update();
@@ -33,14 +31,13 @@ public class Robot extends IterativeRobot {
    */
   @Override
   public final void robotInit() {
-    this.autonChooser.addDefault("Default Auto", this.defaultAuto);
-    this.autonChooser.addObject("My Auto", this.customAuto);
-    SmartDashboardManager.addBind("Auto choices", this.defaultAuto, () -> this.autonChooser);
+    autonChooser.addDefault("Default Auto", defaultAuto);
+    autonChooser.addObject("My Auto", customAuto);
+    SmartDashboardManager.addBind("Auto choices", autonChooser);
 
     SubsystemManager.addSubsystem(new DriveTrain());
     SubsystemManager.addSubsystem(new GearIntake());
 
-    SmartDashboard.putData("Drive forward 5 meters", new DriveForwardCommand(5, 3, 0.5));
     SmartDashboardManager.addBind("Drive forward 5 meters", new DriveForwardCommand(5, 3, 0.5));
 
     SmartDashboardManager.addBind("Left Encoder Dist", 0, RobotMap.leftEncoder::getDistance);
@@ -63,18 +60,18 @@ public class Robot extends IterativeRobot {
    * autonChooser code above as well.
    */
   @Override
-  public final void autonomousInit() {
-    this.autoSelected = this.autonChooser.getSelected();
+  public void autonomousInit() {
+
   }
 
   /**
    * This function is called periodically during autonomous
    */
   @Override
-  public final void autonomousPeriodic() {
+  public void autonomousPeriodic() {
     Robot.update();
 
-    switch (this.autoSelected) {
+    switch (autonChooser.getSelected()) {
       case customAuto:
         // Put custom auto code here
         break;
@@ -87,23 +84,23 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void teleopInit() {
-    //InputManager.bind
+
   }
 
   /**
    * This function is called periodically during operator control
    */
   @Override
-  public final void teleopPeriodic() {
+  public void teleopPeriodic() {
     Robot.update();
     Scheduler.getInstance().run();
   }
 
   /**
-   * This function is called periodically during test mode
+   * This function is called periodically during test mode, however there really is no reason for this to exist.
    */
   @Override
-  public final void testPeriodic() {
+  public void testPeriodic() {
     Robot.update();
   }
 }

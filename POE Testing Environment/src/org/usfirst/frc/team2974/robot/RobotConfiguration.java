@@ -2,6 +2,9 @@ package org.usfirst.frc.team2974.robot;
 
 public final class RobotConfiguration {
 
+  private RobotConfiguration() {
+  }
+
   public static final double DISTANCE_PER_PULSE = 0.0005652; //distance per pulse for encoder
 
   public static final int LEFT_JOYSTICK_PORT = 0;
@@ -22,7 +25,4 @@ public final class RobotConfiguration {
   public static final int N_POINTS = 50; // number of steps the motions is divided into
 
   private static final boolean isDebug = true; // shows the debug smartdashboard keys
-
-  private RobotConfiguration() {
-  }
 }

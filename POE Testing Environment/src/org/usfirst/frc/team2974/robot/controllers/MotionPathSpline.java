@@ -11,20 +11,32 @@ public class MotionPathSpline extends MotionProvider {
   private final double finalTheta; // end angle
   private final boolean isForwards;
 
-  public MotionPathSpline(final Pose initial, final double l0, final Pose final_, final double l1,
-      final double vCruise,
-      final double aMax, final boolean isForwards) {
+  /**
+   * Constructs MotionPathSpline.
+   * @param initial initial pose
+   * @param l0 offset length from initial pose, used to create control points.
+   *           i.e. creates how curvy you want the spline
+   * @param final_ final pose
+   * @param l1 offset length from final pose, used to create control points.
+   *           i.e. creates how curvy you want the spline
+   * @param vCruise velocity to cruise at
+   * @param aMax max acceleration/deceleration
+   * @param isForwards is it forwards
+   */
+  public MotionPathSpline(Pose initial, double l0, Pose final_, double l1,
+                          double vCruise, double aMax, boolean isForwards) {
     super(vCruise, aMax);
+
     controlPoints[0] = initial.point;
     controlPoints[1] = initial.offsetPoint(isForwards ? l0 : -l0);
     controlPoints[2] = final_.offsetPoint(isForwards ? -l1 : l1);
     controlPoints[3] = final_.point;
 
-    Point2D xPrevious = this.evaluate(MotionPathSpline.B(0));
+    Point2D xPrevious = evaluate(B(0));
     double length = 0;
     for (int i = 1; i <= 100; i++) {
       final double s = i / 100.0;
-      final Point2D xNext = this.evaluate(MotionPathSpline.B(s));
+      Point2D xNext = evaluate(B(s));
       length += xPrevious.distance(xNext);
       xPrevious = xNext;
     }
@@ -33,11 +45,6 @@ public class MotionPathSpline extends MotionProvider {
     initialTheta = initial.angle;
     finalTheta = final_.angle;
     this.isForwards = isForwards;
-    System.out.println(initial);
-    System.out.println(this.controlPoints[1]);
-    System.out.println(this.controlPoints[2]);
-    System.out.println(final_);
-
   }
 
   /**
@@ -46,9 +53,9 @@ public class MotionPathSpline extends MotionProvider {
    * @param s how far we have gone inside this motion
    * @return array of bezier curve element values, given s
    */
-  private static double[] B(final double s) {
-    final double[] result = new double[4];
-    final double r = 1.0 - s; // how far we have left
+  private static double[] B(double s) {
+    double[] result = new double[4];
+    double r = 1.0 - s; // how far we have left
     result[0] = r * r * r;
     result[1] = 3.0 * r * r * s;
     result[2] = 3.0 * r * s * s;
@@ -59,9 +66,9 @@ public class MotionPathSpline extends MotionProvider {
   /**
    * Derivative of B(s)
    */
-  private static double[] dBds(final double s) {
-    final double[] result = new double[4];
-    final double r = 1.0 - s;
+  private static double[] dBds(double s) {
+    double[] result = new double[4];
+    double r = 1.0 - s;
     result[0] = -3.0 * r * r;
     result[1] = (3 * r * r) - (6 * r * s);
     result[2] = (-3 * s * s) + (6 * r * s);
@@ -70,12 +77,10 @@ public class MotionPathSpline extends MotionProvider {
   }
 
   @Override
-  public final Pose evaluatePose(final double s) {
-    final Point2D X = this.evaluate(MotionPathSpline.B(s));
-    final Point2D dXds = this.evaluate(MotionPathSpline.dBds(s));
-    final double theta;
-    theta = this.isForwards ? StrictMath.atan2(dXds.getY(), dXds.getX())
-        : StrictMath.atan2(-dXds.getY(), -dXds.getX());
+  public final Pose evaluatePose(double s) {
+    Point2D X = evaluate(B(s));
+    Point2D dXds = evaluate(dBds(s));
+    double theta = isForwards ? Math.atan2(dXds.getY(), dXds.getX()) : Math.atan2(-dXds.getY(), -dXds.getX());
     return new Pose(X, theta); //Find the values for v and a and position
   }
 
@@ -85,12 +90,13 @@ public class MotionPathSpline extends MotionProvider {
    * @param shape the shape of the curve
    * @return the next point
    */
-  private Point2D evaluate(final double[] shape) {
-    final Point2D result = new Point2D(0, 0);
+  private Point2D evaluate(double[] shape) {
+    Point2D result = new Point2D(0, 0);
     for (int i = 0; i < controlPoints.length; i++) {
-      result.setX(result.getX() + (shape[i] * this.controlPoints[i].getX()));
-      result.setY(result.getY() + (shape[i] * this.controlPoints[i].getY()));
+      result.setX(result.getX() + (shape[i] * controlPoints[i].getX()));
+      result.setY(result.getY() + (shape[i] * controlPoints[i].getY()));
     }
+
     return result;
   }
 
@@ -101,19 +107,18 @@ public class MotionPathSpline extends MotionProvider {
 
   @Override
   public final double getLength() {
-    return this.isForwards ? this.length : -this.length;
+    return isForwards ? length : -length;
   }
 
   @Override
   public final double getInitialTheta() {
-    return this.initialTheta;
+    return initialTheta;
   }
 
   @Override
   public final double getFinalTheta() {
-    return this.finalTheta;
+    return finalTheta;
   }
-
 
   @Override
   public final String toString() {

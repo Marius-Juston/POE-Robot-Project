@@ -9,6 +9,12 @@ import java.util.Map.Entry;
 import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 import org.usfirst.frc.team2974.robot.io.logitech.GamepadButton;
 
+/**
+ * To be used with pressing buttons mainly.
+ *
+ * TODO: figure out how we can manage to make this class usable without making it haphazard and weird.
+ * TODO: perhaps create an isButtonDown(String) method where String is the button name
+ */
 public abstract class Driver {
 
   public static final Driver DEFAULT_DRIVER = new Driver("Default Driver") {

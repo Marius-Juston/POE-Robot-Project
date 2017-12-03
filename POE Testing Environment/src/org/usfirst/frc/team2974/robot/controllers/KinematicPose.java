@@ -7,39 +7,43 @@ public class KinematicPose extends Pose {
   public final double t; // time
   public final boolean isFinished;
 
-  KinematicPose(final Pose pose, final KinematicState left, final KinematicState right,
-      final double t,
-      final boolean isFinished) {
+  public KinematicPose(Pose pose, KinematicState left, KinematicState right, double t, boolean isFinished) {
     super(pose.point, pose.angle);
+
     this.left = left;
     this.right = right;
     this.t = t;
     this.isFinished = isFinished;
   }
 
-  public static KinematicPose interpolate(final KinematicPose pose0, final double p,
-      final KinematicPose pose1,
-      final double q) {
-    final Pose pose = Pose.interpolate(pose0, p, pose1, q);
-    final KinematicState left = KinematicState.interpolate(pose0.left, p, pose1.left, q);
-    final KinematicState right = KinematicState.interpolate(pose0.right, p, pose1.right, q);
+  /**
+   * @see #interpolate(Pose, double, Pose, double)
+   */
+  public static KinematicPose interpolate(KinematicPose pose0, double p, KinematicPose pose1, double q) {
+    Pose pose = Pose.interpolate(pose0, p, pose1, q);
+    KinematicState left = KinematicState.interpolate(pose0.left, p, pose1.left, q);
+    KinematicState right = KinematicState.interpolate(pose0.right, p, pose1.right, q);
+
     return new KinematicPose(pose, left, right, (p * pose0.t) + (q * pose1.t), false);
   }
 
-  // length center of robot
+  /**
+   * @return length at center of robot
+   */
   public double getCenterLength() {
-    return (left.length + right.length) / 2.0;
+    return (left.length + right.length) / 2f;
   }
 
-  // velocity center of robot
+  /**
+   * @return velocity at center of robot
+   */
   public double getCenterVelocity() {
-    return (left.velocity + right.velocity) / 2.0;
+    return (left.velocity + right.velocity) / 2f;
   }
 
-  public final String toString() {
-    return String
-        .format("%s, left:%s, right:%s, t=%f, isFinished=%s", super.toString(), this.left,
-            this.right, this.t,
-            this.isFinished);
+  @Override
+  public String toString() {
+    return String.format("%s.Kinematic{left:%s, right:%s, t=%f, isFinished=%s}", super.toString(), left, right, t, isFinished);
   }
+
 }

@@ -8,19 +8,21 @@ public class RobotPair {
   public final double left; // location of left side
   public final double right; // ^^ right ^
 
-  public RobotPair(final double left, final double right) {
+  public RobotPair(double left, double right) {
     this.left = left;
     this.right = right;
   }
 
-  // location of center
+  /**
+   * @return location of center
+   */
   public final double mean() {
-    return (left + right) / 2.0;
+    return (left + right) / 2f;
   }
 
   @Override
   public final String toString() {
-    return String.format("%f, %f", this.left, this.right);
+    return String.format("RobotPair{left=%f, right=%f}", left, right);
   }
 
 }

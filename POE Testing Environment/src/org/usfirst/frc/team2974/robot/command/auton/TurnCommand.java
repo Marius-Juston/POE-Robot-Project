@@ -6,36 +6,32 @@ import org.usfirst.frc.team2974.robot.controllers.Pose;
 import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
-//TODO Test command
 public class TurnCommand extends Command {
 
   private final double turnAngle; // angle to turn by in degrees
   private final double maxVelocity; // the velocity that the robot will try to reach and stay at.
   private final double maxAcceleration; // the acceleration that the robot will try to reach and stay at.
   private final DriveTrain driveTrain = SubsystemManager
-      .getSubsystem(DriveTrain.class); // instance of the drivetrain instance
+          .getSubsystem(DriveTrain.class); // instance of the drivetrain instance
   private MotionPathTurn motionPathTurn;
 
   /**
    * Initializes the instance variables
    *
-   * @param turnAngle angle to turn by
+   * @param turnAngle angle to turn by, in degrees
    * @param maxVelocity the desired speed the robot should reach
    * @param maxAcceleration the desired acceleration the robot should reach
    */
-  public TurnCommand(final double turnAngle, final double maxVelocity,
-      final double maxAcceleration) {
-    super();
+  public TurnCommand(double turnAngle, double maxVelocity, double maxAcceleration) {
     this.turnAngle = turnAngle;
     this.maxVelocity = maxVelocity;
     this.maxAcceleration = maxAcceleration;
+
+    requires(driveTrain); // tells the command that it will use the drivetrain subsystem
   }
 
   @Override
   protected final void initialize() {
-    // gets drivetrain instance
-
-    requires(driveTrain); // tells the command that it will use the drivetrain subsystem
 
     final Pose start = driveTrain.getPose(); // gets the position (x,y, angle) of robot
 

@@ -14,16 +14,15 @@ public class GearIntakeCommand extends Command {
   private final GearIntake gearIntake;
 
   public GearIntakeCommand() {
-    super("Gear Intake");
-    this.gearIntake = SubsystemManager.getSubsystem(GearIntake.class);
+    gearIntake = SubsystemManager.getSubsystem(GearIntake.class);
 
-    this.requires(this.gearIntake);
+    requires(gearIntake);
   }
 
   @Override
   protected final void execute() {
     if (Input.gamepad.buttonPressed(GamepadButton._1)) {
-      this.gearIntake.toggleDeployed();
+      gearIntake.toggleDeployed();
     }
   }
 

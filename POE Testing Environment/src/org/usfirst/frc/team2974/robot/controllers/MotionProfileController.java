@@ -11,6 +11,14 @@ import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
 public class MotionProfileController {
 
+  private class MPCTask extends TimerTask {
+
+    @Override
+    public final void run() {
+        calculate();
+    }
+  }
+
   private final BlockingDeque<MotionProvider> motions = new LinkedBlockingDeque<>(); // motions that we want to do
   private final PoseProvider poseProvider; // wheel positions and pose
   private final java.util.Timer controller; // schedules all of the motions to be run, TIMER
@@ -21,17 +29,20 @@ public class MotionProfileController {
   private double kP; // what we want to change the power by to get the motion we want
   private Kinematics currentKinematics; // does all the math
   private KinematicPose staticKinematicPose; // has the vectors that we use in the calculations
-  private boolean isEnabled; // yeah, this
+  private volatile boolean isEnabled; // yeah, this
 
-  public MotionProfileController(final PoseProvider poseProvider, final double period) {
-
+  /**
+   * Constructs MotionProfileController.
+   * @param poseProvider provides current pose
+   * @param period rate to update PID loop, in seconds
+   */
+  public MotionProfileController(PoseProvider poseProvider, double period) {
     this.poseProvider = poseProvider;
 
-    this.controller = new java.util.Timer();
+    controller = new java.util.Timer();
+    controller.schedule(new MPCTask(), 0L, (long) (period * 1000.0));
 
-    this.controller.schedule(new MPCTask(), 0L, (long) (period * 1000.0));
-
-    this.staticKinematicPose = Kinematics
+    staticKinematicPose = Kinematics
         .staticPose(poseProvider.getPose(), poseProvider.getWheelPositions(),
             Timer.getFPGATimestamp());
   }
@@ -41,23 +52,25 @@ public class MotionProfileController {
    */
   public final void free() {
     this.controller.cancel();
-    //RobotLoggerManager.setFileHandlerInstance("robot.controller").info("MPCTask is destroyed.");
   }
 
-  public final synchronized void addMotion(final MotionProvider motion) {
-    this.motions.addLast(motion);
-    System.out.println("added motion " + motion);
+  /**
+   * Adds a motion to execute after all others before it.
+   * @param motion motion to execute
+   */
+  public final synchronized void addMotion(MotionProvider motion) {
+    motions.addLast(motion);
   }
 
+  /**
+   * Enables the use of the controller.
+   */
   public final synchronized void enable() {
-    System.out
-        .println(String.format("kK=%f, kV=%f, kA=%f, kP=%f", this.kK, this.kV, this.kA, this.kP));
-    final MotionProvider newMotion = this.motions.poll();
+    MotionProvider newMotion = motions.poll();
     if (newMotion != null) {
-//			System.out.println("starting new motion:" + currentKinematics.toString());
-      this.currentKinematics = new Kinematics(newMotion, this.poseProvider.getWheelPositions(),
+      currentKinematics = new Kinematics(newMotion, poseProvider.getWheelPositions(),
           Timer.getFPGATimestamp(), 0, 0, N_POINTS);
-      this.isEnabled = true;
+      isEnabled = true;
     }
   }
 
@@ -65,45 +78,47 @@ public class MotionProfileController {
    * Hard stop
    */
   public final synchronized void cancel() {
-    this.isEnabled = false;
-    this.currentKinematics = null;
-    this.motions.clear();
+    isEnabled = false;
+    currentKinematics = null;
+    motions.clear();
+
+    // FIXME: this is really, really bad for speed
     SubsystemManager.getSubsystem(DriveTrain.class).setPowers(0, 0);
   }
 
   public boolean isEnabled() {
-    return this.isEnabled;
+    return isEnabled;
   }
 
   public final synchronized double getKV() {
-    return this.kV;
+    return kV;
   }
 
-  public final synchronized void setKV(final double kV) {
+  public final synchronized void setKV(double kV) {
     this.kV = kV;
   }
 
   public final synchronized double getKK() {
-    return this.kK;
+    return kK;
   }
 
-  public final synchronized void setKK(final double kK) {
+  public final synchronized void setKK(double kK) {
     this.kK = kK;
   }
 
   public final synchronized double getKA() {
-    return this.kA;
+    return kA;
   }
 
-  public final synchronized void setKA(final double kA) {
+  public final synchronized void setKA(double kA) {
     this.kA = kA;
   }
 
   public final synchronized double getKP() {
-    return this.kP;
+    return kP;
   }
 
-  public final synchronized void setKP(final double kP) {
+  public final synchronized void setKP(double kP) {
     this.kP = kP;
   }
 
@@ -122,65 +137,64 @@ public class MotionProfileController {
 
     if (enabled) {
 
-      final double time = Timer.getFPGATimestamp();
+      double time = Timer.getFPGATimestamp();
 
-      final RobotPair wheelPositions = this.poseProvider.getWheelPositions();
+      final RobotPair wheelPositions = poseProvider.getWheelPositions();
 
-      final KinematicPose kinematicPose;
-      kinematicPose = this.currentKinematics != null ? this.currentKinematics.interpolatePose(time)
-          : this.staticKinematicPose;
+      final KinematicPose kinematicPose =
+              currentKinematics != null ? currentKinematics.interpolatePose(time) : staticKinematicPose;
 
-//			System.out.println("time:" + time+ " " + wheelPositions + " " + kinematicPose);
       synchronized (this) {
         //feed forward
-        leftPower += ((this.kV * kinematicPose.left.velocity) + this.kK)
-            + (this.kA * kinematicPose.left.acceleration);
+        leftPower += ((kV * kinematicPose.left.velocity) + kK)
+            + (kA * kinematicPose.left.acceleration);
         rightPower +=
-            ((this.kV * kinematicPose.right.velocity) + this.kK)
-                + (this.kA * kinematicPose.right.acceleration);
+            ((kV * kinematicPose.right.velocity) + kK)
+                + (kA * kinematicPose.right.acceleration);
         //feed back
-        leftPower += this.kP * (kinematicPose.left.length - wheelPositions.left);
-        rightPower += this.kP * (kinematicPose.right.length - wheelPositions.right);
+        leftPower += kP * (kinematicPose.left.length - wheelPositions.left);
+        rightPower += kP * (kinematicPose.right.length - wheelPositions.right);
 
       }
 
       leftPower = Math.max(-1.0, Math.min(1.0, leftPower));
       rightPower = Math.max(-1.0, Math.min(1.0, rightPower));
 
-//			System.out.println(String.format("LP=%f,RP=%f, err_l=%f, err_r=%f", leftPower,rightPower,
-//					kinematicPose.left.l - wheelPositions.left,
-//					kinematicPose.right.l - wheelPositions.right));
-
       SubsystemManager.getSubsystem(DriveTrain.class).setPowers(leftPower, rightPower);
 
       if (kinematicPose.isFinished) {
-        final MotionProvider newMotion = this.motions.pollFirst();
+        final MotionProvider newMotion = motions.pollFirst();
         if (newMotion != null) {
-          this.currentKinematics = new Kinematics(newMotion,
-              this.currentKinematics.getWheelPositions(),
-              this.currentKinematics.getTime(), 0, 0, N_POINTS);
-//					System.out.println("starting new motion:" + currentKinematics.toString());
+          currentKinematics = new Kinematics(newMotion,
+              currentKinematics.getWheelPositions(),
+              currentKinematics.getTime(), 0, 0, N_POINTS);
         } else {
-          this.staticKinematicPose = Kinematics
-              .staticPose(this.currentKinematics.getPose(),
-                  this.currentKinematics.getWheelPositions(),
-                  this.currentKinematics.getTime());
-          this.currentKinematics = null;
+          staticKinematicPose = Kinematics
+              .staticPose(currentKinematics.getPose(),
+                  currentKinematics.getWheelPositions(),
+                  currentKinematics.getTime());
+          currentKinematics = null;
         }
       }
     }
   }
 
-  public final boolean isCurrentMotionFinished(final double time) {
-    final KinematicPose kinematicPose;
-    kinematicPose = this.currentKinematics != null ? this.currentKinematics.interpolatePose(time)
-        : this.staticKinematicPose;
+  /**
+   * @param time time
+   * @return if the current motion is finished
+   */
+  public final boolean isCurrentMotionFinished(double time) {
+    final KinematicPose kinematicPose =
+            currentKinematics != null ? currentKinematics.interpolatePose(time) : staticKinematicPose;
 
     return kinematicPose.isFinished;
   }
 
+  /**
+   * @return if the kinematics is finished
+   */
   public final boolean isFinished() {
-    return this.currentKinematics == null;
+    return currentKinematics == null;
   }
 
   public final MotionProvider getCurrentMotion() {
@@ -198,14 +212,5 @@ public class MotionProfileController {
         ", currentKinematics=" + currentKinematics +
         ", isEnabled=" + isEnabled +
         '}';
-  }
-
-  private class MPCTask extends TimerTask {
-
-    @Override
-    public final void run() {
-      MotionProfileController.this.calculate();
-    }
-
   }
 }

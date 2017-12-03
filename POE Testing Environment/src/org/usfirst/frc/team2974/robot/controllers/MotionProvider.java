@@ -2,10 +2,19 @@ package org.usfirst.frc.team2974.robot.controllers;
 
 public abstract class MotionProvider {
 
-  double vCruise;
-  double aMax; // max acceleration to vCruise, then goes to 0
+  public enum LimitMode {
+    LimitLinearAcceleration, LimitRotationalAcceleration
+  }
 
-  MotionProvider(final double vCruise, final double aMax) {
+  public double vCruise;
+  public double aMax; // max acceleration to vCruise, then goes to 0
+
+  /**
+   * Constructs MotionProvider.
+   * @param vCruise cruise velocity
+   * @param aMax max acceleration/deceleration
+   */
+  public MotionProvider(double vCruise, double aMax) {
     if (vCruise == 0) {
       throw new IllegalArgumentException("vCruise cannot be 0");
     }
@@ -81,7 +90,4 @@ public abstract class MotionProvider {
         '}';
   }
 
-  public enum LimitMode {
-    LimitLinearAcceleration, LimitRotationalAcceleration
-  }
 }

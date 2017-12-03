@@ -8,9 +8,16 @@ public class MotionPathTurn extends MotionProvider {
   private final Pose pose0;
   private final Pose pose1;
 
-  public MotionPathTurn(final Pose pose0, final double dAngle, final double vCruise,
-      final double rotationMaxAcceleration) {
+    /**
+     * Constructs MotionPathTurn.
+     * @param pose0 initial pose
+     * @param dAngle amount to change angle by, in radians
+     * @param vCruise cruise velocity
+     * @param rotationMaxAcceleration max rotational acceleration/deceleration
+     */
+  public MotionPathTurn(Pose pose0, double dAngle, double vCruise, double rotationMaxAcceleration) {
     super(vCruise, rotationMaxAcceleration);
+
     this.pose0 = pose0;
     pose1 = new Pose(pose0.point, pose0.angle + MotionProvider.boundAngle(dAngle));
   }
