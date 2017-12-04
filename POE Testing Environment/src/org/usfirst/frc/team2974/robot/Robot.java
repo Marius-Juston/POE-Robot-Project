@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import org.usfirst.frc.team2974.robot.command.auton.DriveForwardCommand;
 import org.usfirst.frc.team2974.robot.manager.SmartDashboardManager;
-import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
 
@@ -16,6 +15,14 @@ import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
  * resource directory.
  */
 public class Robot extends IterativeRobot {
+
+    public static final DriveTrain driveTrain;
+    public static final GearIntake gearIntake;
+
+    static {
+        driveTrain = new DriveTrain();
+        gearIntake = new GearIntake();
+    }
 
     private final String defaultAuto = "Default Auto";
     private final String customAuto = "My Auto";
@@ -34,9 +41,6 @@ public class Robot extends IterativeRobot {
         autonChooser.addDefault("Default Auto", defaultAuto);
         autonChooser.addObject("My Auto", customAuto);
         SmartDashboardManager.addBind("Auto choices", autonChooser);
-
-        SubsystemManager.addSubsystem(new DriveTrain());
-        SubsystemManager.addSubsystem(new GearIntake());
 
         SmartDashboardManager.addBind("Drive forward 5 meters", new DriveForwardCommand(5, 3, 0.5));
 

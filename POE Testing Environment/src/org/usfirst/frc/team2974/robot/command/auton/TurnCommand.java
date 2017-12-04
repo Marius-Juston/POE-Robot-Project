@@ -1,9 +1,9 @@
 package org.usfirst.frc.team2974.robot.command.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team2974.robot.Robot;
 import org.usfirst.frc.team2974.robot.controllers.MotionPathTurn;
 import org.usfirst.frc.team2974.robot.controllers.Pose;
-import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
 public class TurnCommand extends Command {
@@ -11,8 +11,7 @@ public class TurnCommand extends Command {
     private final double turnAngle; // angle to turn by in degrees
     private final double maxVelocity; // the velocity that the robot will try to reach and stay at.
     private final double maxAcceleration; // the acceleration that the robot will try to reach and stay at.
-    private final DriveTrain driveTrain = SubsystemManager
-        .getSubsystem(DriveTrain.class); // instance of the drivetrain instance
+    private final DriveTrain driveTrain = Robot.driveTrain; // instance of the drivetrain instance
     private MotionPathTurn motionPathTurn;
 
     /**

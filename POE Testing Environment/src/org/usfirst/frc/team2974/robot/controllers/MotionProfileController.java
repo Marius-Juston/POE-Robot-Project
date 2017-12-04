@@ -6,8 +6,7 @@ import edu.wpi.first.wpilibj.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
-import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
-import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
+import org.usfirst.frc.team2974.robot.Robot;
 
 public class MotionProfileController {
 
@@ -22,6 +21,7 @@ public class MotionProfileController {
     private Kinematics currentKinematics; // does all the math
     private KinematicPose staticKinematicPose; // has the vectors that we use in the calculations
     private volatile boolean isEnabled; // yeah, this
+
     /**
      * Constructs MotionProfileController.
      *
@@ -76,7 +76,7 @@ public class MotionProfileController {
         motions.clear();
 
         // FIXME: this is really, really bad for speed
-        SubsystemManager.getSubsystem(DriveTrain.class).setPowers(0, 0);
+        Robot.driveTrain.setPowers(0, 0);
     }
 
     public boolean isEnabled() {
@@ -154,7 +154,7 @@ public class MotionProfileController {
             leftPower = Math.max(-1.0, Math.min(1.0, leftPower));
             rightPower = Math.max(-1.0, Math.min(1.0, rightPower));
 
-            SubsystemManager.getSubsystem(DriveTrain.class).setPowers(leftPower, rightPower);
+            Robot.driveTrain.setPowers(leftPower, rightPower);
 
             if (kinematicPose.isFinished) {
                 final MotionProvider newMotion = motions.pollFirst();

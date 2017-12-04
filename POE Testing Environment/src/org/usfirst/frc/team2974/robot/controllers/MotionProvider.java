@@ -4,6 +4,7 @@ public abstract class MotionProvider {
 
     public double vCruise;
     public double aMax; // max acceleration to vCruise, then goes to 0
+
     /**
      * Constructs MotionProvider.
      *

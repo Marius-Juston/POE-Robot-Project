@@ -2,9 +2,9 @@ package org.usfirst.frc.team2974.robot.command.auton;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team2974.robot.Robot;
 import org.usfirst.frc.team2974.robot.controllers.MotionPathStraight;
 import org.usfirst.frc.team2974.robot.controllers.MotionProvider;
-import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
 public class DriveForwardCommand extends Command {
@@ -31,7 +31,7 @@ public class DriveForwardCommand extends Command {
      * @param acceleration the max acceleration to accelerate to velocity and decelerate to 0 m/s at.
      */
     public DriveForwardCommand(double distance, double velocity, double acceleration) {
-        driveTrain = SubsystemManager.getSubsystem(DriveTrain.class);
+        driveTrain = Robot.driveTrain;
 
         this.distance = distance;
         this.velocity = velocity;
