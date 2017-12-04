@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import org.usfirst.frc.team2974.robot.command.auton.DriveForwardCommand;
+import org.usfirst.frc.team2974.robot.command.auton.TurnCommand;
 import org.usfirst.frc.team2974.robot.manager.SmartDashboardManager;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
@@ -38,6 +39,7 @@ public class Robot extends IterativeRobot {
         SmartDashboardManager.addBind("Auto choices", autonChooser);
 
         SmartDashboardManager.addBind("Drive forward 5 meters", new DriveForwardCommand(5, 3, 0.5));
+        SmartDashboardManager.addBind("Drive forward 5 meters", new TurnCommand(90, 6, 1));
 
         SmartDashboardManager.addBind("Left Encoder Dist", 0, RobotMap.leftEncoder::getDistance);
         SmartDashboardManager.addBind("Right Encoder Dist", 0, RobotMap.rightEncoder::getDistance);

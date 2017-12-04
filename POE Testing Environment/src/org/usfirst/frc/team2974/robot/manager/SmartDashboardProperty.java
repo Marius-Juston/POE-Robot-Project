@@ -43,6 +43,8 @@ public class SmartDashboardProperty<T> {
 //  onValueChange is run if the value (the value that you want to put into SmartDashboard) changes.
         onValueChange = () -> {
         };
+
+        updateSmartDashboard(); //TODO check if this helps fix the issue with static variables.
     }
 
     /**
@@ -145,6 +147,8 @@ public class SmartDashboardProperty<T> {
      * use the onValueChange Runnable object to update SmartDashboard
      */
     public void update() {
+        //FIXME this will not run if you have a static variable since the valueSupplier is always null causing it to never send the value to SmartDashboard
+
         if (valueSupplier != null) {
             setValue(valueSupplier.get());
         }

@@ -44,8 +44,9 @@ public class TurnCommand extends Command {
     }
 
     @Override
-    protected final boolean isFinished() {
-        return driveTrain.getCurrentMotion().equals(motionPathTurn) && driveTrain
-            .isCurrentMotionFinished();
+    protected final boolean isFinished() { //TODO check that the isFinished no longer returns an error
+        return driveTrain.isControllerFinished() || (
+            driveTrain.getCurrentMotion().equals(motionPathTurn) && driveTrain
+                .isCurrentMotionFinished());
     }
 }
