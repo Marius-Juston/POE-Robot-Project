@@ -4,19 +4,20 @@ import java.util.function.Supplier;
 
 public class DebugSmartDashboardProperty<T> extends SmartDashboardProperty<T> {
 
-  /**
-   * This creates a SmartDashboard value to show only when SmartDashboardManager.isDebug is true.
-   */
-  public DebugSmartDashboardProperty(String key, T defaultValue, Supplier<T> valueSupplier) {
-    super(key, defaultValue, valueSupplier);
-  }
-
-  @Override
-  protected final void updateSmartDashboard() {
-    if (SmartDashboardManager.isDebug) {
-      super.updateSmartDashboard();
-    } else if (SmartDashboardManager.TABLE.containsKey(getKey())) { // why dost thou do this to me smartdashboard
-      SmartDashboardManager.TABLE.delete(getKey());
+    /**
+     * This creates a SmartDashboard value to show only when SmartDashboardManager.isDebug is true.
+     */
+    public DebugSmartDashboardProperty(String key, T defaultValue, Supplier<T> valueSupplier) {
+        super(key, defaultValue, valueSupplier);
     }
-  }
+
+    @Override
+    protected final void updateSmartDashboard() {
+        if (SmartDashboardManager.isDebug) {
+            super.updateSmartDashboard();
+        } else if (SmartDashboardManager.TABLE
+            .containsKey(getKey())) { // why dost thou do this to me smartdashboard
+            SmartDashboardManager.TABLE.delete(getKey());
+        }
+    }
 }

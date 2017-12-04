@@ -11,29 +11,29 @@ import org.usfirst.frc.team2974.robot.command.GearIntakeCommand;
  */
 public class GearIntake extends Subsystem {
 
-  private final Solenoid piston;
+    private final Solenoid piston;
 
-  private final DigitalInput gearSensor;
+    private final DigitalInput gearSensor;
 
-  public GearIntake() {
-    piston = RobotMap.gearIntakeSolenoid;
-    gearSensor = RobotMap.gearSensor;
-  }
+    public GearIntake() {
+        piston = RobotMap.gearIntakeSolenoid;
+        gearSensor = RobotMap.gearSensor;
+    }
 
-  @Override
-  protected final void initDefaultCommand() {
-    setDefaultCommand(new GearIntakeCommand());
-  }
+    @Override
+    protected final void initDefaultCommand() {
+        setDefaultCommand(new GearIntakeCommand());
+    }
 
-  public final void setDeployed(boolean deployed) {
-    piston.set(deployed);
-  }
+    public final void setDeployed(boolean deployed) {
+        piston.set(deployed);
+    }
 
-  public final void toggleDeployed() {
-    piston.set(!piston.get());
-  }
+    public final void toggleDeployed() {
+        piston.set(!piston.get());
+    }
 
-  public final boolean hasGear() {
-    return !gearSensor.get();
-  }
+    public final boolean hasGear() {
+        return !gearSensor.get();
+    }
 }
