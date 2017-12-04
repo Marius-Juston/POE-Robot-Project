@@ -16,13 +16,8 @@ import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
  */
 public class Robot extends IterativeRobot {
 
-    public static final DriveTrain driveTrain;
-    public static final GearIntake gearIntake;
-
-    static {
-        driveTrain = new DriveTrain();
-        gearIntake = new GearIntake();
-    }
+    public static final DriveTrain driveTrain = new DriveTrain();
+    public static final GearIntake gearIntake = new GearIntake();
 
     private final String defaultAuto = "Default Auto";
     private final String customAuto = "My Auto";
