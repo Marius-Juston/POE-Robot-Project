@@ -1,6 +1,7 @@
 package org.waltonrobotics.curvedrawer.curve;
 
 
+import javafx.scene.paint.Color;
 import org.waltonrobotics.curvedrawer.util.Point;
 import org.waltonrobotics.curvedrawer.util.Vector2;
 
@@ -9,21 +10,13 @@ import org.waltonrobotics.curvedrawer.util.Vector2;
  */
 public class BezierCurve extends Path {
 
-  private Point[] pathPoints;
-  private Point[] leftPoints;
-  private Point[] rightPoints;
-  private Point[] controlPoints;
   private double[] coefficients;
 
-  public BezierCurve(int numberOfSteps, double robotLength, String name, Point... controlPoints) {
-    super(numberOfSteps, robotLength, name);
-    this.controlPoints = controlPoints;
+  public BezierCurve(int numberOfSteps, double robotLength, String name, Color color,
+      Point... controlPoints) {
+    super(numberOfSteps, robotLength, name, color, controlPoints);
 
-    updateCoefficients();
-    pathPoints = getCurvePoints(numberOfSteps, controlPoints);
-
-    rightPoints = offsetPoints(pathPoints, true);
-    leftPoints = offsetPoints(pathPoints, false);
+    createPathPoints(controlPoints);
   }
 
   /**
@@ -126,7 +119,7 @@ public class BezierCurve extends Path {
   }
 
   private int getDegree() {
-    return controlPoints.length - 1;
+    return getCreationPoints().size() - 1;
   }
 
   /**
@@ -141,8 +134,10 @@ public class BezierCurve extends Path {
     double dy = 0;
     for (int i = 0; i < n; i++) {
       double coefficient = findNumberOfCombination(n, i) * Math.pow(t, i) * Math.pow(1 - t, n - i);
-      dx += coefficient * (n + 1) * (controlPoints[i + 1].getX() - controlPoints[i].getX());
-      dy += coefficient * (n + 1) * (controlPoints[i + 1].getY() - controlPoints[i].getY());
+      dx += coefficient * (n + 1) * (getCreationPoints().get(i + 1).getX() - getCreationPoints()
+          .get(i).getX());
+      dy += coefficient * (n + 1) * (getCreationPoints().get(i + 1).getY() - getCreationPoints()
+          .get(i).getY());
     }
     return dy / dx;
   }
@@ -160,29 +155,24 @@ public class BezierCurve extends Path {
     return offsetPoints;
   }
 
-  @Override
-  public Point[] getPathPoints() {
-    return pathPoints;
-  }
 
   @Override
-  public void setPathPoints(Point... controlPoints) {
-    this.controlPoints = controlPoints;
+  public void createPathPoints(Point... controlPoints) {
+    setCreationPoints(controlPoints);
 
     updateCoefficients();
-    pathPoints = getCurvePoints(getNumberOfSteps(), controlPoints);
+    setPathPoints(getCurvePoints(getNumberOfSteps(), controlPoints));
 
-    rightPoints = offsetPoints(pathPoints, true);
-    leftPoints = offsetPoints(pathPoints, false);
+    setRightPoints(offsetPoints(getPathPoints().toArray(new Point[0]), true));
+    setLeftPoints(offsetPoints(getPathPoints().toArray(new Point[0]), false));
   }
 
   @Override
-  public Point[] getLeftPath() {
-    return leftPoints;
-  }
+  public void update() {
+    updateCoefficients();
+    setPathPoints(getCurvePoints(getNumberOfSteps(), getCreationPoints().toArray(new Point[0])));
 
-  @Override
-  public Point[] getRightPath() {
-    return rightPoints;
+    setRightPoints(offsetPoints(getPathPoints().toArray(new Point[0]), true));
+    setLeftPoints(offsetPoints(getPathPoints().toArray(new Point[0]), false));
   }
 }

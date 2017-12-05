@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.waltonrobotics.curvedrawer.curve.Path;
@@ -69,10 +70,10 @@ public class PathSelectorController implements Initializable {
 
       String finalText = text;
       if (Arrays.stream(existingPathNames).anyMatch(s -> s.equals(finalText))) {
-        pathName.setStyle("-fx-text-inner-color: red;");
+        pathName.setStyle("-fx-text-fill: red;");
         text = "";
       } else {
-        pathName.setStyle("-fx-text-inner-color: black;");
+        pathName.setStyle("-fx-text-fill: black;");
       }
 
       allowOkButtonToChangeState(text, pathTypeSelection.getValue());
@@ -83,7 +84,7 @@ public class PathSelectorController implements Initializable {
       try {
         PathSelectorController.selectedPath = (Path) pathTypeSelection.getValue()
             .getAssociatedClass().getDeclaredConstructors()[0].newInstance(
-            Curve.RESOLUTION, ROBOT.ROBOT_WIDTH, pathName.getText(), new Point[0]);
+            Curve.RESOLUTION, ROBOT.ROBOT_WIDTH, pathName.getText(), Color.BLACK, new Point[0]);
 
       } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
         e.printStackTrace();

@@ -2,8 +2,8 @@ package org.usfirst.frc.team2974.robot.command;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team2974.robot.Input;
+import org.usfirst.frc.team2974.robot.Robot;
 import org.usfirst.frc.team2974.robot.io.logitech.GamepadButton;
-import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
 import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
 
 /**
@@ -11,23 +11,23 @@ import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
  */
 public class GearIntakeCommand extends Command {
 
-  private final GearIntake gearIntake;
+    private final GearIntake gearIntake;
 
-  public GearIntakeCommand() {
-    gearIntake = SubsystemManager.getSubsystem(GearIntake.class);
+    public GearIntakeCommand() {
+        gearIntake = Robot.gearIntake;
 
-    requires(gearIntake);
-  }
-
-  @Override
-  protected final void execute() {
-    if (Input.gamepad.buttonPressed(GamepadButton._1)) {
-      gearIntake.toggleDeployed();
+        requires(gearIntake);
     }
-  }
 
-  @Override
-  protected final boolean isFinished() {
-    return false;
-  }
+    @Override
+    protected final void execute() {
+        if (Input.gamepad.buttonPressed(GamepadButton._1)) {
+            gearIntake.toggleDeployed();
+        }
+    }
+
+    @Override
+    protected final boolean isFinished() {
+        return false;
+    }
 }

@@ -1,8 +1,10 @@
 package org.waltonrobotics.curvedrawer.curve;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javafx.scene.paint.Color;
 import org.waltonrobotics.curvedrawer.util.Point;
 
 /**
@@ -14,31 +16,24 @@ import org.waltonrobotics.curvedrawer.util.Point;
 
 public class Spline extends Path {
 
-  private Point[] pathPoints;
-  private Point[] leftPoints;
-  private Point[] rightPoints;
-
   /**
    * Create a new spline
    *
    * @param numberOfSteps - the amount of points generated for the path. Like the resolution
    * @param knots - the fixed points the spline will travel through
    */
-  public Spline(int numberOfSteps, double robotWidth, String name, Point... knots) {
-    super(numberOfSteps, robotWidth, name);
+  public Spline(int numberOfSteps, double robotWidth, String name, Color color, Point... knots) {
+    super(numberOfSteps, robotWidth, name, color, knots);
 
-    if (knots.length > 0) {
-      List<List<Point>> pathControlPoints = computeControlPoints(knots);
-      joinBezierCurves(pathControlPoints);
-    }
+    createPathPoints(knots);
   }
 
   /**
    * Creates the control points required to make cubic bezier curves that transition between knots.
    *
    * @return A list of lists that hold the control points for the segments in the spline
-   * @see https://www.particleincell.com/2012/bezier-splines/
-   * @see https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm
+   * @see <a href="https://www.particleincell.com/2012/bezier-splines/">https://www.particleincell.com/2012/bezier-splines/</a>
+   * @see <a href="https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm">https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm</a>
    */
   private List<List<Point>> computeControlPoints(Point[] knots) {
     int degree = knots.length - 1;
@@ -114,39 +109,46 @@ public class Spline extends Path {
 
     for (List<Point> curveControlPoints : pathControlPoints) {
       Point[] controlPoints = curveControlPoints.toArray(new Point[0]);
-      BezierCurve curve = new BezierCurve(getNumberOfSteps(), getRobotLength(), "", controlPoints);
+      BezierCurve curve = new BezierCurve(getNumberOfSteps(), getRobotLength(), "", null,
+          controlPoints);
 
-      Point[] pathPoints = curve.getPathPoints();
-      Point[] leftPoints = curve.getLeftPath();
-      Point[] rightPoints = curve.getRightPath();
-      Collections.addAll(pathPointsAdd, pathPoints);
-      Collections.addAll(leftPointsAdd, leftPoints);
-      Collections.addAll(rightPointsAdd, rightPoints);
+      pathPointsAdd.addAll(curve.getPathPoints());
+      leftPointsAdd.addAll(curve.getLeftPoints());
+      rightPointsAdd.addAll(curve.getRightPoints());
     }
-    this.pathPoints = pathPointsAdd.toArray(new Point[0]);
-    this.leftPoints = leftPointsAdd.toArray(new Point[0]);
-    this.rightPoints = rightPointsAdd.toArray(new Point[0]);
+    setPathPoints(pathPointsAdd.toArray(new Point[0]));
+    setLeftPoints(leftPointsAdd.toArray(new Point[0]));
+    setRightPoints(rightPointsAdd.toArray(new Point[0]));
   }
 
   @Override
-  public Point[] getPathPoints() {
-    return pathPoints;
+  public void createPathPoints(Point... knots) {
+    setCreationPoints(knots);
+
+    if (knots.length > 1) {
+      List<List<Point>> pathControlPoints = computeControlPoints(knots);
+      joinBezierCurves(pathControlPoints);
+    } else {
+      List<Point> controlPoints = new ArrayList<>(Arrays.asList(knots));
+      List<List<Point>> curves = new ArrayList<>();
+      curves.add(controlPoints);
+
+      joinBezierCurves(curves);
+    }
   }
 
   @Override
-  public void setPathPoints(Point... knots) {
-    List<List<Point>> pathControlPoints = computeControlPoints(knots);
-    joinBezierCurves(pathControlPoints);
-  }
+  public void update() {
+    if (getCreationPoints().size() > 1) {
+      List<List<Point>> pathControlPoints = computeControlPoints(
+          getCreationPoints().toArray(new Point[0]));
+      joinBezierCurves(pathControlPoints);
+    } else {
+      List<List<Point>> curves = new ArrayList<>();
+      curves.add(getCreationPoints());
 
-  @Override
-  public Point[] getLeftPath() {
-    return leftPoints;
-  }
-
-  @Override
-  public Point[] getRightPath() {
-    return rightPoints;
+      joinBezierCurves(curves);
+    }
   }
 
 }

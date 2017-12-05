@@ -8,27 +8,28 @@ import edu.wpi.first.wpilibj.buttons.Button;
  */
 public class ButtonMap {
 
-  private final Enum assignedKey;
-  private final Button button;
+    private final Enum assignedKey;
+    private final Button button;
 
-  public <T extends Enum> ButtonMap(T assignedKey, Button button) {
-    this.assignedKey = assignedKey;
-    this.button = button;
-  }
+    public <T extends Enum> ButtonMap(T assignedKey, Button button) {
+        this.assignedKey = assignedKey;
+        this.button = button;
+    }
 
-  public final Enum getAssignedKey() {
-    return assignedKey;
-  }
+    public final Enum getAssignedKey() {
+        return assignedKey;
+    }
 
-  public final Button getButton() {
-    return button;
-  }
+    public final Button getButton() {
+        return button;
+    }
 
-  @Override
-  public final String toString() {
-    return "ButtonMap{" +
-        "assignedKey=" + assignedKey +
-        ", button=" + button +
-        '}';
-  }
+    @Override
+    public String toString() {
+        return String.format(
+            "ButtonMap{assignedKey=%s, button=%s}"
+            , assignedKey
+            , button
+        );
+    }
 }

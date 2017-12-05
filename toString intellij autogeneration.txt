@@ -1,0 +1,24 @@
+public java.lang.String toString() {
+#if ( $members.size() > 0 )
+#set ( $i = 0 )
+    return String.format(
+    "$classname{#foreach( $member in $members )#if ( $i != 0 ), #else#end#if ($member.isFloat() || $member.isDouble())$member.name=%f#elseif ( $member.numeric )$member.name=%d#else$member.name=%s#end#set ( $i = $i + 1 )#end}"
+#set ( $i = 0 )
+    #foreach( $member in $members )
+    , ##
+    #if ( $member.objectArray )
+    #if ($java_version < 5)
+    ($member.accessor == null ? null : java.util.Arrays.asList($member.accessor))
+    #else
+    java.util.Arrays.toString($member.accessor)
+    #end
+    #elseif ( $member.primitiveArray && $java_version >= 5)java.util.Arrays.toString($member.accessor)
+    #else $member.accessor
+    #end
+    #set ( $i = $i + 1 )
+    #end
+);
+#else
+    return "$classname{}";
+#end
+}

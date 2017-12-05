@@ -27,7 +27,7 @@ public class Point {
    * Can be used to create a util without specifying a derivative
    */
   public Point(double x, double y) {
-    this(x, y, 0);
+    this(x, y, 0.0);
   }
 
   public double getX() {
@@ -83,4 +83,37 @@ public class Point {
     return new Point(this.getX() + offsetX, this.getY() + offsetY, angleOfDT);
   }
 
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Point point = (Point) o;
+
+    return (x != null ? x.equals(point.x) : point.x == null) && (y != null ? y.equals(point.y)
+        : point.y == null) && (derivative != null ? derivative.equals(point.derivative)
+        : point.derivative == null);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = x != null ? x.hashCode() : 0;
+    result = 31 * result + (y != null ? y.hashCode() : 0);
+    result = 31 * result + (derivative != null ? derivative.hashCode() : 0);
+    return result;
+  }
+
+  @Override
+  public String toString() {
+    return "Point{" +
+        "x=" + x +
+        ", y=" + y +
+        ", derivative=" + derivative +
+        '}';
+  }
 }

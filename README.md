@@ -1,6 +1,6 @@
 # POE Robot Project
 
-This is an POE project to further enrich our skills with using the allowable sensors.
+This is a POE project to further enrich our skills with using the allowable sensors and to help us improve our skils with coding a robot given a deadline and a goal.
 
 The task chosen is (drumroll please): Use the Bezier curve program to send a spline to the robot and the robot will execute/follow the spline.
 #### Deliverables
@@ -35,7 +35,7 @@ Challenge: Make the robot follow a curve with any number of control points.
 
 ## Task List to Pick
 
-1. Make the robot follow a person continously. The person will face the cameras in front of the robot, the robot will then follow the person when he/she moves around while avoiding the surroundings.
+1. Make the robot follow a person continuously. The person will face the cameras in front of the robot, the robot will then follow the person when he/she moves around while avoiding the surroundings.
 2. Make the robot solve a maze. 
 3. Make the robot follow a line. <- the chosen one
 4. Track target (usually reflective).
@@ -51,8 +51,10 @@ Challenge: Make the robot follow a curve with any number of control points.
 
 Go to [this](https://guides.github.com/features/mastering-markdown/) and [this](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) to read on how to format and add images, lists, code snippet, headers & quotes to a README.md file
 
-To use the Google java formatter in eclipse open eclipse naviagte to Windows -> Preferences -> Java -> Code Style -> Formatter then press import and navigate to the eclipse-java-google-style.xml file included in this repository. 
+To use the Google java formatter in eclipse open eclipse navigate to Windows -> Preferences -> Java -> Code Style -> Formatter then press import and navigate to the eclipse-java-google-style.xml file included in this repository. 
 
 To format a file in eclipse you can press the Ctrl + Shift + F.
 
 To use IntelliJ you can just add the wpilib [right here](./POE%20Testing%20Environment/build/jars) in the project settings (top right button) as a library named lib.
+
+To use the Intellij toString template that uses the String.format instead of concatenation follow theses steps: Open a java class -> press Alt + Insert or Right Click the Generate -> toString() -> Settings -> Templates -> + -> Name the Template (Usually "String format") -> then copy paste the contents of "toString Intellij autogeneration.txt" into the blank template -> Apply -> Ok -> Then continue with selecting the variables.
