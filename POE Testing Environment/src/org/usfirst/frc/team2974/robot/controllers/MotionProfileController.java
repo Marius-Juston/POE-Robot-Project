@@ -75,7 +75,6 @@ public class MotionProfileController {
         currentKinematics = null;
         motions.clear();
 
-        // FIXME: this is really, really bad for speed
         Robot.driveTrain.setPowers(0, 0);
     }
 
