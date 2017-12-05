@@ -122,11 +122,6 @@ public class MotionPathSpline extends MotionProvider {
         return finalTheta;
     }
 
-
-    public static void main(String[] args) {
-        System.out.println(int.class.getName());
-    }
-
     @Override
     public String toString() {
         return String.format(
