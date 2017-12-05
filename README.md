@@ -56,3 +56,5 @@ To use the Google java formatter in eclipse open eclipse naviagte to Windows -> 
 To format a file in eclipse you can press the Ctrl + Shift + F.
 
 To use IntelliJ you can just add the wpilib [right here](./POE%20Testing%20Environment/build/jars) in the project settings (top right button) as a library named lib.
+
+To use the Intellij toString template that uses the String.format instead of concatenation folow theses setps: Open a java class -> press Alt + Insert or Right Click the Generate -> toString() -> Settings -> Templates -> + -> <Name of Template> -> then copy paste the contents of "toString intellij autogeneration.txt" into the blank template.
