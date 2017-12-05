@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 import org.usfirst.frc.team2974.robot.io.logitech.GamepadButton;
 
@@ -157,6 +158,10 @@ public abstract class Driver {
     }
 
     return buttons.get(buttonName).getButton(); // returns the button given its assigned name
+  }
+
+  public boolean isButtonDown(String key) {
+    return buttons.get(key).getButton().get();
   }
 
   public String getDriverName() {

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import org.usfirst.frc.team2974.robot.command.auton.DriveForwardCommand;
+import org.usfirst.frc.team2974.robot.io.Driver;
 import org.usfirst.frc.team2974.robot.manager.SmartDashboardManager;
 import org.usfirst.frc.team2974.robot.manager.SubsystemManager;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
@@ -20,6 +21,8 @@ public class Robot extends IterativeRobot {
   private final String defaultAuto = "Default Auto";
   private final String customAuto = "My Auto";
   private final SendableChooser<String> autonChooser = new SendableChooser<>();
+
+  private Driver currentDriver;
 
   private static void update() {
     SmartDashboardManager.update();

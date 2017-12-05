@@ -198,6 +198,8 @@ public class MotionProfileController {
   }
 
   public final MotionProvider getCurrentMotion() {
+    if(isFinished())
+      return null;
     return currentKinematics.getMotion();
   }
 

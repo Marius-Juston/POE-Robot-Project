@@ -40,7 +40,7 @@ public enum GamepadButton {
 
   @Override
   public String toString() {
-    return "GamepadButton{" +
+    return "GamepadButton{" + // TODO: change this to String.format
         "index=" + index +
         '}';
   }
