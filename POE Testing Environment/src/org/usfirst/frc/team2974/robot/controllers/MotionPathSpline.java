@@ -122,16 +122,20 @@ public class MotionPathSpline extends MotionProvider {
         return finalTheta;
     }
 
+
+    public static void main(String[] args) {
+        System.out.println(int.class.getName());
+    }
+
     @Override
-    public final String toString() {
-        return "MotionPathSpline{" +
-            "controlPoints=" + Arrays.toString(controlPoints) +
-            ", length=" + length +
-            ", initialTheta=" + initialTheta +
-            ", finalTheta=" + finalTheta +
-            ", isForwards=" + isForwards +
-            ", vCruise=" + vCruise +
-            ", aMax=" + aMax +
-            '}';
+    public String toString() {
+        return String.format(
+            "MotionPathSpline{controlPoints=%s, length=%f, initialTheta=%f, finalTheta=%f, isForwards=%s}"
+            , Arrays.toString(controlPoints)
+            , length
+            , initialTheta
+            , finalTheta
+            , isForwards
+        );
     }
 }

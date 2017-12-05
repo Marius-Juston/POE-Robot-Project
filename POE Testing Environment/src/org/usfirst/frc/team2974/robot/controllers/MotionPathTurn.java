@@ -50,13 +50,5 @@ public class MotionPathTurn extends MotionProvider {
         return this.pose1.angle;
     }
 
-    @Override
-    public final String toString() {
-        return "MotionPathTurn{" +
-            "pose0=" + pose0 +
-            ", pose1=" + pose1 +
-            ", vCruise=" + vCruise +
-            ", aMax=" + aMax +
-            '}';
-    }
+
 }

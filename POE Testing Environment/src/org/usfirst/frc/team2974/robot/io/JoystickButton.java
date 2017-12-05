@@ -25,8 +25,10 @@ public enum JoystickButton {
 
     @Override
     public String toString() {
-        return "JoystickButton{" +
-            "index=" + index +
-            '}';
+        return String.format(
+            "JoystickButton{index=%d}"
+            , index
+        );
     }
 }
+

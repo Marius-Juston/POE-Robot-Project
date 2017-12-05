@@ -202,15 +202,7 @@ public class MotionProfileController {
 
     @Override
     public final String toString() {
-        return "MotionProfileController{" +
-            "motions=" + motions +
-            ", kV=" + kV +
-            ", kK=" + kK +
-            ", kA=" + kA +
-            ", kP=" + kP +
-            ", currentKinematics=" + currentKinematics +
-            ", isEnabled=" + isEnabled +
-            '}';
+        return String.format("MotionProfileController{motions=%s, kV=%f, kK=%f, kA=%f, kP=%f, currentKinematics=%s, isEnabled=%s}", motions, kV,kK, kA, kP, currentKinematics, isEnabled);
     }
 
     private class MPCTask extends TimerTask {

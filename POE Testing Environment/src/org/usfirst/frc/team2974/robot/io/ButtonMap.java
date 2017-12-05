@@ -25,10 +25,11 @@ public class ButtonMap {
     }
 
     @Override
-    public final String toString() {
-        return "ButtonMap{" +
-            "assignedKey=" + assignedKey +
-            ", button=" + button +
-            '}';
+    public String toString() {
+        return String.format(
+            "ButtonMap{assignedKey=%s, button=%s}"
+            , assignedKey
+            , button
+        );
     }
 }

@@ -154,12 +154,9 @@ public class SmartDashboardProperty<T> {
         }
     }
 
+
     @Override
-    public final String toString() {
-        return "SmartDashboardProperty{" +
-            "key='" + key + '\'' +
-            ", defaultValue=" + defaultValue +
-            ", value=" + value +
-            '}';
+    public String toString() {
+        return String.format("SmartDashboardProperty{key='%s', defaultValue=%s, value=%s}",key, defaultValue, value);
     }
 }

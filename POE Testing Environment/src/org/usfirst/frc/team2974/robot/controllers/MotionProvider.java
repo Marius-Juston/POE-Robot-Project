@@ -81,10 +81,11 @@ public abstract class MotionProvider {
 
     @Override
     public String toString() {
-        return "MotionProvider{" +
-            "vCruise=" + vCruise +
-            ", aMax=" + aMax +
-            '}';
+        return String.format(
+            "MotionProvider{vCruise=%f, aMax=%f}"
+            , vCruise
+            , aMax
+        );
     }
 
     public enum LimitMode {

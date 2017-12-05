@@ -37,8 +37,6 @@ public class MotionPath {
 
     @Override
     public final String toString() {
-        return "MotionPath{" +
-            "motions=" + Arrays.toString(this.motions) +
-            '}';
+        return String.format("MotionPath{motions=%s}", Arrays.toString(this.motions));
     }
 }

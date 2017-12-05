@@ -139,10 +139,12 @@ public class DriveCommand extends Command {
         end();
     }
 
+
     @Override
-    public final String toString() {
-        return "DriveCommand{" +
-            "currentDriver=" + currentDriver +
-            '}';
+    public String toString() {
+        return String.format(
+            "DriveCommand{currentDriver=%s}"
+            , currentDriver
+        );
     }
 }

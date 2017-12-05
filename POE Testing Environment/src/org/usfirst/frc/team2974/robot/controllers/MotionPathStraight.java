@@ -55,14 +55,18 @@ public class MotionPathStraight extends MotionProvider {
         return pose1.angle;
     }
 
+
     @Override
-    public final String toString() {
-        return "MotionPathStraight{" +
-            "pose0=" + pose0 +
-            ", pose1=" + pose1 +
-            ", length=" + length +
-            ", vCruise=" + vCruise +
-            ", aMax=" + aMax +
-            '}';
+    public String toString() {
+        return String.format(
+            "MotionPathStraight{pose0=%s, pose1=%s, length=%f, vCruise=%f, aMax=%f}"
+            , pose0
+            , pose1
+            , length
+            , vCruise
+            , aMax
+        );
     }
+
+
 }
