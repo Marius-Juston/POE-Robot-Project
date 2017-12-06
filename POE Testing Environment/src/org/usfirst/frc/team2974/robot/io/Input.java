@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2974.robot;
+package org.usfirst.frc.team2974.robot.io;
 
 import static org.usfirst.frc.team2974.robot.RobotConfiguration.GAMEPAD_PORT;
 import static org.usfirst.frc.team2974.robot.RobotConfiguration.LEFT_JOYSTICK_PORT;

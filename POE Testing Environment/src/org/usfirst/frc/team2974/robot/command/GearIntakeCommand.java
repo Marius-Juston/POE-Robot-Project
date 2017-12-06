@@ -3,7 +3,7 @@ package org.usfirst.frc.team2974.robot.command;
 import static org.usfirst.frc.team2974.robot.Robot.gearIntake;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team2974.robot.Input;
+import org.usfirst.frc.team2974.robot.io.Input;
 import org.usfirst.frc.team2974.robot.io.logitech.GamepadButton;
 
 /**

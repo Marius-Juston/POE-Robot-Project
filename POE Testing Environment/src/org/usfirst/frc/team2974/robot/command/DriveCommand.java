@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import org.usfirst.frc.team2974.robot.Input;
 import org.usfirst.frc.team2974.robot.RobotConfiguration;
 import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 import org.usfirst.frc.team2974.robot.io.Driver;
+import org.usfirst.frc.team2974.robot.io.Input;
 
 public class DriveCommand extends Command {
 

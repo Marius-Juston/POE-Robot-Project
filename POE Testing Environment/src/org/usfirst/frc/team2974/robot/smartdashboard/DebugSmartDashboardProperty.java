@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2974.robot.manager;
+package org.usfirst.frc.team2974.robot.smartdashboard;
 
 import static org.usfirst.frc.team2974.robot.RobotConfiguration.isDebug;
 

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2974.robot.controllers;
+package org.usfirst.frc.team2974.robot;
 
 import static org.usfirst.frc.team2974.robot.RobotConfiguration.N_POINTS;
 
@@ -6,7 +6,11 @@ import edu.wpi.first.wpilibj.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
-import org.usfirst.frc.team2974.robot.Robot;
+import org.usfirst.frc.team2974.robot.kinematic.KinematicPose;
+import org.usfirst.frc.team2974.robot.kinematic.Kinematics;
+import org.usfirst.frc.team2974.robot.util.MotionProvider;
+import org.usfirst.frc.team2974.robot.util.PoseProvider;
+import org.usfirst.frc.team2974.robot.util.RobotPair;
 
 public class MotionProfileController {
 
@@ -185,7 +189,7 @@ public class MotionProfileController {
     }
 
     /**
-     * @return if the kinematics is finished
+     * @return if the kinematic is finished
      */
     public final boolean isFinished() {
         return currentKinematics == null;

@@ -1,6 +1,10 @@
-package org.usfirst.frc.team2974.robot.controllers;
+package org.usfirst.frc.team2974.robot.kinematic;
 
 import static org.usfirst.frc.team2974.robot.RobotConfiguration.ROBOT_WIDTH;
+
+import org.usfirst.frc.team2974.robot.util.MotionProvider;
+import org.usfirst.frc.team2974.robot.util.Pose;
+import org.usfirst.frc.team2974.robot.util.RobotPair;
 
 public class Kinematics {
 

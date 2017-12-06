@@ -1,8 +1,9 @@
-package org.usfirst.frc.team2974.robot.controllers;
+package org.usfirst.frc.team2974.robot.motion;
 
 
 import java.util.Arrays;
 import org.usfirst.frc.team2974.robot.exception.RobotException;
+import org.usfirst.frc.team2974.robot.util.MotionProvider;
 
 /**
  * TODO: super coder (heh.) needed

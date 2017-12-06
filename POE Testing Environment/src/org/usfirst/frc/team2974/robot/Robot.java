@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import org.usfirst.frc.team2974.robot.command.auton.DriveForwardCommand;
 import org.usfirst.frc.team2974.robot.command.auton.TurnCommand;
-import org.usfirst.frc.team2974.robot.manager.SmartDashboardManager;
+import org.usfirst.frc.team2974.robot.smartdashboard.SmartDashboardManager;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
 

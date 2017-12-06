@@ -1,4 +1,6 @@
-package org.usfirst.frc.team2974.robot.controllers;
+package org.usfirst.frc.team2974.robot.kinematic;
+
+import org.usfirst.frc.team2974.robot.util.Pose;
 
 public class KinematicPose extends Pose {
 

@@ -1,4 +1,7 @@
-package org.usfirst.frc.team2974.robot.controllers;
+package org.usfirst.frc.team2974.robot.motion;
+
+import org.usfirst.frc.team2974.robot.util.MotionProvider;
+import org.usfirst.frc.team2974.robot.util.Pose;
 
 /**
  * JUST ANGLES, TURNING

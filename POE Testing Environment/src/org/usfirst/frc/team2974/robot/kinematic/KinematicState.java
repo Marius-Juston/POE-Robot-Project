@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2974.robot.controllers;
+package org.usfirst.frc.team2974.robot.kinematic;
 
 public class KinematicState {
 

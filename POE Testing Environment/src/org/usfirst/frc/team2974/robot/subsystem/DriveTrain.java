@@ -12,14 +12,14 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.usfirst.frc.team2974.robot.MotionProfileController;
 import org.usfirst.frc.team2974.robot.RobotMap;
 import org.usfirst.frc.team2974.robot.command.DriveCommand;
-import org.usfirst.frc.team2974.robot.controllers.MotionProfileController;
-import org.usfirst.frc.team2974.robot.controllers.MotionProvider;
-import org.usfirst.frc.team2974.robot.controllers.Point2D;
-import org.usfirst.frc.team2974.robot.controllers.Pose;
-import org.usfirst.frc.team2974.robot.controllers.PoseProvider;
-import org.usfirst.frc.team2974.robot.controllers.RobotPair;
+import org.usfirst.frc.team2974.robot.util.MotionProvider;
+import org.usfirst.frc.team2974.robot.util.Point2D;
+import org.usfirst.frc.team2974.robot.util.Pose;
+import org.usfirst.frc.team2974.robot.util.PoseProvider;
+import org.usfirst.frc.team2974.robot.util.RobotPair;
 
 public class DriveTrain extends Subsystem implements PoseProvider {
 

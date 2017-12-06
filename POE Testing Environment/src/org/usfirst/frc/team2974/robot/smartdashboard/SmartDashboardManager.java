@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2974.robot.manager;
+package org.usfirst.frc.team2974.robot.smartdashboard;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import java.util.ArrayList;
@@ -92,7 +92,7 @@ public final class SmartDashboardManager {
     }
 
     /**
-     * Removes the bind with key key from SmartDashboard and the manager.
+     * Removes the bind with key key from SmartDashboard and the smartdashboard.
      *
      * @param key SmartDashboard key
      */
