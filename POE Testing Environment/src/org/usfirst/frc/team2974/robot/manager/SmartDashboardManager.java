@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2974.robot.manager;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,11 +11,17 @@ import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 
 public final class SmartDashboardManager {
 
-    public static final NetworkTable TABLE = NetworkTable.getTable("SmartDashboard");
-    public static final boolean isDebug = true;
+    private static final NetworkTable TABLE;
 
     // Properties list where all the SmartDashboard  Properties are stored
-    private static final List<SmartDashboardProperty> PROPERTIES = new ArrayList<>(10);
+    private static final List<SmartDashboardProperty> PROPERTIES;
+
+    static {
+        TABLE = NetworkTable.getTable("SmartDashboard");
+        PROPERTIES = new ArrayList<>(10);
+
+        TABLE.getKeys().forEach(TABLE::delete);
+    }
 
     private SmartDashboardManager() {
     }
@@ -24,8 +31,8 @@ public final class SmartDashboardManager {
      *
      * @see #addBind(String, Object, Supplier)
      */
-    public static <T> SmartDashboardProperty<T> addBind(String key, T defaultValue) {
-        return addBind(key, defaultValue, null);
+    public static <T> SmartDashboardProperty<T> addBind(String key, T value) {
+        return addBind(key, value, null);
     }
 
     /**
@@ -38,24 +45,49 @@ public final class SmartDashboardManager {
      *   }</pre>
      * </p>
      *
+     * If the supplier is null the property is effectively static, unless another supplier is added later.
+     *
      * @param key SmartDashboard key
      * @param defaultValue Default value that SmartDashboard will returns if it cannot find the value
      * @param valueSupplier Supplier used to get the updating value
-     * @param <T> the data type you want SmartDashboard to display
+     * @param <T> the data type you want SmartDashboard to display (most of the time you don't need to worry about it)
      * @return The SmartDashboard property created
      */
-    public static <T> SmartDashboardProperty<T> addBind(String key, T defaultValue,
-        Supplier<T> valueSupplier) {
-        SmartDashboardProperty<T> prop = new SmartDashboardProperty<>(key, defaultValue,
-            valueSupplier);
+    public static <T> SmartDashboardProperty<T> addBind(String key, T defaultValue, Supplier<T> valueSupplier) {
+        if(PROPERTIES.stream().anyMatch(p -> p.getKey().equals(key)))
+            throw new RobotRuntimeException("Cannot have duplicate keys for SmartDashboard. Key in question is " + key);
 
-        SmartDashboardManager.PROPERTIES.add(prop);
+        SmartDashboardProperty<T> prop = new SmartDashboardProperty<>(key, defaultValue, valueSupplier);
+
+        PROPERTIES.add(prop);
 
         return prop;
     }
 
     /**
-     * Removes all binds (should be one) with key key from SmartDashboard and the manager.
+     * Creates a static debug bind where Supplier is null.
+     *
+     * @see #addBind(String, Object, Supplier)
+     */
+    public static <T> DebugSmartDashboardProperty<T> addDebug(String key, T value) {
+        return addDebug(key, value, null);
+    }
+
+    /**
+     * Creates a debug bind which will update if isDebug is true.
+     *
+     * @see #addBind(String, Object, Supplier) its basically the same
+     */
+    public static <T> DebugSmartDashboardProperty<T> addDebug(String key, T defaultValue, Supplier<T> valueSupplier) {
+        DebugSmartDashboardProperty<T> prop = new DebugSmartDashboardProperty<>(key, defaultValue, valueSupplier);
+
+        PROPERTIES.add(prop);
+
+        return prop;
+    }
+
+    /**
+     * Removes the bind with key key from SmartDashboard and the manager.
      *
      * @param key SmartDashboard key
      */
@@ -66,6 +98,18 @@ public final class SmartDashboardManager {
                 TABLE.delete(key);
             }
         }
+    }
+
+    /**
+     *
+     * @param key the key to check
+     * @return <b>true</b> if PROPERTIES contains a property with key key, <b>false</b> otherwise.
+     */
+    public static boolean containsBind(String key) {
+        for(SmartDashboardProperty p : PROPERTIES)
+            if(p.getKey().equals(key))
+                return true;
+        return false;
     }
 
     /**
@@ -82,8 +126,7 @@ public final class SmartDashboardManager {
      *
      * @param <T> the data type of value being updated to SmartDashboard
      * @param key the key of the property
-     * @return the SmartDashboard property with the specified key
-     * @throws RobotRuntimeException throws exception if the SmartDashboard property is not found
+     * @return the SmartDashboard property with the specified key if it is found
      */
     @SuppressWarnings("unchecked")
     public static <T> SmartDashboardProperty<T> getProperty(String key) {

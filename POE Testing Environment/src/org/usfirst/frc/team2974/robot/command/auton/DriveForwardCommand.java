@@ -7,11 +7,11 @@ import org.usfirst.frc.team2974.robot.controllers.MotionPathStraight;
 import org.usfirst.frc.team2974.robot.controllers.MotionProvider;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 
+import static org.usfirst.frc.team2974.robot.Robot.driveTrain;
+
 public class DriveForwardCommand extends Command {
 
     private final double SETTLE_TIME = 1.0;
-
-    private final DriveTrain driveTrain;
 
     // in meters
     private final double distance;
@@ -31,8 +31,6 @@ public class DriveForwardCommand extends Command {
      * @param acceleration the max acceleration to accelerate to velocity and decelerate to 0 m/s at.
      */
     public DriveForwardCommand(double distance, double velocity, double acceleration) {
-        driveTrain = Robot.driveTrain;
-
         this.distance = distance;
         this.velocity = velocity;
         this.acceleration = acceleration;

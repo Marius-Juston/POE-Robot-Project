@@ -1,10 +1,11 @@
 package org.usfirst.frc.team2974.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import org.usfirst.frc.team2974.robot.command.auton.DriveForwardCommand;
-import org.usfirst.frc.team2974.robot.io.Driver;
 import org.usfirst.frc.team2974.robot.command.auton.TurnCommand;
 import org.usfirst.frc.team2974.robot.manager.SmartDashboardManager;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
@@ -17,12 +18,11 @@ import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
  * resource directory.
  */
 public class Robot extends IterativeRobot {
-    public static final DriveTrain driveTrain = new DriveTrain();
-    public static final GearIntake gearIntake = new GearIntake();
+    public static DriveTrain driveTrain;
+    public static GearIntake gearIntake;
 
-    private final String defaultAuto = "Default Auto";
-    private final String customAuto = "My Auto";
-    private final SendableChooser<String> autonChooser = new SendableChooser<>();
+//    private Command autonomousCommand;
+    private final SendableChooser<Command> autonChooser = new SendableChooser<>();
 
     private static void update() {
         SmartDashboardManager.update();
@@ -34,20 +34,26 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public final void robotInit() {
-        autonChooser.addDefault("Default Auto", defaultAuto);
-        autonChooser.addObject("My Auto", customAuto);
+    	driveTrain = new DriveTrain();
+        gearIntake = new GearIntake();
+    	
+        autonChooser.addDefault("Do Nothing", null);
+        autonChooser.addObject("Drive forward 10 meters", new DriveForwardCommand(10, 3, 0.5));
+        autonChooser.addObject("Turn 180 degrees", new TurnCommand(180, 6, 1));
         SmartDashboardManager.addBind("Auto choices", autonChooser);
 
-        SmartDashboardManager.addBind("Drive forward 5 meters", new DriveForwardCommand(5, 3, 0.5));
-        SmartDashboardManager.addBind("Drive forward 5 meters", new TurnCommand(90, 6, 1));
+//        SmartDashboardManager.addBind("Drive forward 10 meters", new DriveForwardCommand(10, 3, 0.5));
+//        SmartDashboardManager.addBind("Turn 180 degrees", new TurnCommand(180, 6, 1));
 
-        SmartDashboardManager.addBind("Left Encoder Dist", 0, RobotMap.leftEncoder::getDistance);
-        SmartDashboardManager.addBind("Right Encoder Dist", 0, RobotMap.rightEncoder::getDistance);
+        SmartDashboardManager.addDebug("Left Encoder Rate", 0, RobotMap.leftEncoder::getRate);
+        SmartDashboardManager.addDebug("Right Encoder Rate", 0, RobotMap.rightEncoder::getRate);
 
-        SmartDashboardManager.addBind("Left Encoder Rate", 0, RobotMap.leftEncoder::getRate);
-        SmartDashboardManager.addBind("Right Encoder Rate", 0, RobotMap.rightEncoder::getRate);
+        SmartDashboardManager.addBind("Run chosen command", null, autonChooser::getSelected);
+    }
 
-        SmartDashboardManager.addBind("Gear Sensor", 0, RobotMap.gearSensor::get);
+    @Override
+    public void robotPeriodic() {
+
     }
 
     /**
@@ -72,15 +78,15 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() {
         Robot.update();
 
-        switch (autonChooser.getSelected()) {
-            case customAuto:
-                // Put custom auto code here
-                break;
-            case defaultAuto:
-            default:
-                // Put default auto code here
-                break;
-        }
+//        switch (autonChooser.getSelected()) {
+//            case customAuto:
+//                // Put custom auto code here
+//                break;
+//            case defaultAuto:
+//            default:
+//                // Put default auto code here
+//                break;
+//        }
     }
 
     @Override
@@ -95,6 +101,12 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Robot.update();
         Scheduler.getInstance().run();
+    }
+
+
+    @Override
+    public void testInit() {
+
     }
 
     /**

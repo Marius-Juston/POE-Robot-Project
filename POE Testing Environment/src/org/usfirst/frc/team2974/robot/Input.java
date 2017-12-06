@@ -21,12 +21,32 @@ public final class Input {
     public static final Joystick rightJoystick;
     public static final Gamepad gamepad;
 
+    private static final Map<String, Button> binds;
+
     static {
         leftJoystick = new Joystick(LEFT_JOYSTICK_PORT);
         rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
         gamepad = new Gamepad(GAMEPAD_PORT);
+
+        binds = new HashMap<>();
     }
 
     private Input() {
+    }
+
+    public static void clearBinds() {
+        binds.clear();
+    }
+
+    public static void removeBind(String name) {
+        binds.remove(name);
+    }
+
+    public static void addBind(String name, Joystick joystick, int button) {
+        binds.put(name, new JoystickButton(joystick, button));
+    }
+
+    public static boolean isButtonDown(String name) {
+        return binds.get(name).get();
     }
 }

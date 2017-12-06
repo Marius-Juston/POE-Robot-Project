@@ -2,6 +2,8 @@ package org.usfirst.frc.team2974.robot.manager;
 
 import java.util.function.Supplier;
 
+import static org.usfirst.frc.team2974.robot.RobotConfiguration.isDebug;
+
 public class DebugSmartDashboardProperty<T> extends SmartDashboardProperty<T> {
 
     /**
@@ -13,11 +15,11 @@ public class DebugSmartDashboardProperty<T> extends SmartDashboardProperty<T> {
 
     @Override
     protected final void updateSmartDashboard() {
-        if (SmartDashboardManager.isDebug) {
+        if (isDebug) {
             super.updateSmartDashboard();
-        } else if (SmartDashboardManager.TABLE
-            .containsKey(getKey())) { // why dost thou do this to me smartdashboard
-            SmartDashboardManager.TABLE.delete(getKey());
+        } else if (SmartDashboardManager.containsBind(getKey())) {
+            // why dost thou do this to me smartdashboard
+            SmartDashboardManager.removeBind(getKey()); // TODO: fix so it actually deletes
         }
     }
 }

@@ -9,12 +9,12 @@ import org.usfirst.frc.team2974.robot.Robot;
 import org.usfirst.frc.team2974.robot.RobotConfiguration;
 import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 import org.usfirst.frc.team2974.robot.io.Driver;
-import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
+
+import static org.usfirst.frc.team2974.robot.Robot.driveTrain;
 
 public class DriveCommand extends Command {
 
     private final Set<Driver> drivers; // TODO: actually use
-    private final DriveTrain driveTrain;
     private Driver currentDriver;
 
     public DriveCommand(final Driver initialDriver) {
@@ -23,8 +23,6 @@ public class DriveCommand extends Command {
         drivers = new HashSet<>(4);
 
         setCurrentDriver(initialDriver);
-
-        driveTrain = Robot.driveTrain;
 
         requires(driveTrain);
     }

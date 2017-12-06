@@ -15,7 +15,7 @@ public final class RobotConfiguration {
     public static final double LEFT_JOYSTICK_THRESHOLD = 0.3;
     public static final double ROBOT_WIDTH = 0.70485; // The width of the robot in meters.
     public static final int N_POINTS = 50; // number of steps the motions is divided into
-    private static final boolean isDebug = true; // shows the debug smartdashboard keys
+    public static final boolean isDebug = true; // shows the debug smartdashboard keys
 
     private RobotConfiguration() {
     }
