@@ -1,13 +1,11 @@
 package org.usfirst.frc.team2974.robot.command.auton;
 
+import static org.usfirst.frc.team2974.robot.Robot.driveTrain;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team2974.robot.Robot;
 import org.usfirst.frc.team2974.robot.controllers.MotionPathStraight;
 import org.usfirst.frc.team2974.robot.controllers.MotionProvider;
-import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
-
-import static org.usfirst.frc.team2974.robot.Robot.driveTrain;
 
 public class DriveForwardCommand extends Command {
 

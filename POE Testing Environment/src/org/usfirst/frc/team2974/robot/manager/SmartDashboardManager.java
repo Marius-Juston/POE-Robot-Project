@@ -1,7 +1,6 @@
 package org.usfirst.frc.team2974.robot.manager;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,11 +52,15 @@ public final class SmartDashboardManager {
      * @param <T> the data type you want SmartDashboard to display (most of the time you don't need to worry about it)
      * @return The SmartDashboard property created
      */
-    public static <T> SmartDashboardProperty<T> addBind(String key, T defaultValue, Supplier<T> valueSupplier) {
-        if(PROPERTIES.stream().anyMatch(p -> p.getKey().equals(key)))
-            throw new RobotRuntimeException("Cannot have duplicate keys for SmartDashboard. Key in question is " + key);
+    public static <T> SmartDashboardProperty<T> addBind(String key, T defaultValue,
+        Supplier<T> valueSupplier) {
+        if (PROPERTIES.stream().anyMatch(p -> p.getKey().equals(key))) {
+            throw new RobotRuntimeException(
+                "Cannot have duplicate keys for SmartDashboard. Key in question is " + key);
+        }
 
-        SmartDashboardProperty<T> prop = new SmartDashboardProperty<>(key, defaultValue, valueSupplier);
+        SmartDashboardProperty<T> prop = new SmartDashboardProperty<>(key, defaultValue,
+            valueSupplier);
 
         PROPERTIES.add(prop);
 
@@ -78,8 +81,10 @@ public final class SmartDashboardManager {
      *
      * @see #addBind(String, Object, Supplier) its basically the same
      */
-    public static <T> DebugSmartDashboardProperty<T> addDebug(String key, T defaultValue, Supplier<T> valueSupplier) {
-        DebugSmartDashboardProperty<T> prop = new DebugSmartDashboardProperty<>(key, defaultValue, valueSupplier);
+    public static <T> DebugSmartDashboardProperty<T> addDebug(String key, T defaultValue,
+        Supplier<T> valueSupplier) {
+        DebugSmartDashboardProperty<T> prop = new DebugSmartDashboardProperty<>(key, defaultValue,
+            valueSupplier);
 
         PROPERTIES.add(prop);
 
@@ -101,14 +106,15 @@ public final class SmartDashboardManager {
     }
 
     /**
-     *
      * @param key the key to check
      * @return <b>true</b> if PROPERTIES contains a property with key key, <b>false</b> otherwise.
      */
     public static boolean containsBind(String key) {
-        for(SmartDashboardProperty p : PROPERTIES)
-            if(p.getKey().equals(key))
+        for (SmartDashboardProperty p : PROPERTIES) {
+            if (p.getKey().equals(key)) {
                 return true;
+            }
+        }
         return false;
     }
 

@@ -2,7 +2,6 @@ package org.usfirst.frc.team2974.robot.manager;
 
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import java.util.function.Supplier;
 
 /**
@@ -132,9 +131,10 @@ public class SmartDashboardProperty<T> {
     }
 
     protected void updateSmartDashboard() {
-    	if(value == null)
-    		return;
-    	
+        if (value == null) {
+            return;
+        }
+
         if (value instanceof Number) { // if the value you are going to put in is a number (double, float, int, byte, etc.)
             SmartDashboard.putNumber(key, ((Number) value).doubleValue());
         } else if (value instanceof Boolean) { // if the value is a boolean

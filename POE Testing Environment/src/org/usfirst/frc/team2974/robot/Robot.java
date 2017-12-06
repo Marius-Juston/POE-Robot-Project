@@ -1,7 +1,6 @@
 package org.usfirst.frc.team2974.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -18,10 +17,11 @@ import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
  * resource directory.
  */
 public class Robot extends IterativeRobot {
+
     public static DriveTrain driveTrain;
     public static GearIntake gearIntake;
 
-//    private Command autonomousCommand;
+    //    private Command autonomousCommand;
     private final SendableChooser<Command> autonChooser = new SendableChooser<>();
 
     private static void update() {
@@ -34,9 +34,9 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public final void robotInit() {
-    	driveTrain = new DriveTrain();
+        driveTrain = new DriveTrain();
         gearIntake = new GearIntake();
-    	
+
         autonChooser.addDefault("Do Nothing", null);
         autonChooser.addObject("Drive forward 10 meters", new DriveForwardCommand(10, 3, 0.5));
         autonChooser.addObject("Turn 180 degrees", new TurnCommand(180, 6, 1));

@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import java.util.HashMap;
 import java.util.Map;
 import org.usfirst.frc.team2974.robot.io.logitech.Gamepad;
-import org.usfirst.frc.team2974.robot.io.logitech.GamepadButton;
 
 /**
  * Input Manager

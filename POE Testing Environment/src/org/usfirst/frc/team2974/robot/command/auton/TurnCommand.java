@@ -1,12 +1,10 @@
 package org.usfirst.frc.team2974.robot.command.auton;
 
+import static org.usfirst.frc.team2974.robot.Robot.driveTrain;
+
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team2974.robot.Robot;
 import org.usfirst.frc.team2974.robot.controllers.MotionPathTurn;
 import org.usfirst.frc.team2974.robot.controllers.Pose;
-import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
-
-import static org.usfirst.frc.team2974.robot.Robot.driveTrain;
 
 public class TurnCommand extends Command {
 

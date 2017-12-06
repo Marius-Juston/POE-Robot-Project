@@ -1,12 +1,10 @@
 package org.usfirst.frc.team2974.robot.command;
 
+import static org.usfirst.frc.team2974.robot.Robot.gearIntake;
+
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team2974.robot.Input;
-import org.usfirst.frc.team2974.robot.Robot;
 import org.usfirst.frc.team2974.robot.io.logitech.GamepadButton;
-import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
-
-import static org.usfirst.frc.team2974.robot.Robot.gearIntake;
 
 /**
  * Gear Intake Command

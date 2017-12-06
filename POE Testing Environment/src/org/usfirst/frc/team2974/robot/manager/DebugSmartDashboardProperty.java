@@ -1,8 +1,8 @@
 package org.usfirst.frc.team2974.robot.manager;
 
-import java.util.function.Supplier;
-
 import static org.usfirst.frc.team2974.robot.RobotConfiguration.isDebug;
+
+import java.util.function.Supplier;
 
 public class DebugSmartDashboardProperty<T> extends SmartDashboardProperty<T> {
 
