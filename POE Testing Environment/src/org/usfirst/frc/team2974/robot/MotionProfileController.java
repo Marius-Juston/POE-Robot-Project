@@ -1,7 +1,5 @@
 package org.usfirst.frc.team2974.robot;
 
-import static org.usfirst.frc.team2974.robot.RobotConfiguration.N_POINTS;
-
 import edu.wpi.first.wpilibj.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.BlockingDeque;
@@ -66,7 +64,7 @@ public class MotionProfileController {
         MotionProvider newMotion = motions.poll();
         if (newMotion != null) {
             currentKinematics = new Kinematics(newMotion, poseProvider.getWheelPositions(),
-                Timer.getFPGATimestamp(), 0, 0, N_POINTS);
+                Timer.getFPGATimestamp(), 0, 0);
             isEnabled = true;
         }
     }
@@ -164,7 +162,7 @@ public class MotionProfileController {
                 if (newMotion != null) {
                     currentKinematics = new Kinematics(newMotion,
                         currentKinematics.getWheelPositions(),
-                        currentKinematics.getTime(), 0, 0, N_POINTS);
+                        currentKinematics.getTime(), 0, 0);
                 } else {
                     staticKinematicPose = Kinematics
                         .staticPose(currentKinematics.getPose(),

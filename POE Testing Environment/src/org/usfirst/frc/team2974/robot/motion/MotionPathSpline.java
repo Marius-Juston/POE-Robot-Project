@@ -9,7 +9,6 @@ import org.usfirst.frc.team2974.robot.util.Pose;
 public class MotionPathSpline extends MotionProvider {
 
     private final Point2D[] controlPoints = new Point2D[4];
-    private final double length;
     private final double initialTheta; // start angle
     private final double finalTheta; // end angle
     private final boolean isForwards;
@@ -45,7 +44,7 @@ public class MotionPathSpline extends MotionProvider {
             xPrevious = xNext;
         }
 
-        this.length = length;
+        setLength(isForwards ? length : -length);
         initialTheta = initial.angle;
         finalTheta = final_.angle;
         this.isForwards = isForwards;
@@ -111,11 +110,6 @@ public class MotionPathSpline extends MotionProvider {
     }
 
     @Override
-    public final double getLength() {
-        return isForwards ? length : -length;
-    }
-
-    @Override
     public final double getInitialTheta() {
         return initialTheta;
     }
@@ -130,7 +124,7 @@ public class MotionPathSpline extends MotionProvider {
         return String.format(
             "MotionPathSpline{controlPoints=%s, length=%f, initialTheta=%f, finalTheta=%f, isForwards=%s}"
             , Arrays.toString(controlPoints)
-            , length
+            , getLength()
             , initialTheta
             , finalTheta
             , isForwards

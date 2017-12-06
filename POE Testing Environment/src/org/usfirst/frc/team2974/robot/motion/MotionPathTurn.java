@@ -25,6 +25,8 @@ public class MotionPathTurn extends MotionProvider {
 
         this.pose0 = pose0;
         pose1 = new Pose(pose0.point, pose0.angle + MotionProvider.boundAngle(dAngle));
+
+        setLength(0);
     }
 
     @Override
@@ -36,11 +38,6 @@ public class MotionPathTurn extends MotionProvider {
     @Override
     public final MotionProvider.LimitMode getLimitMode() {
         return MotionProvider.LimitMode.LimitRotationalAcceleration;
-    }
-
-    @Override
-    public final double getLength() {
-        return 0;
     }
 
     @Override

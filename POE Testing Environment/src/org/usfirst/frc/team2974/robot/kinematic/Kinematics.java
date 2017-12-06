@@ -39,6 +39,11 @@ public class Kinematics {
         evaluateNextPose(1.0 / nPoints);
     }
 
+    public Kinematics(MotionProvider motion, RobotPair wheelPosition, double t, double v0,
+        double v1) {
+        this(motion, wheelPosition, t, v0, v1, motion.getNumberOfPoints());
+    }
+
     /**
      * Constructs a static kinematic pose. i.e. KinematicPose with only distance
      *
@@ -114,7 +119,7 @@ public class Kinematics {
         final double dlRight = (dl + ((dAngle * ROBOT_WIDTH) / 2));
 
         //assuming one of the wheels will limit motion, calculate time this step will take
-        double dt = Math.max(Math.abs(dlLeft), Math.abs(dlRight)) / motion.vCruise;
+        double dt = Math.max(Math.abs(dlLeft), Math.abs(dlRight)) / motion.getvCruise();
         double a = 0.0; //acceleration doesn't matter if following steady motion
 
         //bound time steps for initial/final acceleration
@@ -125,18 +130,18 @@ public class Kinematics {
                 final double lMidpoint = (lastPose.getCenterLength() + (0.5 * dl)) - l0;
 
                 final double vAcceleration = Math.sqrt(
-                    (v0 * v0) + (motion.aMax * Math.abs(lMidpoint)));
+                    (v0 * v0) + (motion.getaMax() * Math.abs(lMidpoint)));
                 final double vDeceleration = Math
-                    .sqrt((v1 * v1) + (motion.aMax * (Math
+                    .sqrt((v1 * v1) + (motion.getaMax() * (Math
                         .abs(motion.getLength() - lMidpoint))));
 
                 if ((vAcceleration < v) && (vAcceleration < vDeceleration)) {
-                    a = motion.aMax;
+                    a = motion.getaMax();
                     dt = Math.abs(dl) / vAcceleration;
                 }
 
                 if ((vDeceleration < v) && (vDeceleration < vAcceleration)) {
-                    a = -motion.aMax;
+                    a = -motion.getaMax();
                     dt = Math.abs(dl) / vDeceleration;
                 }
 
@@ -147,9 +152,9 @@ public class Kinematics {
                 final double omega = Math.abs(dlRight - dlLeft) / dt / ROBOT_WIDTH;
                 final double thetaMidpoint = lastPose.angle + (0.5 * dAngle);
 
-                final double omegaAcceleration = Math.sqrt(motion.aMax * Math
+                final double omegaAcceleration = Math.sqrt(motion.getaMax() * Math
                     .abs(MotionProvider.boundAngle(thetaMidpoint - motion.getInitialTheta())));
-                final double omegaDeceleration = Math.sqrt(motion.aMax * Math
+                final double omegaDeceleration = Math.sqrt(motion.getaMax() * Math
                     .abs(MotionProvider.boundAngle(thetaMidpoint - motion.getFinalTheta())));
 
                 if ((omegaAcceleration < omega) && (omegaAcceleration < omegaDeceleration)) {

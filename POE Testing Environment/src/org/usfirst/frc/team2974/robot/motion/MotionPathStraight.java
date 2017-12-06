@@ -11,7 +11,6 @@ public class MotionPathStraight extends MotionProvider {
 
     private final Pose pose0;
     private final Pose pose1;
-    private final double length;
 
     /**
      * Constructs MotionPathStraight.
@@ -28,7 +27,7 @@ public class MotionPathStraight extends MotionProvider {
         synchronized (this) {
             this.pose0 = pose0;
             pose1 = new Pose(pose0.offsetPoint(distance), pose0.angle);
-            length = distance;
+            setLength(distance);
         }
     }
 
@@ -42,11 +41,6 @@ public class MotionPathStraight extends MotionProvider {
     @Override
     public final MotionProvider.LimitMode getLimitMode() {
         return MotionProvider.LimitMode.LimitLinearAcceleration;
-    }
-
-    @Override
-    public final double getLength() {
-        return length;
     }
 
     @Override
@@ -66,9 +60,9 @@ public class MotionPathStraight extends MotionProvider {
             "MotionPathStraight{pose0=%s, pose1=%s, length=%f, vCruise=%f, aMax=%f}"
             , pose0
             , pose1
-            , length
-            , vCruise
-            , aMax
+            , getLength()
+            , getvCruise()
+            , getaMax()
         );
     }
 
