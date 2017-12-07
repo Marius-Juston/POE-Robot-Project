@@ -5,10 +5,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import org.usfirst.frc.team2974.robot.command.auton.DriveForwardCommand;
+import org.usfirst.frc.team2974.robot.command.auton.PathFollowerCommand;
 import org.usfirst.frc.team2974.robot.command.auton.TurnCommand;
 import org.usfirst.frc.team2974.robot.smartdashboard.SmartDashboardManager;
 import org.usfirst.frc.team2974.robot.subsystem.DriveTrain;
 import org.usfirst.frc.team2974.robot.subsystem.GearIntake;
+import org.usfirst.frc.team2974.robot.util.Pose;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -44,6 +46,10 @@ public class Robot extends IterativeRobot {
 
 //        SmartDashboardManager.addBind("Drive forward 10 meters", new DriveForwardCommand(10, 3, 0.5));
 //        SmartDashboardManager.addBind("Turn 180 degrees", new TurnCommand(180, 6, 1));
+
+        SmartDashboardManager.addBind("Move to points",
+            new PathFollowerCommand(10, 3, true, Robot.driveTrain.getPose(),
+                new Pose(Robot.driveTrain.getPose().offsetPoint(1),0)));
 
         SmartDashboardManager.addDebug("Left Encoder Rate", 0, RobotMap.leftEncoder::getRate);
         SmartDashboardManager.addDebug("Right Encoder Rate", 0, RobotMap.rightEncoder::getRate);

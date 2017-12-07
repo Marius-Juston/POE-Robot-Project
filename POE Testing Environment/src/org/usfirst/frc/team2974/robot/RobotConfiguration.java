@@ -17,6 +17,8 @@ public final class RobotConfiguration {
     public static final int N_POINTS = 50; // number of steps the motions is divided into
     public static final boolean isDebug = true; // shows the debug smartdashboard keys
 
+    public static final String PATH_NETWORKTABLE = "SmartDashboard";
+
     private RobotConfiguration() {
     }
 }

@@ -53,7 +53,7 @@ public class MotionPathFollower extends MotionProvider {
      */
     @Override
     public final Pose evaluatePose(double s) {
-        return robotPoses[(int) ((s * robotPoses.length) - 1)];
+        return robotPoses[(int) (s * (robotPoses.length - 1))];
     }
 
     /**
