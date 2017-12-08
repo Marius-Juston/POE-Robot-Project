@@ -48,8 +48,8 @@ public class Robot extends IterativeRobot {
 //        SmartDashboardManager.addBind("Turn 180 degrees", new TurnCommand(180, 6, 1));
 
         SmartDashboardManager.addBind("Move to points",
-            new PathFollowerCommand(10, 3, true, Robot.driveTrain.getPose(),
-                new Pose(Robot.driveTrain.getPose().offsetPoint(1),0)));
+            new PathFollowerCommand(3, 0.5, false, Robot.driveTrain.getPose(),
+                new Pose(Robot.driveTrain.getPose().offsetPoint(1), 0)));
 
         SmartDashboardManager.addDebug("Left Encoder Rate", 0, RobotMap.leftEncoder::getRate);
         SmartDashboardManager.addDebug("Right Encoder Rate", 0, RobotMap.rightEncoder::getRate);

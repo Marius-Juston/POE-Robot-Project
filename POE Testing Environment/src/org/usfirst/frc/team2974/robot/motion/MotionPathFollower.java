@@ -18,7 +18,7 @@ public class MotionPathFollower extends MotionProvider {
     /**
      * Constructs MotionPathSpline.
      *
-     * @param vCruise velocity to cruise at (velocty to try to reach and stay at as long as possible)
+     * @param vCruise velocity to cruise at (velocity to try to reach and stay at as long as possible)
      * @param aMax acceleration/deceleration
      * @param isForwards if the robot is facing forwards or not
      * @param robotPoses the positions the robot has to go through
@@ -89,14 +89,11 @@ public class MotionPathFollower extends MotionProvider {
     @Override
     public String toString() {
         return String.format(
-            "MotionPathFollower{length=%f, initialTheta=%f, finalTheta=%f, isForwards=%s, robotPoses=%s, vCruise=%f, aMax=%f}"
-            , getLength()
+            "MotionPathFollower{initialTheta=%f, finalTheta=%f, isForwards=%s, robotPoses=%s}"
             , initialTheta
             , finalTheta
             , isForwards
             , Arrays.toString(robotPoses)
-            , getvCruise()
-            , getaMax()
         );
     }
 }

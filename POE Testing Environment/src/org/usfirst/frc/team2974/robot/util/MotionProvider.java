@@ -31,12 +31,12 @@ public abstract class MotionProvider {
         if (vCruise == 0) {
             throw new IllegalArgumentException("vCruise cannot be 0");
         }
-        this.setvCruise(vCruise);
+        this.setVCruise(vCruise);
 
         if (aMax == 0) {
             throw new IllegalArgumentException("aMax cannot be 0");
         }
-        this.setaMax(aMax);
+        this.setAMax(aMax);
     }
 
 
@@ -106,8 +106,8 @@ public abstract class MotionProvider {
     public String toString() {
         return String.format(
             "MotionProvider{vCruise=%f, aMax=%f}"
-            , getvCruise()
-            , getaMax()
+            , getVCruise()
+            , getAMax()
         );
     }
 
@@ -115,19 +115,19 @@ public abstract class MotionProvider {
         return numberOfPoints;
     }
 
-    public double getvCruise() {
+    public double getVCruise() {
         return vCruise;
     }
 
-    public void setvCruise(double vCruise) {
+    public void setVCruise(double vCruise) {
         this.vCruise = vCruise;
     }
 
-    public double getaMax() {
+    public double getAMax() {
         return aMax;
     }
 
-    public void setaMax(double aMax) {
+    public void setAMax(double aMax) {
         this.aMax = aMax;
     }
 

@@ -61,8 +61,8 @@ public class MotionPathStraight extends MotionProvider {
             , pose0
             , pose1
             , getLength()
-            , getvCruise()
-            , getaMax()
+            , getVCruise()
+            , getAMax()
         );
     }
 
