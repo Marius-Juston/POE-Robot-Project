@@ -98,9 +98,15 @@ public class DriveTrain extends Subsystem implements PoseProvider {
         return rightEncoder.getRate();
     }
 
+    /**
+     * Returns the position of the robot
+     *
+     * @return position of the robot
+     */
     @Override
     public final Pose getPose() {
-        return new Pose(new Point2D(0, 0), 0);
+        return new Pose(new Point2D(0, 0),
+            0); //TODO make it so that it actually returns an estimated position of the robot
     }
 
     @Override
@@ -108,46 +114,86 @@ public class DriveTrain extends Subsystem implements PoseProvider {
         return new RobotPair(leftEncoder.getDistance(), rightEncoder.getDistance());
     }
 
+    /**
+     * Checks if the motion profile controller is enabled
+     *
+     * @return true if motion profile controller has been enabled false otherwise
+     */
     public final boolean getControllerStatus() {
         return motionProfileController.isEnabled();
     }
 
+    /**
+     * Stop running the motions in the motion profile cnotroller by removing all the motions and setting speeds to 0
+     */
     public final void cancelMotion() {
         motionProfileController.cancel();
     }
 
+    /**
+     * Start to run the motions in the motion profile controller
+     */
     public final void startMotion() {
         motionProfileController.enable();
     }
 
+    /**
+     * Adds the motion to the motion profile controller to run
+     *
+     * @param motion motion to add to the controller
+     */
     public final void addControllerMotion(final MotionProvider motion) {
         motionProfileController.addMotion(motion);
     }
 
+    /**
+     * Checks if the motion controller has no more motions left to execute
+     *
+     * @return true if there are no more motions left false otherwise
+     */
     public final boolean isControllerFinished() {
         return motionProfileController.isFinished();
     }
 
+    /**
+     * Checks if the current motion has been finished.
+     *
+     * @return true if the motion has finished false otherwise
+     */
     public final boolean isCurrentMotionFinished() {
         return motionProfileController.isCurrentMotionFinished(Timer.getFPGATimestamp());
     }
 
+    /**
+     * Gets the current motion being run from the current kinematic
+     *
+     * @return current motion
+     */
     public final MotionProvider getCurrentMotion() {
         return motionProfileController.getCurrentMotion();
     }
 
+    /**
+     * Shifts down (will make the robot slower but more accurate)
+     */
     public final void shiftUp() {
         if (shifter.get()) {
             shifter.set(false);
         }
     }
 
+    /**
+     * Shifts up (will make the robot faster but less accurate)
+     */
     public final void shiftDown() {
         if (!shifter.get()) {
             shifter.set(true);
         }
     }
 
+    /**
+     * Sets the PID constants by retrieving the kV, kK, kA, kP values from the Preference table
+     */
     public final void setConstants() {
         final Preferences pref = Preferences.getInstance();
         final double kV = pref.getDouble("drivetrain.kV", DEFAULT_KV);

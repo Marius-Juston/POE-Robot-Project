@@ -57,8 +57,10 @@ public abstract class MotionProvider {
     }
 
     /**
+     * Returns the next position to go to
+     *
      * @param s how far we are into the motion
-     * @return the next pose it needs to be
+     * @return the next position the robot has to head to
      */
     public abstract Pose evaluatePose(double s);
 

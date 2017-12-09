@@ -45,42 +45,22 @@ public class MotionPathFollower extends MotionProvider {
         setLength(isForwards ? length : -length);
     }
 
-    /**
-     * Returns the next position to go to
-     *
-     * @param s how far we are into the motion
-     * @return the next position the robot has to head to
-     */
+
     @Override
     public final Pose evaluatePose(double s) {
         return robotPoses[(int) (s * (robotPoses.length - 1))];
     }
 
-    /**
-     * Returns the mode of the mode if it is moving or if it is just turning.
-     *
-     * @return the mode the robot is going to run this motion
-     */
     @Override
     public final LimitMode getLimitMode() {
         return LimitMode.LimitLinearAcceleration;
     }
 
-    /**
-     * Returns the initial robot angle
-     *
-     * @return inital robot angle
-     */
     @Override
     public final double getInitialTheta() {
         return initialTheta;
     }
 
-    /**
-     * Returns the robot final angle
-     *
-     * @return final angle of robot
-     */
     @Override
     public final double getFinalTheta() {
         return finalTheta;
