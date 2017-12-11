@@ -35,16 +35,10 @@ public class SmartDashboardProperty<T> {
      */
     public SmartDashboardProperty(String key, T defaultValue, Supplier<T> valueSupplier) {
         this.key = key;
-        value = defaultValue;
         this.defaultValue = defaultValue;
-
         this.valueSupplier = valueSupplier;
 
-//  onValueChange is run if the value (the value that you want to put into SmartDashboard) changes.
-        onValueChange = () -> {
-        };
-
-        update(); //TODO check if this helps fix the issue with static variables.
+        setValue(defaultValue);
         updateSmartDashboard();
     }
 
@@ -73,13 +67,11 @@ public class SmartDashboardProperty<T> {
      * @param value the value you want value to be
      */
     public final void setValue(T value) {
-        if (!value.equals(this.value)) { // will update SmartDashboard value if the value changes
-            this.value = value;
+        this.value = value;
 
-            updateSmartDashboard();
-            if (onValueChange != null) {
-                onValueChange.run();
-            }
+        updateSmartDashboard();
+        if (onValueChange != null) {
+            onValueChange.run();
         }
     }
 
@@ -130,6 +122,9 @@ public class SmartDashboardProperty<T> {
         this.onValueChange = onValueChange;
     }
 
+    /**
+     * Note: the value will not be shown if it is null.
+     */
     protected void updateSmartDashboard() {
         if (value == null) {
             return;
