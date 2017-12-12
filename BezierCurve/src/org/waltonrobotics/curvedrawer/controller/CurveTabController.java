@@ -47,40 +47,38 @@ public class CurveTabController implements Initializable {
   private final Alert confirmationAlert = new Alert(AlertType.CONFIRMATION);
   private final List<Shape> shapeHashSet = new ArrayList<>();
   public Button sendButton;
-  public SplitPane splitPane;
   public TextField smartDashboardKeyField;
   public TextField ipAddressTextField;
   public Accordion pathPane;
   public HBox creationPane;
-  @FXML
-  private Pane drawingPane;
+  @FXML private Pane drawingPane;
   private SimpleIntegerProperty selectedPath = new SimpleIntegerProperty(-1);
 
-  private TableView<Point> createTable(Path path) {
-    TableView<Point> pointTable = new TableView<>();
+    private TableView<Point> createTable(Path path) {
+        TableView<Point> pointTable = new TableView<>();
 
-    pointTable.setEditable(true);
-    pointTable.setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
-    pointTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        pointTable.setEditable(true);
+        pointTable.setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
+        pointTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-    TableColumn xColumn = initializeNumberColumn("x",
-        cellEditEvent -> cellEditEvent.getTableView().getItems().get(
-            cellEditEvent.getTablePosition().getRow())
-            .setX(cellEditEvent.getNewValue().doubleValue()));
-    xColumn.setText("X");
+        TableColumn xColumn = initializeNumberColumn("x",
+                cellEditEvent -> cellEditEvent.getTableView().getItems().get(
+                        cellEditEvent.getTablePosition().getRow())
+                        .setX(cellEditEvent.getNewValue().doubleValue()));
+        xColumn.setText("X");
 
-    TableColumn yColumn = initializeNumberColumn("y",
-        cellEditEvent -> cellEditEvent.getTableView().getItems().get(
-            cellEditEvent.getTablePosition().getRow())
-            .setY(cellEditEvent.getNewValue().doubleValue()));
-    yColumn.setText("Y");
+        TableColumn yColumn = initializeNumberColumn("y",
+                cellEditEvent -> cellEditEvent.getTableView().getItems().get(
+                        cellEditEvent.getTablePosition().getRow())
+                        .setY(cellEditEvent.getNewValue().doubleValue()));
+        yColumn.setText("Y");
 
-    pointTable.getColumns().addAll(xColumn, yColumn);
+        pointTable.getColumns().addAll(xColumn, yColumn);
 
-    pointTable.getItems().addAll(path.getCreationPoints());
+        pointTable.getItems().addAll(path.getCreationPoints());
 
-    return pointTable;
-  }
+        return pointTable;
+    }
 
   private TableColumn initializeNumberColumn(String property,
       EventHandler<CellEditEvent<Point, Number>> eventHandler) {
