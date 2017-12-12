@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/8"
+      fx:controller="org.curvedrawer.controller.CurveDrawerTabController">
+    <padding>
+        <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
+    </padding>
+    <SplitPane dividerPositions="1.0" VBox.vgrow="ALWAYS">
+        <ScrollPane fitToHeight="true" fitToWidth="true" onMouseClicked="#createPoint" prefViewportHeight="430.0"
+                    prefViewportWidth="429.0" HBox.hgrow="ALWAYS">
+            <Pane fx:id="drawingPane" prefHeight="500.0" prefWidth="500.0"/>
+        </ScrollPane>
+        <ScrollPane minWidth="0.0" prefViewportHeight="430.0" HBox.hgrow="NEVER"
+                    SplitPane.resizableWithParent="false">
+            <Accordion fx:id="pathsViewer"/>
+        </ScrollPane>
+    </SplitPane>
+    <Button fx:id="sendButton" disable="true" mnemonicParsing="false" onAction="#sendCurveToSmartDashboard"
+            text="Send to SmartDashboard"/>
+</VBox>

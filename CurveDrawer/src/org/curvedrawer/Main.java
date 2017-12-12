@@ -11,21 +11,20 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Main extends Application{
+public class Main extends Application {
+    private TabPane tabPane;
+
     public static void main(String[] args) {
         launch(args);
     }
 
-    private TabPane tabPane;
-
     @Override
     public void start(Stage primaryStage) throws IOException {
-        tabPane = FXMLLoader.load(getClass().getResource(
-                "./src/fxml/menu.fxml"));
-
-        primaryStage.setTitle("Bezier Curve Creator");
-        primaryStage.setScene(new Scene(tabPane));
-        primaryStage.show();
+        tabPane = new TabPane();
+        tabPane.setMaxSize(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+        tabPane.setMinSize(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+        tabPane.setPrefSize(640.0, 480.0);
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
         tabPane.setOnKeyPressed(event ->
         {
@@ -36,21 +35,34 @@ public class Main extends Application{
             }
         });
 
-        primaryStage.setOnCloseRequest(event -> NetworkTable.shutdown());
+        addTab(createDrawingTab("Curve Drawer"));
 
-        addTab(createDrawingTab("Bezier Test"));
+        primaryStage.setTitle("Bezier Curve Creator");
+        primaryStage.setScene(new Scene(tabPane));
+        primaryStage.show();
+
+        primaryStage.setOnCloseRequest(event -> NetworkTable.shutdown());
     }
 
     private void addTab(Tab tab) {
         tabPane.getTabs().add(tab);
-        tabPane.
+
+        if (tabPane.getTabs().size() > 1) {
+            tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+        }
     }
 
     private Tab createDrawingTab(String name) throws IOException {
-        Parent tabContentController = FXMLLoader.load(getClass().getResource("./src/fxml/drawing_tab.fxml"));
+        Parent tabContentController = FXMLLoader.load(getClass().getResource("/assets/fxml/curve_drawing_tab.fxml"));
 
         Tab tab = new Tab(name);
         tab.setContent(tabContentController);
+        tab.setOnClosed(event -> {
+            if (tabPane.getTabs().size() <= 1) {
+                tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+            }
+        });
+
 
         return tab;
     }
