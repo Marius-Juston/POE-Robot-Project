@@ -48,7 +48,17 @@ public class MotionPathFollower extends MotionProvider {
 
     @Override
     public final Pose evaluatePose(double s) {
-        return robotPoses[(int) (s * (robotPoses.length - 1))];
+        // interpolate between poses s% and s% + 1
+        int index = (int) (s * (robotPoses.length - 1));
+        if(index + 1 >= robotPoses.length)
+            return robotPoses[index];
+
+        Pose last = robotPoses[index];
+        Pose next = robotPoses[index + 1];
+
+        double localPercent = (s - index / (robotPoses.length - 1)) / (1 / robotPoses.length);
+
+        return Pose.interpolate(last, 1 - localPercent, next, localPercent);
     }
 
     @Override
