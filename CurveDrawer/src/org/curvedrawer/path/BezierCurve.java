@@ -9,8 +9,6 @@ import org.curvedrawer.util.Pose;
  * https://pages.mtu.edu/~shene/COURSES/cs3621/NOTES/spline/Bezier/bezier-der.html
  */
 public class BezierCurve extends Path {
-    private final int numberOfSteps;
-    private final Point[] controlPoints;
     private double[] coefficients;
 
     /**
@@ -19,10 +17,8 @@ public class BezierCurve extends Path {
      * @param numberOfSteps - the amount of points to define the curve, the resolution of the curve
      * @param controlPoints - the control points that define the robot
      */
-    public BezierCurve(double vCruise, double aMax, int numberOfSteps, Point... controlPoints) {
-        super(vCruise, aMax);
-        this.numberOfSteps = numberOfSteps;
-        this.controlPoints = controlPoints;
+    public BezierCurve(int numberOfSteps, Point... controlPoints) {
+        super(numberOfSteps, controlPoints);
         setCoefficients();
     }
 
@@ -59,10 +55,10 @@ public class BezierCurve extends Path {
      * @return an array of Points that define the curve
      */
     private Pose[] getCurvePoints() {
-        Pose[] poses = new Pose[numberOfSteps + 1];
+        Pose[] poses = new Pose[getNumberOfSteps() + 1];
 
-        for (double i = 0; i <= numberOfSteps; i++) {
-            poses[(int) i] = getPoint(i / ((double) numberOfSteps), controlPoints);
+        for (double i = 0; i <= getNumberOfSteps(); i++) {
+            poses[(int) i] = getPoint(i / ((double) getNumberOfSteps()), getPoints().toArray(new Point[0]));
         }
 
         return poses;
@@ -112,7 +108,7 @@ public class BezierCurve extends Path {
      * @return the degree of the curve
      */
     private int getDegree() {
-        return controlPoints.length - 1;
+        return getPoints().size() - 1;
     }
 
     /**
@@ -128,8 +124,8 @@ public class BezierCurve extends Path {
         double dy = 0;
         for (int i = 0; i < n; i++) {
             double coefficient = findNumberOfCombination(n, i) * Math.pow(t, i) * Math.pow(1 - t, n - i);
-            dx += coefficient * (n + 1) * (controlPoints[i + 1].getX() - controlPoints[i].getX());
-            dy += coefficient * (n + 1) * (controlPoints[i + 1].getY() - controlPoints[i].getY());
+            dx += coefficient * (n + 1) * (getPoints().get(i + 1).getX() - getPoints().get(i).getX());
+            dy += coefficient * (n + 1) * (getPoints().get(i + 1).getY() - getPoints().get(i).getY());
         }
         return dy / dx;
     }

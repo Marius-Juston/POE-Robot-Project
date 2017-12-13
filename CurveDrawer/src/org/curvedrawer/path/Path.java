@@ -1,24 +1,21 @@
 package org.curvedrawer.path;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.curvedrawer.util.LimitMode;
+import org.curvedrawer.util.Point;
 import org.curvedrawer.util.Pose;
 
 public abstract class Path {
-    private final double cruiseVelocity;
-    private final double acceleration;
+    private final SimpleListProperty<Point> points;
+    private final SimpleIntegerProperty numberOfSteps;
 
-    /**
-     * @param cruiseVelocity - cruise velocity
-     * @param aMax           - max acceleration
-     */
-    Path(double cruiseVelocity, double aMax) {
-        if (cruiseVelocity == 0)
-            throw new IllegalArgumentException("cruiseVelocity cannot be 0");
-        this.cruiseVelocity = cruiseVelocity;
 
-        if (aMax == 0)
-            throw new IllegalArgumentException("acceleration cannot be 0");
-        this.acceleration = aMax;
+    protected Path(int numberOfSteps, Point... points) {
+        this.points = new SimpleListProperty<>(FXCollections.observableArrayList(points));
+        this.numberOfSteps = new SimpleIntegerProperty(numberOfSteps);
     }
 
     private static Pose[] offsetPosesPerpendicularly(Pose[] poses, double offsetDistance) {
@@ -31,12 +28,32 @@ public abstract class Path {
         return offsetPoses;
     }
 
-    double getCruiseVelocity() {
-        return cruiseVelocity;
+    public int getNumberOfSteps() {
+        return numberOfSteps.get();
     }
 
-    double getAcceleration() {
-        return acceleration;
+    public void setNumberOfSteps(int numberOfSteps) {
+        this.numberOfSteps.set(numberOfSteps);
+    }
+
+    public SimpleIntegerProperty numberOfStepsProperty() {
+        return numberOfSteps;
+    }
+
+    public ObservableList<Point> getPoints() {
+        return points.get();
+    }
+
+    public void setPoints(ObservableList<Point> points) {
+        this.points.set(points);
+    }
+
+    public SimpleListProperty<Point> pointsProperty() {
+        return points;
+    }
+
+    public void addPoints(Point... points) {
+        getPoints().addAll(points);
     }
 
     /**
@@ -47,4 +64,12 @@ public abstract class Path {
     public abstract Pose[] createPathPoints();
 
     public abstract LimitMode getLimitMode();
+
+    @Override
+    public String toString() {
+        return "Path{" +
+                "points=" + points +
+                ", numberOfSteps=" + numberOfSteps +
+                '}';
+    }
 }

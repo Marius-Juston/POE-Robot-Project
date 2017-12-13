@@ -7,11 +7,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class Main extends Application {
+
+    public static final int NUMBER_OF_STEPS = 50;
+
+
     private TabPane tabPane;
 
     public static void main(String[] args) {
@@ -28,9 +33,7 @@ public class Main extends Application {
 
         tabPane.setOnKeyPressed(event ->
         {
-            String character = event.getText();
-
-            if (event.isControlDown() && character.equals("s")) {
+            if (event.isControlDown() && event.getCode() == KeyCode.S) {
                 System.out.println("SAVED"); //TODO make it save the current progress
             }
         });
@@ -40,6 +43,7 @@ public class Main extends Application {
         primaryStage.setTitle("Bezier Curve Creator");
         primaryStage.setScene(new Scene(tabPane));
         primaryStage.show();
+
 
         primaryStage.setOnCloseRequest(event -> NetworkTable.shutdown());
     }
@@ -53,7 +57,7 @@ public class Main extends Application {
     }
 
     private Tab createDrawingTab(String name) throws IOException {
-        Parent tabContentController = FXMLLoader.load(getClass().getResource("/assets/fxml/curve_drawing_tab.fxml"));
+        Parent tabContentController = FXMLLoader.load(getClass().getResource("/assets/fxml/curve_drawing_tab.fxml")); //TODO improve upon this
 
         Tab tab = new Tab(name);
         tab.setContent(tabContentController);
