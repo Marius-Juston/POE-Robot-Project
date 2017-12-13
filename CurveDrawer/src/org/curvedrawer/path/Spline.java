@@ -1,6 +1,5 @@
 package org.curvedrawer.path;
 
-import org.curvedrawer.util.LimitMode;
 import org.curvedrawer.util.Point;
 import org.curvedrawer.util.Pose;
 
@@ -119,20 +118,15 @@ public class Spline extends Path {
             Point[] controlPoints = curveControlPoints.toArray(new Point[0]);
             BezierCurve curve = new BezierCurve(getNumberOfSteps(), controlPoints);
 
-            Pose[] pathPoints = curve.createPathPoints();
+            Pose[] pathPoints = curve.createPathPoses();
             Collections.addAll(pathPointsAdd, pathPoints);
         }
         return pathPointsAdd.toArray(new Pose[0]);
     }
 
     @Override
-    public Pose[] createPathPoints() {
+    public Pose[] createPathPoses() {
         return joinBezierCurves(computeControlPoints());
-    }
-
-    @Override
-    public LimitMode getLimitMode() {
-        return LimitMode.LimitLinearAcceleration;
     }
 
 }

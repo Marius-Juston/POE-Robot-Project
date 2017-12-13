@@ -1,6 +1,6 @@
 package org.curvedrawer.path;
 
-import org.curvedrawer.util.LimitMode;
+import javafx.collections.ObservableList;
 import org.curvedrawer.util.Point;
 import org.curvedrawer.util.Pose;
 
@@ -75,6 +75,18 @@ public class BezierCurve extends Path {
         }
     }
 
+    @Override
+    public void addPoints(Point... points) {
+        super.addPoints(points);
+        setCoefficients();
+    }
+
+    @Override
+    public void setPoints(ObservableList<Point> points) {
+        super.setPoints(points);
+        setCoefficients();
+    }
+
     /**
      * Returns the point on the curve at any percentage on the line, t
      *
@@ -127,17 +139,12 @@ public class BezierCurve extends Path {
             dx += coefficient * (n + 1) * (getPoints().get(i + 1).getX() - getPoints().get(i).getX());
             dy += coefficient * (n + 1) * (getPoints().get(i + 1).getY() - getPoints().get(i).getY());
         }
-        return dy / dx;
+        return dy / dx;  //FIXME what to do if dx == 0? it will return NaN
     }
 
 
     @Override
-    public LimitMode getLimitMode() {
-        return LimitMode.LimitLinearAcceleration;
-    }
-
-    @Override
-    public Pose[] createPathPoints() {
+    public Pose[] createPathPoses() {
         return getCurvePoints();
     }
 }

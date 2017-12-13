@@ -1,10 +1,10 @@
 package org.curvedrawer.path;
 
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.curvedrawer.util.LimitMode;
 import org.curvedrawer.util.Point;
 import org.curvedrawer.util.Pose;
 
@@ -14,7 +14,9 @@ public abstract class Path {
 
 
     protected Path(int numberOfSteps, Point... points) {
-        this.points = new SimpleListProperty<>(FXCollections.observableArrayList(points));
+        this.points = new SimpleListProperty<>(FXCollections.observableArrayList(p -> new Observable[]{p.xProperty(), p.yProperty()}));
+        this.points.setAll(points);
+
         this.numberOfSteps = new SimpleIntegerProperty(numberOfSteps);
     }
 
@@ -61,9 +63,7 @@ public abstract class Path {
      *
      * @return an array of points that holds the points along the path
      */
-    public abstract Pose[] createPathPoints();
-
-    public abstract LimitMode getLimitMode();
+    public abstract Pose[] createPathPoses();
 
     @Override
     public String toString() {

@@ -15,8 +15,9 @@ import java.io.IOException;
 public class Main extends Application {
 
     public static final int NUMBER_OF_STEPS = 50;
-
-
+    public static final int TEAM_NUMBER = 2974;
+    public static final String NETWORK_TABLE_TABLE_KEY = "SmartDashboard";
+    public static NetworkTable networkTable;
     private TabPane tabPane;
 
     public static void main(String[] args) {
@@ -25,6 +26,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        initNetworkTable();
+
         tabPane = new TabPane();
         tabPane.setMaxSize(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
         tabPane.setMinSize(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
@@ -46,6 +49,12 @@ public class Main extends Application {
 
 
         primaryStage.setOnCloseRequest(event -> NetworkTable.shutdown());
+    }
+
+    private void initNetworkTable() {
+        NetworkTable.setClientMode();
+        NetworkTable.setTeam(TEAM_NUMBER);
+        networkTable = NetworkTable.getTable(NETWORK_TABLE_TABLE_KEY);
     }
 
     private void addTab(Tab tab) {
