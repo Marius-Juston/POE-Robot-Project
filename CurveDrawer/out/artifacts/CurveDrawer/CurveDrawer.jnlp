@@ -2,13 +2,13 @@
 <jnlp xmlns:jfx="http://javafx.com" spec="1.0" href="CurveDrawer.jnlp">
     <information>
         <title>Curve Drawer</title>
-        <vendor>Unknown</vendor>
-        <description>CurveDrawer</description>
+        <vendor>Unknown vendor</vendor>
+        <description>Sample JavaFX 2.0 application.</description>
         <offline-allowed/>
     </information>
     <resources>
         <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-        <jar href="CurveDrawer.jar" size="26832" download="eager"/>
+        <jar href="CurveDrawer.jar" size="28199" download="eager"/>
         <jar href="SmartDashboard.jar" size="4381529" download="eager"/>
     </resources>
     <jfx:javafx-desc width="640" height="480" main-class="org.curvedrawer.Main" name="CurveDrawer"/>

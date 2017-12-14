@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -13,7 +14,9 @@
     <SplitPane fx:id="splitPane" dividerPositions="1.0" VBox.vgrow="ALWAYS">
         <ScrollPane fitToHeight="true" fitToWidth="true" onMouseClicked="#createPoint" prefViewportHeight="430.0"
                     prefViewportWidth="429.0" HBox.hgrow="ALWAYS">
-            <Pane fx:id="drawingPane" prefHeight="500.0" prefWidth="500.0"/>
+            <Pane prefHeight="500.0" prefWidth="500.0">
+                <Group fx:id="drawingPane"/>
+            </Pane>
         </ScrollPane>
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" minWidth="0.0" prefViewportHeight="430.0">
             <Accordion fx:id="pathsViewer"/>
