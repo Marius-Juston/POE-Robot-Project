@@ -37,17 +37,19 @@ public class Spline extends Path {
      */
     private List<List<Point>> computeControlPoints() {
         int degree = getPoints().size() - 1;
-        Point[] points1 = new Point[degree];
-        Point[] points2 = new Point[degree];
-
-        /* constants for Thomas Algorithm */
-        double[] a = new double[degree];
-        double[] b = new double[degree];
-        double[] c = new double[degree];
-        double[] r_x = new double[degree];
-        double[] r_y = new double[degree];
 
         if (degree > 0) {
+
+            Point[] points1 = new Point[degree];
+            Point[] points2 = new Point[degree];
+
+            /* constants for Thomas Algorithm */
+            double[] a = new double[degree];
+            double[] b = new double[degree];
+            double[] c = new double[degree];
+            double[] r_x = new double[degree];
+            double[] r_y = new double[degree];
+
             /* left most segment */
             a[0] = 0;
             b[0] = 2;
@@ -93,17 +95,18 @@ public class Spline extends Path {
             points2[degree - 1] = new Point(0.5 * (getPoints().get(degree).getX() + points1[degree - 1].getX()),
                     0.5 * (getPoints().get(degree).getY() + points1[degree - 1].getY()));
 
+            List<List<Point>> controlPoints = new ArrayList<>(degree);
+
+            for (int i = 0; i < degree; i++) {
+                List<Point> segmentControlPoints = new ArrayList<>(4);
+                Collections.addAll(segmentControlPoints, getPoints().get(i), points1[i], points2[i], getPoints().get(i + 1));
+                Collections.addAll(controlPoints, segmentControlPoints);
+            }
+
+            return controlPoints;
+        } else {
+            return new ArrayList<>();
         }
-
-        List<List<Point>> controlPoints = new ArrayList<>(degree);
-
-        for (int i = 0; i < degree; i++) {
-            List<Point> segmentControlPoints = new ArrayList<>(4);
-            Collections.addAll(segmentControlPoints, getPoints().get(i), points1[i], points2[i], getPoints().get(i + 1));
-            Collections.addAll(controlPoints, segmentControlPoints);
-        }
-
-        return controlPoints;
     }
 
     /**

@@ -33,7 +33,7 @@ public class PathSelectorController implements Initializable { //TODO make this 
     @FXML
     private TextField pathName;
     @FXML
-    private ChoiceBox<PathType> pathTypeSelection;
+    private ChoiceBox<String> pathTypeSelection;
     @FXML
     private Button okButton;
     @FXML
@@ -65,8 +65,8 @@ public class PathSelectorController implements Initializable { //TODO make this 
     public final void initialize(URL location, ResourceBundle resources) {
         if (PathType.values().length > 0) {
 
-            pathTypeSelection.getItems().addAll(PathType.values());
-            pathTypeSelection.valueProperty().setValue(PathType.values()[0]);
+            pathTypeSelection.getItems().addAll(Arrays.stream(PathType.values()).map(PathType::name).toArray(String[]::new));
+            pathTypeSelection.valueProperty().setValue(PathType.values()[0].name());
             pathTypeSelection.valueProperty().addListener(
                     (observable, oldValue, newValue) -> allowOkButtonToChangeState(pathName.getText(),
                             newValue));
@@ -92,7 +92,7 @@ public class PathSelectorController implements Initializable { //TODO make this 
         cancelButton.setOnAction(event -> ((Node) (event.getSource())).getScene().getWindow().hide());
         okButton.setOnAction(event -> {
             try {
-                selectedPath = (Path) pathTypeSelection.getValue()
+                selectedPath = (Path) PathType.valueOf(pathTypeSelection.getValue())
                         .getAssociatedClass().getDeclaredConstructors()[0].newInstance(Main.NUMBER_OF_STEPS, new Point[0]);
 
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -104,7 +104,7 @@ public class PathSelectorController implements Initializable { //TODO make this 
     }
 
 
-    private void allowOkButtonToChangeState(String fieldText, PathType pathType) {
+    private void allowOkButtonToChangeState(String fieldText, String pathType) {
         if (fieldText.isEmpty() || (pathType == null)) {
             okButton.setDisable(true);
         } else {
