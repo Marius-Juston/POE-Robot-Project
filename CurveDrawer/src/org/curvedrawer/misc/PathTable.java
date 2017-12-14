@@ -3,6 +3,7 @@ package org.curvedrawer.misc;
 import javafx.event.EventHandler;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -34,7 +35,7 @@ public class PathTable extends TableView<Point> {
     }
 
     private void initializeNumberColumn(String columnName, String property,
-                                        EventHandler<TableColumn.CellEditEvent<Point, Number>> eventHandler) {
+                                        EventHandler<CellEditEvent<Point, Number>> eventHandler) {
 
         TableColumn<Point, Number> column = new TableColumn<>();
         column.setCellValueFactory(new PropertyValueFactory<>(property));
@@ -46,7 +47,7 @@ public class PathTable extends TableView<Point> {
         getColumns().add(column);
     }
 
-    private void initializeStringColumn(String columnName, String property, EventHandler<TableColumn.CellEditEvent<Point, String>> eventHandler) {
+    private void initializeStringColumn(String columnName, String property, EventHandler<CellEditEvent<Point, String>> eventHandler) {
         TableColumn<Point, String> column = new TableColumn<>();
         column.setCellValueFactory(new PropertyValueFactory<>(property));
         column.setCellFactory(TextFieldTableCell.forTableColumn());

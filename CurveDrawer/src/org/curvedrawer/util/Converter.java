@@ -3,13 +3,16 @@ package org.curvedrawer.util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Converter {
+public final class Converter {
+    private Converter() {
+    }
+
     public static Pose[] stringToPoses(String stringPoses) {
         String[] information = stringPoses.split(" ");
 
-        assert information.length % 3 == 0;
+        assert (information.length % 3) == 0;
 
-        List<Pose> poses = new ArrayList<>();
+        List<Pose> poses = new ArrayList<>(information.length / 3);
 
         for (int i = 0; i < information.length; i += 3) {
             double x = Double.parseDouble(information[i]);
@@ -19,7 +22,7 @@ public class Converter {
             poses.add(new Pose(x, y, angle));
         }
 
-        return poses.toArray(new Pose[0]);
+        return poses.toArray(new Pose[poses.size()]);
     }
 
     public static String posesToString(Pose[] poses) {

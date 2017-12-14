@@ -43,9 +43,11 @@ public class BezierCurve extends Path {
      * @return the factorial of d
      */
     private static double factorial(double d) {
-        double r = d - Math.floor(d) + 1;
-        for (; d > 1; d -= 1) {
-            r *= d;
+        double d1 = d;
+        double r = (d1 - Math.floor(d1)) + 1;
+        while (d1 > 1) {
+            r *= d1;
+            d1 -= 1;
         }
         return r;
     }
@@ -57,7 +59,8 @@ public class BezierCurve extends Path {
         Pose[] poses = new Pose[getNumberOfSteps() + 1];
 
         for (double i = 0; i <= getNumberOfSteps(); i++) {
-            poses[(int) i] = getPoint(i / ((double) getNumberOfSteps()), getPoints().toArray(new Point[0]));
+            javafx.collections.ObservableList<Point> var = getPoints();
+            poses[(int) i] = getPoint(i / ((double) getNumberOfSteps()), var.toArray(new Point[var.size()]));
         }
 
         return poses;
@@ -87,16 +90,16 @@ public class BezierCurve extends Path {
 
         int n = getDegree();
 
-        if (coefficients.length != n + 1) {
+        if (coefficients.length != (n + 1)) {
             setCoefficients();
         }
 
         for (double i = 0; i <= n; i++) {
             double coefficient = coefficients[(int) i];
 
-            double oneMinusT = Math.pow(1 - percentage, n - i);
+            double oneMinusT = StrictMath.pow(1 - percentage, n - i);
 
-            double powerOfT = Math.pow(percentage, i);
+            double powerOfT = StrictMath.pow(percentage, i);
 
             Point pointI = controlPoints[(int) i];
 
@@ -122,13 +125,13 @@ public class BezierCurve extends Path {
      * @return derivative at point
      */
     private double getDT(double t) {
-        if (t < 1 && getPoints().size() > 0) {
+        if ((t < 1) && !getPoints().isEmpty()) {
             int n = getDegree();
             double dx = 0;
             double dy = 0;
 
             for (int i = 0; i < n; i++) {
-                double coefficient = findNumberOfCombination(n, i) * Math.pow(t, i) * Math.pow(1 - t, n - i);
+                double coefficient = findNumberOfCombination(n, i) * StrictMath.pow(t, i) * StrictMath.pow(1 - t, n - i);
                 dx += coefficient * (n + 1) * (getPoints().get(i + 1).getX() - getPoints().get(i).getX());
                 dy += coefficient * (n + 1) * (getPoints().get(i + 1).getY() - getPoints().get(i).getY());
             }
@@ -148,7 +151,9 @@ public class BezierCurve extends Path {
 
 
     @Override
-    public Pose[] createPathPoses() {
+    public final Pose[] createPathPoses() {
         return getCurvePoints();
     }
+
+
 }

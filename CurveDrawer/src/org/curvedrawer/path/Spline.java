@@ -52,42 +52,42 @@ public class Spline extends Path {
             a[0] = 0;
             b[0] = 2;
             c[0] = 1;
-            r_x[0] = getPoints().get(0).getX() + 2 * getPoints().get(1).getX();
-            r_y[0] = getPoints().get(0).getY() + 2 * getPoints().get(1).getY();
+            r_x[0] = getPoints().get(0).getX() + (2 * getPoints().get(1).getX());
+            r_y[0] = getPoints().get(0).getY() + (2 * getPoints().get(1).getY());
 
             /* internal segments */
-            for (int i = 1; i < degree - 1; i++) {
+            for (int i = 1; i < (degree - 1); i++) {
                 a[i] = 1;
                 b[i] = 4;
                 c[i] = 1;
-                r_x[i] = 4 * getPoints().get(i).getX() + 2 * getPoints().get(i + 1).getX();
-                r_y[i] = 4 * getPoints().get(i).getY() + 2 * getPoints().get(i + 1).getY();
+                r_x[i] = (4 * getPoints().get(i).getX()) + (2 * getPoints().get(i + 1).getX());
+                r_y[i] = (4 * getPoints().get(i).getY()) + (2 * getPoints().get(i + 1).getY());
             }
 
             /* right segment */
             a[degree - 1] = 2;
             b[degree - 1] = 7;
             c[degree - 1] = 0;
-            r_x[degree - 1] = 8 * getPoints().get(degree - 1).getX() + getPoints().get(degree).getX();
-            r_y[degree - 1] = 8 * getPoints().get(degree - 1).getY() + getPoints().get(degree).getY();
+            r_x[degree - 1] = (8 * getPoints().get(degree - 1).getX()) + getPoints().get(degree).getX();
+            r_y[degree - 1] = (8 * getPoints().get(degree - 1).getY()) + getPoints().get(degree).getY();
 
             /* solves Ax=b with the Thomas algorithm */
             for (int i = 1; i < degree; i++) {
                 double m = a[i] / b[i - 1]; // temporary variable
-                b[i] = b[i] - m * c[i - 1];
-                r_x[i] = r_x[i] - m * r_x[i - 1];
-                r_y[i] = r_y[i] - m * r_y[i - 1];
+                b[i] -= m * c[i - 1];
+                r_x[i] -= m * r_x[i - 1];
+                r_y[i] -= m * r_y[i - 1];
             }
             points1[degree - 1] = new Point(r_x[degree - 1] / b[degree - 1], r_y[degree - 1] / b[degree - 1]);
             for (int i = degree - 2; i >= 0; --i) {
-                points1[i] = new Point((r_x[i] - c[i] * points1[i + 1].getX()) / b[i],
-                        (r_y[i] - c[i] * points1[i + 1].getY()) / b[i]);
+                points1[i] = new Point((r_x[i] - (c[i] * points1[i + 1].getX())) / b[i],
+                        (r_y[i] - (c[i] * points1[i + 1].getY())) / b[i]);
             }
 
             /* we have p1, now compute p2 */
-            for (int i = 0; i < degree - 1; i++) {
-                points2[i] = new Point(2 * getPoints().get(i + 1).getX() - points1[i + 1].getX(),
-                        2 * getPoints().get(i + 1).getY() - points1[i + 1].getY());
+            for (int i = 0; i < (degree - 1); i++) {
+                points2[i] = new Point((2 * getPoints().get(i + 1).getX()) - points1[i + 1].getX(),
+                        (2 * getPoints().get(i + 1).getY()) - points1[i + 1].getY());
             }
 
             points2[degree - 1] = new Point(0.5 * (getPoints().get(degree).getX() + points1[degree - 1].getX()),
@@ -95,10 +95,10 @@ public class Spline extends Path {
 
         }
 
-        List<List<Point>> controlPoints = new ArrayList<>();
+        List<List<Point>> controlPoints = new ArrayList<>(degree);
 
         for (int i = 0; i < degree; i++) {
-            List<Point> segmentControlPoints = new ArrayList<>();
+            List<Point> segmentControlPoints = new ArrayList<>(4);
             Collections.addAll(segmentControlPoints, getPoints().get(i), points1[i], points2[i], getPoints().get(i + 1));
             Collections.addAll(controlPoints, segmentControlPoints);
         }
@@ -107,25 +107,25 @@ public class Spline extends Path {
     }
 
     /**
-     * Joins the bezier curves defining the spline into intdividual arrays of Points
+     * Joins the bezier curves defining the spline into individual arrays of Points
      *
      * @param pathControlPoints - a List of Lists of control points for each curve that make up the spline
      */
     private Pose[] joinBezierCurves(List<List<Point>> pathControlPoints) {
-        List<Pose> pathPointsAdd = new ArrayList<>();
+        List<Pose> pathPointsAdd = new ArrayList<>(pathControlPoints.size() * 4);
 
         for (List<Point> curveControlPoints : pathControlPoints) {
-            Point[] controlPoints = curveControlPoints.toArray(new Point[0]);
+            Point[] controlPoints = curveControlPoints.toArray(new Point[curveControlPoints.size()]);
             BezierCurve curve = new BezierCurve(getNumberOfSteps(), controlPoints);
 
             Pose[] pathPoints = curve.createPathPoses();
             Collections.addAll(pathPointsAdd, pathPoints);
         }
-        return pathPointsAdd.toArray(new Pose[0]);
+        return pathPointsAdd.toArray(new Pose[pathPointsAdd.size()]);
     }
 
     @Override
-    public Pose[] createPathPoses() {
+    public final Pose[] createPathPoses() {
         return joinBezierCurves(computeControlPoints());
     }
 

@@ -17,42 +17,51 @@ public class Point {
     public Point(double x, double y) {
         this.x = new SimpleDoubleProperty(x);
         this.y = new SimpleDoubleProperty(y);
-        this.name = new SimpleStringProperty(null);
+        name = new SimpleStringProperty(null);
     }
 
-    public double getX() {
+    public final double getX() {
         return x.get();
     }
 
-    public void setX(double x) {
+    public final void setX(double x) {
         this.x.set(x);
     }
 
-    public SimpleDoubleProperty xProperty() {
+    public final SimpleDoubleProperty xProperty() {
         return x;
     }
 
-    public double getY() {
+    public final double getY() {
         return y.get();
     }
 
-    public void setY(double y) {
+    public final void setY(double y) {
         this.y.set(y);
     }
 
-    public SimpleDoubleProperty yProperty() {
+    public final SimpleDoubleProperty yProperty() {
         return y;
     }
 
-    public String getName() {
+    public final String getName() {
         return name.get();
     }
 
-    public void setName(String name) {
+    public final void setName(String name) {
         this.name.set(name);
     }
 
-    public SimpleStringProperty nameProperty() {
+    public final SimpleStringProperty nameProperty() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Point{" +
+                "x=" + x +
+                ", y=" + y +
+                ", name=" + name +
+                '}';
     }
 }

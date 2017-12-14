@@ -5,10 +5,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableMap;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TitledPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -25,25 +27,25 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class CurveDrawerTabController implements Initializable {
     private final ObservableMap<Path, Pose[]> pathPoints = FXCollections.observableHashMap();
-    public SplitPane splitPane;
-    public ScrollPane pathScrollPane;
+    private final Map<Integer, Path> pathHashMap = new HashMap<>(10);
+    private final Map<Path, HashMap<Pose, CirclePoint>> posePointHashMap = new HashMap<>(10);
+    @FXML
+    private SplitPane splitPane;
     @FXML
     private Pane drawingPane;
     @FXML
     private Accordion pathsViewer;
     @FXML
     private Button sendButton;
-    private HashMap<Integer, Path> pathHashMap = new HashMap<>();
     private SimpleIntegerProperty selectedPath;
-    private Path selectedPaths;
-    private HashMap<Path, HashMap<Pose, CirclePoint>> posePointHashMap = new HashMap<>();
 
-    public void sendCurveToSmartDashboard(ActionEvent actionEvent) {
+    public final void sendCurveToSmartDashboard() {
         Path path = getSelectedPaths();
 
         Pose[] poses = pathPoints.get(path);
@@ -54,20 +56,20 @@ public class CurveDrawerTabController implements Initializable {
 
         String nameOfPath = pathsViewer.getPanes().get(selectedPath.get()).getText();
 
-        System.out.println("'" + nameOfPath + "'");
+        System.out.println('\'' + nameOfPath + '\'');
 
         Main.networkTable.putString(nameOfPath, converted);
     }
 
-    public void createPath() {
-        Map.Entry<String, Path> path = askForPath();
+    private void createPath() {
+        Entry<String, Path> path = askForPath();
 
         if (path != null) {
             addPath(path.getKey(), path.getValue());
         }
     }
 
-    public void createPoint(MouseEvent mouseEvent) {
+    public final void createPoint(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
             if (selectedPath.get() == -1) {
                 createPath();
@@ -81,7 +83,7 @@ public class CurveDrawerTabController implements Initializable {
         }
     }
 
-    private Map.Entry<String, Path> askForPath() {
+    private Entry<String, Path> askForPath() {
         return PathSelectorController.getPathChoice(getUsedPathNames());
     }
 
@@ -89,8 +91,8 @@ public class CurveDrawerTabController implements Initializable {
         return pathsViewer.getPanes().stream().map(TitledPane::getText).toArray(String[]::new);
     }
 
-    public void addPath(String pathName, Path path) {
-        if (path != null || pathName != null) {
+    private void addPath(String pathName, Path path) {
+        if ((path != null) || (pathName != null)) {
             assert path != null;
             TitledPane titledPane = new TitledPane(pathName, new PathTable(path));
 
@@ -105,7 +107,7 @@ public class CurveDrawerTabController implements Initializable {
             sendButton.setDisable(false);
 
             pathPoints.put(path, path.createPathPoses());
-            posePointHashMap.put(path, new HashMap<>());
+            posePointHashMap.put(path, new HashMap<>(Main.NUMBER_OF_STEPS));
 
             path.getPoints().addListener((ListChangeListener<Point>) c -> {
                 if (c.next()) {
@@ -122,12 +124,12 @@ public class CurveDrawerTabController implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public final void initialize(URL location, ResourceBundle resources) {
         selectedPath = new SimpleIntegerProperty(-1);
 
         splitPane.setOnKeyPressed(event -> {
-            if (event.isControlDown() && event.getCode() == KeyCode.N) {
-                this.createPath();
+            if (event.isControlDown() && (event.getCode() == KeyCode.N)) {
+                createPath();
             }
         });
 
@@ -136,7 +138,7 @@ public class CurveDrawerTabController implements Initializable {
                 CirclePoint[] circlePoint = Arrays.stream(c.getValueAdded()).map(pose -> new CirclePoint(pose.getX(), pose.getY())).toArray(CirclePoint[]::new);
 
                 if (posePointHashMap.containsKey(c.getKey())) {
-                    HashMap<Pose, CirclePoint> circlePointHashMap = posePointHashMap.get(c.getKey());
+                    Map<Pose, CirclePoint> circlePointHashMap = posePointHashMap.get(c.getKey());
 
                     Pose[] pose = c.getValueAdded();
 
@@ -149,7 +151,7 @@ public class CurveDrawerTabController implements Initializable {
             }
             if (c.wasRemoved()) {
                 if (posePointHashMap.containsKey(c.getKey())) {
-                    HashMap<Pose, CirclePoint> circlePointHashMap = posePointHashMap.get(c.getKey());
+                    Map<Pose, CirclePoint> circlePointHashMap = posePointHashMap.get(c.getKey());
 
                     Pose[] poses = c.getValueRemoved();
 
@@ -158,7 +160,8 @@ public class CurveDrawerTabController implements Initializable {
                     int i = 0;
 
                     for (Pose pose : poses) {
-                        circlePoints[i++] = circlePointHashMap.get(pose);
+                        circlePoints[i] = circlePointHashMap.get(pose);
+                        i++;
                     }
 
                     drawingPane.getChildren().removeAll(circlePoints);

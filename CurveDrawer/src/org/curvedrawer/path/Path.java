@@ -8,12 +8,15 @@ import javafx.collections.ObservableList;
 import org.curvedrawer.util.Point;
 import org.curvedrawer.util.Pose;
 
+import java.util.Collections;
+import java.util.List;
+
 public abstract class Path {
     private final SimpleListProperty<Point> points;
     private final SimpleIntegerProperty numberOfSteps;
 
 
-    protected Path(int numberOfSteps, Point... points) {
+    Path(int numberOfSteps, Point... points) {
         this.points = new SimpleListProperty<>(FXCollections.observableArrayList(p -> new Observable[]{p.xProperty(), p.yProperty()}));
         this.points.setAll(points);
 
@@ -30,31 +33,31 @@ public abstract class Path {
         return offsetPoses;
     }
 
-    public int getNumberOfSteps() {
+    public final int getNumberOfSteps() {
         return numberOfSteps.get();
     }
 
-    public void setNumberOfSteps(int numberOfSteps) {
+    public final void setNumberOfSteps(int numberOfSteps) {
         this.numberOfSteps.set(numberOfSteps);
     }
 
-    public SimpleIntegerProperty numberOfStepsProperty() {
+    public final SimpleIntegerProperty numberOfStepsProperty() {
         return numberOfSteps;
     }
 
-    public ObservableList<Point> getPoints() {
+    public final ObservableList<Point> getPoints() {
         return points.get();
     }
 
-    public void setPoints(ObservableList<Point> points) {
+    public final void setPoints(ObservableList<Point> points) {
         this.points.set(points);
     }
 
-    public SimpleListProperty<Point> pointsProperty() {
-        return points;
+    public final List<Point> pointsProperty() {
+        return Collections.unmodifiableList(points);
     }
 
-    public void addPoints(Point... points) {
+    public final void addPoints(Point... points) {
         getPoints().addAll(points);
     }
 
@@ -66,7 +69,7 @@ public abstract class Path {
     public abstract Pose[] createPathPoses();
 
     @Override
-    public String toString() {
+    public final String toString() {
         return "Path{" +
                 "points=" + points +
                 ", numberOfSteps=" + numberOfSteps +

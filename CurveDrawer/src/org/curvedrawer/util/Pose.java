@@ -11,15 +11,15 @@ public class Pose {
         this.angle = angle;
     }
 
-    public double getX() {
+    public final double getX() {
         return x;
     }
 
-    public double getY() {
+    public final double getY() {
         return y;
     }
 
-    public double getAngle() {
+    public final double getAngle() {
         return angle;
     }
 
@@ -29,12 +29,21 @@ public class Pose {
      * @param distance - the distance to offset the point by
      * @return the offset point
      */
-    public Pose offsetPerpendicular(double distance) {
-        double angleOfDT = Math.atan(angle);
-        double offsetX = distance * Math.cos(angleOfDT + Math.PI / 2); // Finds point at distance along perpendicular
+    public final Pose offsetPerpendicular(double distance) {
+        double angleOfDT = StrictMath.atan(angle);
+        double offsetX = distance * StrictMath.cos(angleOfDT + (Math.PI / 2)); // Finds point at distance along perpendicular
         // line
-        double offsetY = distance * Math.sin(angleOfDT + Math.PI / 2);
+        double offsetY = distance * StrictMath.sin(angleOfDT + (Math.PI / 2));
 
-        return new Pose(this.x + offsetX, this.y + offsetY, angleOfDT);
+        return new Pose(x + offsetX, y + offsetY, angleOfDT);
+    }
+
+    @Override
+    public String toString() {
+        return "Pose{" +
+                "x=" + x +
+                ", y=" + y +
+                ", angle=" + angle +
+                '}';
     }
 }

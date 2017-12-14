@@ -1,5 +1,6 @@
 package org.curvedrawer.controller;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -8,7 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.TextInputControl;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.curvedrawer.Main;
@@ -19,21 +21,26 @@ import org.curvedrawer.util.Point;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class PathSelectorController implements Initializable { //TODO make this better and more efficient
 
     private static String[] existingPathNames;
     private static Path selectedPath;
-    public TextField pathName;
-    public ChoiceBox<PathType> pathTypeSelection;
-    public Button okButton;
-    public Button cancelButton;
+    @FXML
+    private TextField pathName;
+    @FXML
+    private ChoiceBox<PathType> pathTypeSelection;
+    @FXML
+    private Button okButton;
+    @FXML
+    private Button cancelButton;
 
-    public static AbstractMap.SimpleEntry<String, Path> getPathChoice(String[] existingPathNames) {
-        PathSelectorController.existingPathNames = existingPathNames;
+    public static Map.Entry<String, Path> getPathChoice(String[] existingPathNames) {
+        PathSelectorController.existingPathNames = existingPathNames.clone();
 
         try {
             Parent parent = FXMLLoader
@@ -44,9 +51,9 @@ public class PathSelectorController implements Initializable { //TODO make this 
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-            String text = ((TextField) ((HBox) parent.getChildrenUnmodifiable().get(0)).getChildren().get(0)).getText();
+            String text = ((TextInputControl) ((Pane) parent.getChildrenUnmodifiable().get(0)).getChildren().get(0)).getText();
 
-            return new AbstractMap.SimpleEntry<>(text, selectedPath);
+            return new SimpleEntry<>(text, selectedPath);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,7 +62,7 @@ public class PathSelectorController implements Initializable { //TODO make this 
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public final void initialize(URL location, ResourceBundle resources) {
         if (PathType.values().length > 0) {
 
             pathTypeSelection.getItems().addAll(PathType.values());
@@ -85,7 +92,7 @@ public class PathSelectorController implements Initializable { //TODO make this 
         cancelButton.setOnAction(event -> ((Node) (event.getSource())).getScene().getWindow().hide());
         okButton.setOnAction(event -> {
             try {
-                PathSelectorController.selectedPath = (Path) pathTypeSelection.getValue()
+                selectedPath = (Path) pathTypeSelection.getValue()
                         .getAssociatedClass().getDeclaredConstructors()[0].newInstance(Main.NUMBER_OF_STEPS, new Point[0]);
 
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -98,7 +105,7 @@ public class PathSelectorController implements Initializable { //TODO make this 
 
 
     private void allowOkButtonToChangeState(String fieldText, PathType pathType) {
-        if (fieldText.isEmpty() || pathType == null) {
+        if (fieldText.isEmpty() || (pathType == null)) {
             okButton.setDisable(true);
         } else {
             okButton.setDisable(false);

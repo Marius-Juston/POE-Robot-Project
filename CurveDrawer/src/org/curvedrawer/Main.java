@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
@@ -15,8 +16,8 @@ import java.io.IOException;
 public class Main extends Application {
 
     public static final int NUMBER_OF_STEPS = 50;
-    public static final int TEAM_NUMBER = 2974;
-    public static final String NETWORK_TABLE_TABLE_KEY = "SmartDashboard";
+    private static final int TEAM_NUMBER = 2974;
+    private static final String NETWORK_TABLE_TABLE_KEY = "SmartDashboard";
     public static NetworkTable networkTable;
     private TabPane tabPane;
 
@@ -24,19 +25,25 @@ public class Main extends Application {
         launch(args);
     }
 
+    private static void initNetworkTable() {
+        NetworkTable.setClientMode();
+        NetworkTable.setTeam(TEAM_NUMBER);
+        networkTable = NetworkTable.getTable(NETWORK_TABLE_TABLE_KEY);
+    }
+
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public final void start(Stage primaryStage) throws IOException {
         initNetworkTable();
 
         tabPane = new TabPane();
         tabPane.setMaxSize(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
         tabPane.setMinSize(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
         tabPane.setPrefSize(640.0, 480.0);
-        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 
         tabPane.setOnKeyPressed(event ->
         {
-            if (event.isControlDown() && event.getCode() == KeyCode.S) {
+            if (event.isControlDown() && (event.getCode() == KeyCode.S)) {
                 System.out.println("SAVED"); //TODO make it save the current progress
             }
         });
@@ -47,21 +54,14 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(tabPane));
         primaryStage.show();
 
-
         primaryStage.setOnCloseRequest(event -> NetworkTable.shutdown());
-    }
-
-    private void initNetworkTable() {
-        NetworkTable.setClientMode();
-        NetworkTable.setTeam(TEAM_NUMBER);
-        networkTable = NetworkTable.getTable(NETWORK_TABLE_TABLE_KEY);
     }
 
     private void addTab(Tab tab) {
         tabPane.getTabs().add(tab);
 
         if (tabPane.getTabs().size() > 1) {
-            tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+            tabPane.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
         }
     }
 
@@ -72,7 +72,7 @@ public class Main extends Application {
         tab.setContent(tabContentController);
         tab.setOnClosed(event -> {
             if (tabPane.getTabs().size() <= 1) {
-                tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+                tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
             }
         });
 
