@@ -1,6 +1,7 @@
 package org.curvedrawer.misc;
 
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import org.curvedrawer.util.Point;
 
@@ -10,5 +11,13 @@ public class CirclePoint extends Circle {
 
         centerXProperty().bind(point.xProperty());
         centerYProperty().bind(point.yProperty());
+    }
+
+    public CirclePoint(double centerX, double centerY) {
+        super(centerX, centerY, 2, Color.RED);
+    }
+
+    public CirclePoint(double centerX, double centerY, double radius, Paint fill) {
+        super(centerX, centerY, radius, fill);
     }
 }

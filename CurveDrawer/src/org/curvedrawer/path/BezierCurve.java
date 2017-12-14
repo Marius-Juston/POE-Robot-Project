@@ -1,6 +1,5 @@
 package org.curvedrawer.path;
 
-import javafx.collections.ObservableList;
 import org.curvedrawer.util.Point;
 import org.curvedrawer.util.Pose;
 
@@ -75,18 +74,6 @@ public class BezierCurve extends Path {
         }
     }
 
-    @Override
-    public void addPoints(Point... points) {
-        super.addPoints(points);
-        setCoefficients();
-    }
-
-    @Override
-    public void setPoints(ObservableList<Point> points) {
-        super.setPoints(points);
-        setCoefficients();
-    }
-
     /**
      * Returns the point on the curve at any percentage on the line, t
      *
@@ -99,6 +86,10 @@ public class BezierCurve extends Path {
         double yCoordinateAtPercentage = 0;
 
         int n = getDegree();
+
+        if (coefficients.length != n + 1) {
+            setCoefficients();
+        }
 
         for (double i = 0; i <= n; i++) {
             double coefficient = coefficients[(int) i];
@@ -131,15 +122,28 @@ public class BezierCurve extends Path {
      * @return derivative at point
      */
     private double getDT(double t) {
-        int n = getDegree();
-        double dx = 0;
-        double dy = 0;
-        for (int i = 0; i < n; i++) {
-            double coefficient = findNumberOfCombination(n, i) * Math.pow(t, i) * Math.pow(1 - t, n - i);
-            dx += coefficient * (n + 1) * (getPoints().get(i + 1).getX() - getPoints().get(i).getX());
-            dy += coefficient * (n + 1) * (getPoints().get(i + 1).getY() - getPoints().get(i).getY());
+        if (t < 1 && getPoints().size() > 0) {
+            int n = getDegree();
+            double dx = 0;
+            double dy = 0;
+
+            for (int i = 0; i < n; i++) {
+                double coefficient = findNumberOfCombination(n, i) * Math.pow(t, i) * Math.pow(1 - t, n - i);
+                dx += coefficient * (n + 1) * (getPoints().get(i + 1).getX() - getPoints().get(i).getX());
+                dy += coefficient * (n + 1) * (getPoints().get(i + 1).getY() - getPoints().get(i).getY());
+            }
+
+            if (dx == 0)
+                return 0;
+
+            return dy / dx;  //FIXME what to do if dx == 0? it will return NaN
+        } else if (getPoints().size() > 1) {
+
+            return (getPoints().get(getPoints().size() - 1).getY() - getPoints().get(getPoints().size() - 2).getY()) / (getPoints().get(getPoints().size() - 1).getX() - getPoints().get(getPoints().size() - 2).getX());
+        } else {
+            return 0;
         }
-        return dy / dx;  //FIXME what to do if dx == 0? it will return NaN
+
     }
 
 

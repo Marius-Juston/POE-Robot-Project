@@ -1,7 +1,6 @@
 package org.curvedrawer.controller;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleMapProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
@@ -23,12 +22,14 @@ import org.curvedrawer.util.Point;
 import org.curvedrawer.util.Pose;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class CurveDrawerTabController implements Initializable {
+    private final ObservableMap<Path, Pose[]> pathPoints = FXCollections.observableHashMap();
     public SplitPane splitPane;
     public ScrollPane pathScrollPane;
     @FXML
@@ -37,10 +38,10 @@ public class CurveDrawerTabController implements Initializable {
     private Accordion pathsViewer;
     @FXML
     private Button sendButton;
-
     private HashMap<Integer, Path> pathHashMap = new HashMap<>();
     private SimpleIntegerProperty selectedPath;
     private Path selectedPaths;
+    private HashMap<Path, HashMap<Pose, CirclePoint>> posePointHashMap = new HashMap<>();
 
     public void sendCurveToSmartDashboard(ActionEvent actionEvent) {
         Path path = getSelectedPaths();
@@ -52,6 +53,8 @@ public class CurveDrawerTabController implements Initializable {
         System.out.println(converted);
 
         String nameOfPath = pathsViewer.getPanes().get(selectedPath.get()).getText();
+
+        System.out.println("'" + nameOfPath + "'");
 
         Main.networkTable.putString(nameOfPath, converted);
     }
@@ -102,6 +105,7 @@ public class CurveDrawerTabController implements Initializable {
             sendButton.setDisable(false);
 
             pathPoints.put(path, path.createPathPoses());
+            posePointHashMap.put(path, new HashMap<>());
 
             path.getPoints().addListener((ListChangeListener<Point>) c -> {
                 if (c.next()) {
@@ -110,14 +114,12 @@ public class CurveDrawerTabController implements Initializable {
                     } else if (c.wasAdded()) {
                         drawingPane.getChildren().addAll(c.getAddedSubList().stream().map(CirclePoint::new).collect(Collectors.toList()));
                     }
-                    System.out.println(c.wasPermutated());
-                    System.out.println(c.wasUpdated());
+
+                    pathPoints.put(path, path.createPathPoses());
                 }
             });
         }
     }
-
-    private final ObservableMap<Path , Pose[]> pathPoints = FXCollections.observableHashMap();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -129,10 +131,40 @@ public class CurveDrawerTabController implements Initializable {
             }
         });
 
-        pathPoints.addListener((MapChangeListener<? super Path, ? super Pose[]>) change -> {
+        pathPoints.addListener((MapChangeListener<Path, Pose[]>) c -> {
+            if (c.wasAdded()) {
+                CirclePoint[] circlePoint = Arrays.stream(c.getValueAdded()).map(pose -> new CirclePoint(pose.getX(), pose.getY())).toArray(CirclePoint[]::new);
 
-            System.out.println(pathPoints);
-            System.out.println(change.getMap());
+                if (posePointHashMap.containsKey(c.getKey())) {
+                    HashMap<Pose, CirclePoint> circlePointHashMap = posePointHashMap.get(c.getKey());
+
+                    Pose[] pose = c.getValueAdded();
+
+                    for (int i = 0; i < pose.length; i++) {
+                        circlePointHashMap.put(pose[i], circlePoint[i]);
+                    }
+                }
+
+                drawingPane.getChildren().addAll(circlePoint);
+            }
+            if (c.wasRemoved()) {
+                if (posePointHashMap.containsKey(c.getKey())) {
+                    HashMap<Pose, CirclePoint> circlePointHashMap = posePointHashMap.get(c.getKey());
+
+                    Pose[] poses = c.getValueRemoved();
+
+                    CirclePoint[] circlePoints = new CirclePoint[poses.length];
+
+                    int i = 0;
+
+                    for (Pose pose : poses) {
+                        circlePoints[i++] = circlePointHashMap.get(pose);
+                    }
+
+                    drawingPane.getChildren().removeAll(circlePoints);
+                }
+            }
+
         });
     }
 
