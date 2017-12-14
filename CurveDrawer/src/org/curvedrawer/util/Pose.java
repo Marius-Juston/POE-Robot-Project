@@ -38,6 +38,11 @@ public class Pose {
         return new Pose(x + offsetX, y + offsetY, angleOfDT);
     }
 
+    public Pose multiply(double factor)
+    {
+        return new Pose(x * factor, y * factor, angle);
+    }
+
     @Override
     public String toString() {
         return "Pose{" +

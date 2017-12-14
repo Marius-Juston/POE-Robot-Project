@@ -5,7 +5,7 @@ import org.curvedrawer.Main;
 import org.curvedrawer.util.Converter;
 import org.curvedrawer.util.Pose;
 
-public class RobotPathViewer implements Runnable {
+public class RobotPathViewer {
 
     private final String pathKey;
     private final Pose[] pathPoses;

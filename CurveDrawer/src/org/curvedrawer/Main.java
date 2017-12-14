@@ -16,9 +16,13 @@ import java.io.IOException;
 public class Main extends Application {
 
     public static final int NUMBER_OF_STEPS = 50;
+    public static final String IP_ADDRESS = "10.0.0.24";
+    public static final boolean IS_CLIENT = false;
     private static final int TEAM_NUMBER = 2974;
-    private static final String NETWORK_TABLE_TABLE_KEY = "SmartDashboard";
+    public static final String NETWORK_TABLE_TABLE_KEY = "SmartDashboard";
     public static NetworkTable networkTable;
+    public static final double SCALE_FACTOR = 100; // 10 px == 1 m
+
     private TabPane tabPane;
 
     public static void main(String[] args) {
@@ -26,8 +30,14 @@ public class Main extends Application {
     }
 
     private static void initNetworkTable() {
-        NetworkTable.setClientMode();
-        NetworkTable.setTeam(TEAM_NUMBER);
+        if (IS_CLIENT) {
+            NetworkTable.setClientMode();
+            NetworkTable.setTeam(TEAM_NUMBER);
+        } else {
+            NetworkTable.setServerMode();
+            NetworkTable.setIPAddress(IP_ADDRESS);
+        }
+
         networkTable = NetworkTable.getTable(NETWORK_TABLE_TABLE_KEY);
     }
 
