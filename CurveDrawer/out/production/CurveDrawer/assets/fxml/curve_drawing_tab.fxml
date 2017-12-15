@@ -12,8 +12,7 @@
         <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
     </padding>
     <SplitPane fx:id="splitPane" dividerPositions="1.0" VBox.vgrow="ALWAYS">
-        <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" onMouseClicked="#createPoint"
-                    prefViewportHeight="430.0"
+        <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" onMouseClicked="#createPoint" prefViewportHeight="430.0"
                     prefViewportWidth="429.0" HBox.hgrow="ALWAYS">
             <Pane prefHeight="500.0" prefWidth="500.0">
                 <Group fx:id="drawingPane"/>

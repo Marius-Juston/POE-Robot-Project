@@ -8,12 +8,10 @@ import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import org.curvedrawer.Main;
 import org.curvedrawer.misc.PathTable;
@@ -32,6 +30,7 @@ import java.util.ResourceBundle;
 public class CurveDrawerTabController implements Initializable {
     private final ObservableMap<Path, Pose[]> pathPoints = FXCollections.observableHashMap();
     private final Map<Integer, Path> pathHashMap = new HashMap<>(10);
+    public ScrollPane scrollPane;
     @FXML
     private SplitPane splitPane;
     @FXML
@@ -130,6 +129,8 @@ public class CurveDrawerTabController implements Initializable {
     @Override
     public final void initialize(URL location, ResourceBundle resources) {
         selectedPath = new SimpleIntegerProperty(-1);
+
+//        scrollPane.addEventFilter(MouseDragEvent.MOUSE_DRAGGED, event -> panPoints(event, pressedX[0], pressedY[0])); FIXME make it so then you can pan points
 
         splitPane.setOnKeyPressed(event -> {
             if (event.isControlDown() && (event.getCode() == KeyCode.N)) {
