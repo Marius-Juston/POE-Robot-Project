@@ -1,25 +1,68 @@
 package org.curvedrawer.util;
 
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.SimpleDoubleProperty;
+import org.curvedrawer.Main;
+
 public class Pose {
-    private final double x;
-    private final double y;
-    private final double angle;
+    private final SimpleDoubleProperty x;
+
+    private final SimpleDoubleProperty y;
+
+    private final SimpleDoubleProperty angle;
+    private final SimpleDoubleProperty scaledX;
+    private final SimpleDoubleProperty scaledY;
 
     public Pose(double x, double y, double angle) {
-        this.x = x;
-        this.y = y;
-        this.angle = angle;
+        this.x = new SimpleDoubleProperty(x);
+
+        scaledX = new SimpleDoubleProperty();
+        scaledX.bind(ReadOnlyDoubleWrapper.doubleExpression(this.x.divide(Main.SCALE_FACTOR)));
+
+        this.y = new SimpleDoubleProperty(y);
+        scaledY = new SimpleDoubleProperty();
+        scaledY.bind(ReadOnlyDoubleWrapper.doubleExpression(this.y.divide(Main.SCALE_FACTOR)));
+
+        this.angle = new SimpleDoubleProperty(angle);
     }
 
-    public final double getX() {
+    public double getScaledX() {
+        return scaledX.get();
+    }
+
+    public SimpleDoubleProperty scaledXProperty() {
+        return scaledX;
+    }
+
+    public double getScaledY() {
+        return scaledY.get();
+    }
+
+    public SimpleDoubleProperty scaledYProperty() {
+        return scaledY;
+    }
+
+    public double getX() {
+        return x.get();
+    }
+
+    public SimpleDoubleProperty xProperty() {
         return x;
     }
 
-    public final double getY() {
+    public double getY() {
+        return y.get();
+    }
+
+    public SimpleDoubleProperty yProperty() {
         return y;
     }
 
-    public final double getAngle() {
+    public double getAngle() {
+        return angle.get();
+    }
+
+    public SimpleDoubleProperty angleProperty() {
         return angle;
     }
 
@@ -30,17 +73,12 @@ public class Pose {
      * @return the offset point
      */
     public final Pose offsetPerpendicular(double distance) {
-        double angleOfDT = StrictMath.atan(angle);
+        double angleOfDT = StrictMath.atan(getAngle());
         double offsetX = distance * StrictMath.cos(angleOfDT + (Math.PI / 2)); // Finds point at distance along perpendicular
         // line
         double offsetY = distance * StrictMath.sin(angleOfDT + (Math.PI / 2));
 
-        return new Pose(x + offsetX, y + offsetY, angleOfDT);
-    }
-
-    public Pose multiply(double factor)
-    {
-        return new Pose(x * factor, y * factor, angle);
+        return new Pose(getX() + offsetX, getY() + offsetY, angleOfDT);
     }
 
     @Override

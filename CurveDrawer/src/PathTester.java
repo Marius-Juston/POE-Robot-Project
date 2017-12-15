@@ -1,6 +1,7 @@
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.tables.ITable;
-import edu.wpi.first.wpilibj.tables.ITableListener;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.SimpleDoubleProperty;
 import org.curvedrawer.Main;
 
 public class PathTester {
@@ -13,6 +14,12 @@ public class PathTester {
 
         networkTable.addTableListener("Curve", (iTable, s, o, b) -> System.out.println(s + '\t' + o), true);
 
-        for (;;);
+        SimpleDoubleProperty simpleDoubleProperty = new SimpleDoubleProperty();
+
+        DoubleBinding readOnlyProperty = (simpleDoubleProperty.divide(Main.SCALE_FACTOR));
+        ReadOnlyDoubleWrapper.doubleExpression(readOnlyProperty);
+
+        System.out.println("Started");
+        for (; ; ) ;
     }
 }

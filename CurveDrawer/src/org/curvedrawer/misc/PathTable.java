@@ -8,6 +8,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.NumberStringConverter;
+import org.curvedrawer.Main;
 import org.curvedrawer.path.Path;
 import org.curvedrawer.util.Point;
 
@@ -17,15 +18,15 @@ public class PathTable extends TableView<Point> {
         setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
         getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        initializeNumberColumn("X", "x",
+        initializeNumberColumn("X", "scaledX",
                 cellEditEvent -> cellEditEvent.getTableView().getItems().get(
                         cellEditEvent.getTablePosition().getRow())
-                        .setX(cellEditEvent.getNewValue().doubleValue()));
+                        .setX(cellEditEvent.getNewValue().doubleValue() * Main.SCALE_FACTOR.get()));
 
-        initializeNumberColumn("Y", "y",
+        initializeNumberColumn("Y", "scaledY",
                 cellEditEvent -> cellEditEvent.getTableView().getItems().get(
                         cellEditEvent.getTablePosition().getRow())
-                        .setY(cellEditEvent.getNewValue().doubleValue()));
+                        .setY(cellEditEvent.getNewValue().doubleValue() * Main.SCALE_FACTOR.get()));
 
         initializeStringColumn("Name", "name", cellEditEvent -> cellEditEvent.getTableView().getItems().get(
                 cellEditEvent.getTablePosition().getRow())

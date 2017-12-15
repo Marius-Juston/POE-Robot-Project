@@ -24,7 +24,6 @@ import org.curvedrawer.util.Point;
 import org.curvedrawer.util.Pose;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -76,7 +75,7 @@ public class CurveDrawerTabController implements Initializable {
             } else {
                 Path path = pathHashMap.get(selectedPath.get());
 
-                Point point = new Point(mouseEvent.getX() / Main.SCALE_FACTOR, mouseEvent.getY() / Main.SCALE_FACTOR);
+                Point point = new Point(mouseEvent.getX(), mouseEvent.getY());
 
                 path.addPoints(point);
             }
@@ -106,7 +105,7 @@ public class CurveDrawerTabController implements Initializable {
 
             sendButton.setDisable(false);
 
-            pathPoints.put(path, getScaledPathPoints(path));
+            pathPoints.put(path, path.createPathPoses());
             pathGroupHashMap.put(path, new PathGroup());
             drawingPane.getChildren().add(pathGroupHashMap.get(path));
 
@@ -122,15 +121,10 @@ public class CurveDrawerTabController implements Initializable {
                         pathGroup.addPoints(c.getAddedSubList());
                     }
 
-                    pathPoints.put(path, getScaledPathPoints(path));
+                    pathPoints.put(path, path.createPathPoses());
                 }
             });
         }
-    }
-
-    public Pose[] getScaledPathPoints(Path path)
-    {
-        return Arrays.stream(path.createPathPoses()).map(pose -> pose.multiply(Main.SCALE_FACTOR)).toArray(Pose[]::new);
     }
 
     @Override

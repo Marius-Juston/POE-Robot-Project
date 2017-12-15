@@ -2,6 +2,7 @@ package org.curvedrawer;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import javafx.application.Application;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,11 +19,10 @@ public class Main extends Application {
     public static final int NUMBER_OF_STEPS = 50;
     public static final String IP_ADDRESS = "10.0.0.24";
     public static final boolean IS_CLIENT = false;
-    private static final int TEAM_NUMBER = 2974;
     public static final String NETWORK_TABLE_TABLE_KEY = "SmartDashboard";
+    public static final SimpleDoubleProperty SCALE_FACTOR = new SimpleDoubleProperty(100); // 10 px == 1 m
+    private static final int TEAM_NUMBER = 2974;
     public static NetworkTable networkTable;
-    public static final double SCALE_FACTOR = 100; // 10 px == 1 m
-
     private TabPane tabPane;
 
     public static void main(String[] args) {

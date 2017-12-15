@@ -29,9 +29,9 @@ public final class Converter {
         StringBuilder stringBuilder = new StringBuilder(poses.length * 6);
 
         for (Pose pose : poses) {
-            stringBuilder.append(pose.getX());
+            stringBuilder.append(pose.getScaledX());
             stringBuilder.append(' ');
-            stringBuilder.append(pose.getY());
+            stringBuilder.append(pose.getScaledY());
             stringBuilder.append(' ');
             stringBuilder.append(pose.getAngle());
             stringBuilder.append(' ');
