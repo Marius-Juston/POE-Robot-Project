@@ -16,7 +16,7 @@ public class CirclePoint extends Circle {
         setOnMouseDragged(mouseEvent -> {
             if (mouseEvent.getButton() == MouseButton.PRIMARY) {
                 point.setX(mouseEvent.getX());
-                point.setX(mouseEvent.getY());
+                point.setY(mouseEvent.getY());
             }
         });
     }
