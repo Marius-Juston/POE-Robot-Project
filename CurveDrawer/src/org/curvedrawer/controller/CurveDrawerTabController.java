@@ -1,5 +1,6 @@
 package org.curvedrawer.controller;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -14,6 +15,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import org.curvedrawer.Main;
 import org.curvedrawer.path.Path;
 import org.curvedrawer.util.Converter;
@@ -30,18 +32,19 @@ import java.util.ResourceBundle;
 public class CurveDrawerTabController implements Initializable {
     private final ObservableMap<Path, Pose[]> pathPoints = FXCollections.observableHashMap();
     private final Map<Integer, Path> pathHashMap = new HashMap<>(10);
+    private final Map<Path, PathGroup> pathGroupHashMap = new HashMap<>();
+    private final SimpleDoubleProperty pressedX = new SimpleDoubleProperty();
+    private final SimpleDoubleProperty pressedY = new SimpleDoubleProperty();
+    @FXML
+    private Pane pane;
     @FXML
     private Group drawingPane;
-    //    private Pane drawingPane;
     @FXML
     private Accordion pathsViewer;
     @FXML
     private Button sendButton;
     private SimpleIntegerProperty selectedPath;
-
-    private Map<Path, PathGroup> pathGroupHashMap = new HashMap<>();
-    private SimpleDoubleProperty pressedX = new SimpleDoubleProperty();
-    private SimpleDoubleProperty pressedY = new SimpleDoubleProperty();
+    private SimpleBooleanProperty isDragging = new SimpleBooleanProperty(false);
 
     @FXML
     private void sendCurveToSmartDashboard() {
@@ -69,17 +72,15 @@ public class CurveDrawerTabController implements Initializable {
     }
 
     @FXML
-    private final void createPoint(MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+    private void createPoint(MouseEvent mouseEvent) {
+        if (mouseEvent.getButton() == MouseButton.PRIMARY && !isDragging.get()) {
             if (selectedPath.get() == -1 || pathsViewer.getPanes().isEmpty()) {
                 createPath();
-            } else {
-                Path path = pathHashMap.get(selectedPath.get());
-
-                Point point = new Point(mouseEvent.getX() - drawingPane.getTranslateX(), mouseEvent.getY() - drawingPane.getTranslateY());
-
-                path.addPoints(point);
             }
+            Path path = pathHashMap.get(selectedPath.get());
+            Point point = new Point(mouseEvent.getX() - drawingPane.getTranslateX(), mouseEvent.getY() - drawingPane.getTranslateY());
+
+            path.addPoints(point);
         }
     }
 
@@ -125,7 +126,6 @@ public class CurveDrawerTabController implements Initializable {
         }
     }
 
-
     @Override
     public final void initialize(URL location, ResourceBundle resources) {
         selectedPath = new SimpleIntegerProperty(-1);
@@ -160,7 +160,7 @@ public class CurveDrawerTabController implements Initializable {
 
         pathsViewer.setContextMenu(pathViewerContextMenu);
 
-        drawingPane.setStyle("-fx-border-color: black;");
+        pane.addEventFilter(MouseEvent.DRAG_DETECTED, e -> isDragging.set(true));
     }
 
     private void removePath(Path path) {
@@ -192,7 +192,8 @@ public class CurveDrawerTabController implements Initializable {
         return pathHashMap.get(selectedPath.get());
     }
 
-    public void pan(MouseEvent event) {
+    @FXML
+    private void pan(MouseEvent event) {
         if (!anyPointIsSelected()) {
             drawingPane.setTranslateX(drawingPane.getTranslateX() + event.getX() - pressedX.get());
             drawingPane.setTranslateY(drawingPane.getTranslateY() + event.getY() - pressedY.get());
@@ -208,8 +209,12 @@ public class CurveDrawerTabController implements Initializable {
         return pathGroupHashMap.values().stream().anyMatch(PathGroup::isHasPointSelected);
     }
 
-    public void getMouseLocation(MouseEvent event) {
+    @FXML
+    private void getMouseLocation(MouseEvent event) {
         pressedX.set(event.getX());
         pressedY.set(event.getY());
+
+        isDragging.set(false);
     }
+
 }
