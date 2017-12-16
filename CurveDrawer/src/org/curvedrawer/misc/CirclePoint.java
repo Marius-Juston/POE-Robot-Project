@@ -21,13 +21,7 @@ public class CirclePoint extends Circle {
             }
         });
 
-        hoverProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                setId("circle-selected");
-            } else {
-                setId("circle-unselected");
-            }
-        });
+        hoverProperty().addListener((observable, oldValue, newValue) -> selected(newValue));
     }
 
     public CirclePoint(double centerX, double centerY) {
@@ -36,5 +30,13 @@ public class CirclePoint extends Circle {
 
     public CirclePoint(Pose pose) {
         this(pose.getX(), pose.getY());
+    }
+
+    public void selected(boolean isSelected) {
+        if (isSelected) {
+            setId("circle-selected");
+        } else {
+            setId("circle-unselected");
+        }
     }
 }

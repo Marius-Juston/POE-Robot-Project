@@ -1,5 +1,6 @@
 package org.curvedrawer.util;
 
+import javafx.collections.ListChangeListener;
 import javafx.scene.Group;
 import javafx.scene.control.TitledPane;
 import org.curvedrawer.misc.CirclePoint;
@@ -18,7 +19,22 @@ public class PathGroup extends Group {
         this.circlePointHashMap = new HashMap<>();
         this.circlePoseHashMap = new HashMap<>();
 
-        titlePane = new TitledPane(pathName, new PathTable(path));
+        PathTable pathTable = new PathTable(path);
+        pathTable.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Point>) event -> {
+            if (event.next()) {
+                if (event.wasAdded()) {
+                    for (Point point : event.getAddedSubList())
+                        circlePointHashMap.get(point).selected(true);
+                }
+                if (event.wasRemoved()) {
+
+                    for (Point point : event.getRemoved())
+                        circlePointHashMap.get(point).selected(false);
+                }
+            }
+        });
+
+        titlePane = new TitledPane(pathName, pathTable);
 
     }
 
