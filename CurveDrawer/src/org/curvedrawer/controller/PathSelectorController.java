@@ -56,6 +56,9 @@ public class PathSelectorController implements Initializable { //TODO make this 
 
             String text = ((TextInputControl) ((Pane) parent.getChildrenUnmodifiable().get(0)).getChildren().get(0)).getText();
 
+            if (selectedPath == null)
+                return null;
+
             return new SimpleEntry<>(text, selectedPath);
         } catch (IOException e) {
             e.printStackTrace();

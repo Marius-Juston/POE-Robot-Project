@@ -63,24 +63,34 @@ public class CurveDrawerTabController implements Initializable {
         Main.networkTable.putString(nameOfPath, converted);
     }
 
-    private void createPath() {
+    private Path createPath() {
         Entry<String, Path> path = askForPath();
 
         if (path != null) {
             addPath(path.getKey(), path.getValue());
+
+            return path.getValue();
         }
+
+        return null;
     }
 
     @FXML
     private void createPoint(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY && !isDragging.get()) {
-            if (selectedPath.get() == -1 || pathsViewer.getPanes().isEmpty()) {
-                createPath();
-            }
-            Path path = pathHashMap.get(selectedPath.get());
             Point point = new Point(mouseEvent.getX() - drawingPane.getTranslateX(), mouseEvent.getY() - drawingPane.getTranslateY());
 
-            path.addPoints(point);
+            if (selectedPath.get() == -1 || pathsViewer.getPanes().isEmpty()) {
+
+                Path path = createPath();
+
+                if (path != null)
+                    path.addPoints(point);
+
+            } else {
+                Path path = pathHashMap.get(selectedPath.get());
+                path.addPoints(point);
+            }
         }
     }
 
