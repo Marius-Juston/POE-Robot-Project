@@ -1,7 +1,10 @@
 package org.curvedrawer.util;
 
 import javafx.scene.Group;
+import javafx.scene.control.TitledPane;
 import org.curvedrawer.misc.CirclePoint;
+import org.curvedrawer.misc.PathTable;
+import org.curvedrawer.path.Path;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,10 +12,14 @@ import java.util.List;
 public class PathGroup extends Group {
     private HashMap<Pose, CirclePoint> circlePoseHashMap;
     private HashMap<Point, CirclePoint> circlePointHashMap;
+    private TitledPane titlePane;
 
-    public PathGroup() {
+    public PathGroup(String pathName, Path path) {
         this.circlePointHashMap = new HashMap<>();
         this.circlePoseHashMap = new HashMap<>();
+
+        titlePane = new TitledPane(pathName, new PathTable(path));
+
     }
 
     public void addPoints(Point... points) {
@@ -62,5 +69,9 @@ public class PathGroup extends Group {
 
     public void addPoints(List<? extends Point> addedSubList) {
         addPoints(addedSubList.toArray(new Point[addedSubList.size()]));
+    }
+
+    public TitledPane getTitlePane() {
+        return titlePane;
     }
 }

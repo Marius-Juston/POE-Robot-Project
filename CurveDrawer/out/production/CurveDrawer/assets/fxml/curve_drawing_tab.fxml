@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -11,13 +14,10 @@
     <padding>
         <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
     </padding>
-    <SplitPane fx:id="splitPane" dividerPositions="1.0" VBox.vgrow="ALWAYS">
-        <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" onMouseClicked="#createPoint" prefViewportHeight="430.0"
-                    prefViewportWidth="429.0" HBox.hgrow="ALWAYS">
-            <Pane prefHeight="500.0" prefWidth="500.0">
-                <Group fx:id="drawingPane"/>
-            </Pane>
-        </ScrollPane>
+    <SplitPane dividerPositions="1.0" VBox.vgrow="ALWAYS" onKeyPressed="#handleKeyPresses">
+        <Pane prefHeight="500.0" prefWidth="500.0" HBox.hgrow="ALWAYS" onMouseClicked="#createPoint">
+            <Group fx:id="drawingPane"/>
+        </Pane>
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" minWidth="0.0" prefViewportHeight="430.0">
             <Accordion fx:id="pathsViewer"/>
         </ScrollPane>

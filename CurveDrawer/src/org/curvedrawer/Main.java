@@ -62,6 +62,8 @@ public class Main extends Application {
 
         primaryStage.setTitle("Bezier Curve Creator");
         primaryStage.setScene(new Scene(tabPane));
+        primaryStage.getScene().getStylesheets().add("/assets/css/stylesheet.css");
+
         primaryStage.show();
 
         primaryStage.setOnCloseRequest(event -> NetworkTable.shutdown());

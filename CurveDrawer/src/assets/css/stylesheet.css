@@ -1,0 +1,14 @@
+#circle-selected {
+    -fx-scale-x: 2;
+    -fx-scale-y: 2;
+
+    -fx-border-radius: 10;
+    -fx-border-color: red;
+}
+
+#circle-unselected {
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+
+    -fx-border-radius: 0;
+}

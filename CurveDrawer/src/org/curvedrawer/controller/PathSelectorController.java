@@ -1,5 +1,7 @@
 package org.curvedrawer.controller;
 
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -72,35 +75,24 @@ public class PathSelectorController implements Initializable { //TODO make this 
                             newValue));
         }
 
-        pathName.setOnKeyTyped(event ->
-        {
-            String text =
-                    pathName.getText() + (Character.isAlphabetic(event.getCharacter().charAt(0)) ? event
-                            .getCharacter() : event.getText());
+        cancelButton.setOnAction(this::closeWindow);
+    }
 
-            String finalText = text;
-            if (Arrays.stream(existingPathNames).anyMatch(s -> s.equals(finalText))) {
-                pathName.setStyle("-fx-text-fill: red;");
-                text = "";
-            } else {
-                pathName.setStyle("-fx-text-fill: black;");
-            }
+    @FXML
+    private void getPathAndClose(ActionEvent event) {
+        try {
+            selectedPath = (Path) PathType.valueOf(pathTypeSelection.getValue())
+                    .getAssociatedClass().getDeclaredConstructors()[0].newInstance(Main.NUMBER_OF_STEPS, new Point[0]);
 
-            allowOkButtonToChangeState(text, pathTypeSelection.getValue());
-        });
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
 
-        cancelButton.setOnAction(event -> ((Node) (event.getSource())).getScene().getWindow().hide());
-        okButton.setOnAction(event -> {
-            try {
-                selectedPath = (Path) PathType.valueOf(pathTypeSelection.getValue())
-                        .getAssociatedClass().getDeclaredConstructors()[0].newInstance(Main.NUMBER_OF_STEPS, new Point[0]);
+        closeWindow(event);
+    }
 
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-        });
+    private void closeWindow(Event event) {
+        ((Node) (event.getSource())).getScene().getWindow().hide();
     }
 
 
@@ -110,6 +102,24 @@ public class PathSelectorController implements Initializable { //TODO make this 
         } else {
             okButton.setDisable(false);
         }
+
+    }
+
+    @FXML
+    private void handleInput(KeyEvent event) {
+        String text =
+                pathName.getText() + (Character.isAlphabetic(event.getCharacter().charAt(0)) ? event
+                        .getCharacter() : event.getText());
+
+        String finalText = text;
+        if (Arrays.stream(existingPathNames).anyMatch(s -> s.equals(finalText))) {
+            pathName.setStyle("-fx-text-fill: red;");
+            text = "";
+        } else {
+            pathName.setStyle("-fx-text-fill: black;");
+        }
+
+        allowOkButtonToChangeState(text, pathTypeSelection.getValue());
 
     }
 }

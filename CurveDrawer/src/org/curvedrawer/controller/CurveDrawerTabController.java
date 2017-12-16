@@ -10,11 +10,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import org.curvedrawer.Main;
-import org.curvedrawer.misc.PathTable;
 import org.curvedrawer.path.Path;
 import org.curvedrawer.util.Converter;
 import org.curvedrawer.util.PathGroup;
@@ -30,9 +29,6 @@ import java.util.ResourceBundle;
 public class CurveDrawerTabController implements Initializable {
     private final ObservableMap<Path, Pose[]> pathPoints = FXCollections.observableHashMap();
     private final Map<Integer, Path> pathHashMap = new HashMap<>(10);
-    public ScrollPane scrollPane;
-    @FXML
-    private SplitPane splitPane;
     @FXML
     private Group drawingPane;
     @FXML
@@ -43,7 +39,8 @@ public class CurveDrawerTabController implements Initializable {
 
     private Map<Path, PathGroup> pathGroupHashMap = new HashMap<>();
 
-    public final void sendCurveToSmartDashboard() {
+    @FXML
+    private void sendCurveToSmartDashboard() {
         Path path = getSelectedPaths();
 
         Pose[] poses = pathPoints.get(path);
@@ -67,9 +64,10 @@ public class CurveDrawerTabController implements Initializable {
         }
     }
 
-    public final void createPoint(MouseEvent mouseEvent) {
+    @FXML
+    private final void createPoint(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-            if (selectedPath.get() == -1) {
+            if (selectedPath.get() == -1 || pathsViewer.getPanes().isEmpty()) {
                 createPath();
             } else {
                 Path path = pathHashMap.get(selectedPath.get());
@@ -92,10 +90,10 @@ public class CurveDrawerTabController implements Initializable {
     private void addPath(String pathName, Path path) {
         if ((path != null) || (pathName != null)) {
             assert path != null;
-            TitledPane titledPane = new TitledPane(pathName, new PathTable(path));
+            PathGroup pathGroup = new PathGroup(pathName, path);
 
-            pathsViewer.getPanes().add(titledPane);
-            pathsViewer.setExpandedPane(titledPane);
+            pathsViewer.getPanes().add(pathGroup.getTitlePane());
+            pathsViewer.setExpandedPane(pathGroup.getTitlePane());
 
             int selection = pathsViewer.getPanes().size() - 1;
 
@@ -105,15 +103,12 @@ public class CurveDrawerTabController implements Initializable {
             sendButton.setDisable(false);
 
             pathPoints.put(path, path.createPathPoses());
-            pathGroupHashMap.put(path, new PathGroup());
-            drawingPane.getChildren().add(pathGroupHashMap.get(path));
+            pathGroupHashMap.put(path, pathGroup);
+            drawingPane.getChildren().add(pathGroup);
 
 
             path.getPoints().addListener((ListChangeListener<Point>) c -> {
                 if (c.next()) {
-                    PathGroup pathGroup = pathGroupHashMap.get(path);
-
-
                     if (c.wasRemoved()) {
                         pathGroup.removePoints(c.getRemoved());
                     } else if (c.wasAdded()) {
@@ -126,17 +121,10 @@ public class CurveDrawerTabController implements Initializable {
         }
     }
 
+
     @Override
     public final void initialize(URL location, ResourceBundle resources) {
         selectedPath = new SimpleIntegerProperty(-1);
-
-//        scrollPane.addEventFilter(MouseDragEvent.MOUSE_DRAGGED, event -> panPoints(event, pressedX[0], pressedY[0])); FIXME make it so then you can pan points
-
-        splitPane.setOnKeyPressed(event -> {
-            if (event.isControlDown() && (event.getCode() == KeyCode.N)) {
-                createPath();
-            }
-        });
 
         pathPoints.addListener((MapChangeListener<Path, Pose[]>) c -> {
             if (c.wasAdded()) {
@@ -158,10 +146,47 @@ public class CurveDrawerTabController implements Initializable {
             }
 
         });
+
+        ContextMenu pathViewerContextMenu = new ContextMenu();
+
+        MenuItem removePath = new MenuItem("Remove Path");
+        removePath.setOnAction(event -> {
+            removePaths(getSelectedPaths());
+        });
+
+        pathViewerContextMenu.getItems().add(removePath);
+
+
+        pathsViewer.setContextMenu(pathViewerContextMenu);
+    }
+
+    private void removePath(Path path) {
+        PathGroup pathGroup = pathGroupHashMap.get(path);
+        pathsViewer.getPanes().remove(pathGroup.getTitlePane());
+        drawingPane.getChildren().remove(pathGroup);
+    }
+
+    private void removePaths(Path... paths) {
+        for (Path path : paths)
+            removePath(path);
+    }
+
+    @FXML
+    private void handleKeyPresses(KeyEvent event) {
+        if (event.isControlDown()) {
+            if ((event.getCode() == KeyCode.N)) {
+                createPath();
+            } else if (event.getCode() == KeyCode.UP) {
+                selectedPath.set(Math.max(selectedPath.getValue() - 1, 0));
+            } else if (event.getCode() == KeyCode.DOWN) {
+                selectedPath.set(Math.min(selectedPath.getValue() + 1, pathsViewer.getPanes().size() - 1));
+            }
+        }
     }
 
     private Path getSelectedPaths() //TODO make it so that you can select many paths
     {
         return pathHashMap.get(selectedPath.get());
     }
+
 }

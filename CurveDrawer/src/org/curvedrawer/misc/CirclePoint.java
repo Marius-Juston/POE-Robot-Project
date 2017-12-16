@@ -10,6 +10,7 @@ public class CirclePoint extends Circle {
     public CirclePoint(Point point) {
         super(5, Color.BLUE);
 
+
         centerXProperty().bind(point.xProperty());
         centerYProperty().bind(point.yProperty());
 
@@ -17,6 +18,14 @@ public class CirclePoint extends Circle {
             if (mouseEvent.getButton() == MouseButton.PRIMARY) {
                 point.setX(mouseEvent.getX());
                 point.setY(mouseEvent.getY());
+            }
+        });
+
+        hoverProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                setId("circle-selected");
+            } else {
+                setId("circle-unselected");
             }
         });
     }

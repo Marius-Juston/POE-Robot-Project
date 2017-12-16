@@ -61,6 +61,10 @@ public abstract class Path {
         getPoints().addAll(points);
     }
 
+    public final void removePoints(Point... points) {
+        getPoints().removeAll(points);
+    }
+
     /**
      * Finds the points that define the path the robot follows
      *
@@ -74,5 +78,9 @@ public abstract class Path {
                 "points=" + points +
                 ", numberOfSteps=" + numberOfSteps +
                 '}';
+    }
+
+    public void removePoints(ObservableList<Point> selectedItems) {
+        removePoints(selectedItems.toArray(new Point[selectedItems.size()]));
     }
 }

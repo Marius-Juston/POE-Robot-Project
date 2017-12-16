@@ -1,10 +1,8 @@
 package org.curvedrawer.misc;
 
 import javafx.event.EventHandler;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.NumberStringConverter;
@@ -13,7 +11,21 @@ import org.curvedrawer.path.Path;
 import org.curvedrawer.util.Point;
 
 public class PathTable extends TableView<Point> {
+    private ContextMenu pathTableContextMenu;
+
     public PathTable(Path path) {
+        pathTableContextMenu = new ContextMenu();
+        MenuItem addPoint = new MenuItem("Add Point");
+        addPoint.setOnAction(event -> path.getPoints().add(new Point(0, 0)));
+
+        MenuItem removePoint = new MenuItem("Remove Points");
+        removePoint.setOnAction(event -> path.removePoints(getSelectionModel().getSelectedItems()));
+
+
+        pathTableContextMenu.getItems().addAll(addPoint, removePoint);
+        setContextMenu(pathTableContextMenu);
+
+
         setEditable(true);
         setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
         getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
