@@ -43,7 +43,6 @@ public class CurveDrawerTabController implements Initializable {
     private SimpleDoubleProperty pressedX = new SimpleDoubleProperty();
     private SimpleDoubleProperty pressedY = new SimpleDoubleProperty();
 
-
     @FXML
     private void sendCurveToSmartDashboard() {
         Path path = getSelectedPaths();
@@ -194,18 +193,23 @@ public class CurveDrawerTabController implements Initializable {
     }
 
     public void pan(MouseEvent event) {
-        drawingPane.setTranslateX(drawingPane.getTranslateX() + event.getX() - pressedX.get());
-        drawingPane.setTranslateY(drawingPane.getTranslateY() + event.getY() - pressedY.get());
+        if (!anyPointIsSelected()) {
+            drawingPane.setTranslateX(drawingPane.getTranslateX() + event.getX() - pressedX.get());
+            drawingPane.setTranslateY(drawingPane.getTranslateY() + event.getY() - pressedY.get());
 
-        pressedX.set(event.getX());
-        pressedY.set(event.getY());
+            pressedX.set(event.getX());
+            pressedY.set(event.getY());
 
-        event.consume();
+            event.consume();
+        }
+    }
+
+    private boolean anyPointIsSelected() {
+        return pathGroupHashMap.values().stream().anyMatch(PathGroup::isHasPointSelected);
     }
 
     public void getMouseLocation(MouseEvent event) {
         pressedX.set(event.getX());
         pressedY.set(event.getY());
-
     }
 }

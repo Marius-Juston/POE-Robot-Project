@@ -1,5 +1,6 @@
 package org.curvedrawer.util;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Group;
 import javafx.scene.control.TitledPane;
@@ -14,6 +15,8 @@ public class PathGroup extends Group {
     private HashMap<Pose, CirclePoint> circlePoseHashMap;
     private HashMap<Point, CirclePoint> circlePointHashMap;
     private TitledPane titlePane;
+
+    private SimpleBooleanProperty hasPointSelected = new SimpleBooleanProperty(false);
 
     public PathGroup(String pathName, Path path) {
         this.circlePointHashMap = new HashMap<>();
@@ -40,7 +43,7 @@ public class PathGroup extends Group {
 
     public void addPoints(Point... points) {
         for (Point point : points) {
-            CirclePoint circlePoint = new CirclePoint(point);
+            CirclePoint circlePoint = new CirclePoint(point, this);
             circlePointHashMap.put(point, circlePoint);
 
             getChildren().add(0, circlePoint);
@@ -50,7 +53,7 @@ public class PathGroup extends Group {
 
     public void addPoses(Pose... poses) {
         for (Pose pose : poses) {
-            CirclePoint circlePoint = new CirclePoint(pose);
+            CirclePoint circlePoint = new CirclePoint(pose, this);
             circlePoseHashMap.put(pose, circlePoint);
 
             getChildren().add(Math.max(0, getChildren().size() - 1), circlePoint);
@@ -89,5 +92,17 @@ public class PathGroup extends Group {
 
     public TitledPane getTitlePane() {
         return titlePane;
+    }
+
+    public boolean isHasPointSelected() {
+        return hasPointSelected.get();
+    }
+
+    public void setHasPointSelected(boolean hasPointSelected) {
+        this.hasPointSelected.set(hasPointSelected);
+    }
+
+    public SimpleBooleanProperty hasPointSelectedProperty() {
+        return hasPointSelected;
     }
 }

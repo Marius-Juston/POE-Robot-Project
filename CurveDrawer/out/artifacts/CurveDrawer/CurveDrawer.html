@@ -15,36 +15,15 @@
         }
     </script>
 
-<<<<<<< HEAD
-<script>
-    function javafxEmbedCurveDrawer_id() {
-        dtjava.embed(
-            {
-                id : 'CurveDrawer_id',
-                url : 'CurveDrawer.jnlp',
-                placeholder : 'javafx-app-placeholder',
-                width : '640',
-                height : '480'
-            },
-            {
-                javafx : '8.0+'
-            },
-            {}
-        );
-    }
-    <!-- Embed FX application into web page once page is loaded -->
-    dtjava.addOnloadCallback(javafxEmbedCurveDrawer_id);
-</script>
-=======
     <script>
-        function javafxEmbed_CurveDrawer_id() {
+        function javafxEmbedCurveDrawer_id() {
             dtjava.embed(
                 {
                     id: 'CurveDrawer_id',
                     url: 'CurveDrawer.jnlp',
                     placeholder: 'javafx-app-placeholder',
-                    width: 640,
-                    height: 480
+                    width: '640',
+                    height: '480'
                 },
                 {
                     javafx: '8.0+'
@@ -52,10 +31,9 @@
                 {}
             );
         }
->>>>>>> 1320d87247ea64cda6fef886aa9b72e455039467
 
         <!-- Embed FX application into web page once page is loaded -->
-        dtjava.addOnloadCallback(javafxEmbed_CurveDrawer_id);
+        dtjava.addOnloadCallback(javafxEmbedCurveDrawer_id);
     </script>
 
 </head>

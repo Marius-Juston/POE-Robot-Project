@@ -1,33 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
-<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="CurveDrawer.jnlp">
-  <information>
-    <title>Curve Drawer</title>
-    <vendor>Unknown</vendor>
-    <description>CurveDrawer</description>
-    <offline-allowed/>
-  </information>
-  <resources>
-    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="CurveDrawer.jar" size="33870" download="eager" />
-    <jar href="SmartDashboard.jar" size="4381529" download="eager" />
-  </resources>
-  <jfx:javafx-desc  width="640" height="480" main-class="org.curvedrawer.Main"  name="CurveDrawer" />
-  <update check="background"/>
-=======
 <jnlp xmlns:jfx="http://javafx.com" spec="1.0" href="CurveDrawer.jnlp">
     <information>
         <title>Curve Drawer</title>
-        <vendor>Walton Robotics Team 2974 - Marius Juston</vendor>
-        <description>This is a program to draw paths for the robot to follow.</description>
+        <vendor>Unknown</vendor>
+        <description>CurveDrawer</description>
         <offline-allowed/>
     </information>
     <resources>
         <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-        <jar href="CurveDrawer.jar" size="34234" download="eager"/>
+        <jar href="CurveDrawer.jar" size="35111" download="eager"/>
         <jar href="SmartDashboard.jar" size="4381529" download="eager"/>
     </resources>
     <jfx:javafx-desc width="640" height="480" main-class="org.curvedrawer.Main" name="CurveDrawer"/>
     <update check="background"/>
->>>>>>> 1320d87247ea64cda6fef886aa9b72e455039467
 </jnlp>
