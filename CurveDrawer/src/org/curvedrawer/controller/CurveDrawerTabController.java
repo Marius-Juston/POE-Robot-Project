@@ -1,5 +1,6 @@
 package org.curvedrawer.controller;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -31,6 +32,7 @@ public class CurveDrawerTabController implements Initializable {
     private final Map<Integer, Path> pathHashMap = new HashMap<>(10);
     @FXML
     private Group drawingPane;
+    //    private Pane drawingPane;
     @FXML
     private Accordion pathsViewer;
     @FXML
@@ -38,6 +40,9 @@ public class CurveDrawerTabController implements Initializable {
     private SimpleIntegerProperty selectedPath;
 
     private Map<Path, PathGroup> pathGroupHashMap = new HashMap<>();
+    private SimpleDoubleProperty pressedX = new SimpleDoubleProperty();
+    private SimpleDoubleProperty pressedY = new SimpleDoubleProperty();
+
 
     @FXML
     private void sendCurveToSmartDashboard() {
@@ -72,7 +77,7 @@ public class CurveDrawerTabController implements Initializable {
             } else {
                 Path path = pathHashMap.get(selectedPath.get());
 
-                Point point = new Point(mouseEvent.getX(), mouseEvent.getY());
+                Point point = new Point(mouseEvent.getX() - drawingPane.getTranslateX(), mouseEvent.getY() - drawingPane.getTranslateY());
 
                 path.addPoints(point);
             }
@@ -150,14 +155,13 @@ public class CurveDrawerTabController implements Initializable {
         ContextMenu pathViewerContextMenu = new ContextMenu();
 
         MenuItem removePath = new MenuItem("Remove Path");
-        removePath.setOnAction(event -> {
-            removePaths(getSelectedPaths());
-        });
+        removePath.setOnAction(event -> removePaths(getSelectedPaths()));
 
         pathViewerContextMenu.getItems().add(removePath);
 
-
         pathsViewer.setContextMenu(pathViewerContextMenu);
+
+        drawingPane.setStyle("-fx-border-color: black;");
     }
 
     private void removePath(Path path) {
@@ -189,4 +193,19 @@ public class CurveDrawerTabController implements Initializable {
         return pathHashMap.get(selectedPath.get());
     }
 
+    public void pan(MouseEvent event) {
+        drawingPane.setTranslateX(drawingPane.getTranslateX() + event.getX() - pressedX.get());
+        drawingPane.setTranslateY(drawingPane.getTranslateY() + event.getY() - pressedY.get());
+
+        pressedX.set(event.getX());
+        pressedY.set(event.getY());
+
+        event.consume();
+    }
+
+    public void getMouseLocation(MouseEvent event) {
+        pressedX.set(event.getX());
+        pressedY.set(event.getY());
+
+    }
 }
