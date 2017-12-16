@@ -1,43 +1,50 @@
-<html><head>
-  <SCRIPT src="http://java.com/js/dtjava.js"></SCRIPT>
-<script>
-    function launchApplication(jnlpfile) {
-        dtjava.launch(            {
-                url : 'CurveDrawer.jnlp'
-            },
-            {
-                javafx : '8.0+'
-            },
-            {}
-        );
-        return false;
-    }
-</script>
+<html>
+<head>
+    <SCRIPT src="http://java.com/js/dtjava.js"></SCRIPT>
+    <script>
+        function launchApplication(jnlpfile) {
+            dtjava.launch({
+                    url: 'CurveDrawer.jnlp'
+                },
+                {
+                    javafx: '8.0+'
+                },
+                {}
+            );
+            return false;
+        }
+    </script>
 
-<script>
-    function javafxEmbed_CurveDrawer_id() {
-        dtjava.embed(
-            {
-                id : 'CurveDrawer_id',
-                url : 'CurveDrawer.jnlp',
-                placeholder : 'javafx-app-placeholder',
-                width : 640,
-                height : 480
-            },
-            {
-                javafx : '8.0+'
-            },
-            {}
-        );
-    }
-    <!-- Embed FX application into web page once page is loaded -->
-    dtjava.addOnloadCallback(javafxEmbed_CurveDrawer_id);
-</script>
+    <script>
+        function javafxEmbed_CurveDrawer_id() {
+            dtjava.embed(
+                {
+                    id: 'CurveDrawer_id',
+                    url: 'CurveDrawer.jnlp',
+                    placeholder: 'javafx-app-placeholder',
+                    width: 640,
+                    height: 480
+                },
+                {
+                    javafx: '8.0+'
+                },
+                {}
+            );
+        }
 
-</head><body>
+        <!-- Embed FX application into web page once page is loaded -->
+        dtjava.addOnloadCallback(javafxEmbed_CurveDrawer_id);
+    </script>
+
+</head>
+<body>
 <h2>Test page for <b>CurveDrawer</b></h2>
-  <b>Webstart:</b> <a href='CurveDrawer.jnlp' onclick="return launchApplication('CurveDrawer.jnlp');">click to launch this app as webstart</a><br><hr><br>
+<b>Webstart:</b> <a href='CurveDrawer.jnlp' onclick="return launchApplication('CurveDrawer.jnlp');">click to launch this
+    app as webstart</a><br>
+<hr>
+<br>
 
-  <!-- Applet will be inserted here -->
-  <div id='javafx-app-placeholder'></div>
-</body></html>
+<!-- Applet will be inserted here -->
+<div id='javafx-app-placeholder'></div>
+</body>
+</html>

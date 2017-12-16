@@ -11,10 +11,9 @@ import org.curvedrawer.path.Path;
 import org.curvedrawer.util.Point;
 
 public class PathTable extends TableView<Point> {
-    private ContextMenu pathTableContextMenu;
 
     public PathTable(Path path) {
-        pathTableContextMenu = new ContextMenu();
+        ContextMenu pathTableContextMenu = new ContextMenu();
         MenuItem addPoint = new MenuItem("Add Point");
         addPoint.setOnAction(event -> path.getPoints().add(new Point(0, 0)));
 
@@ -24,7 +23,6 @@ public class PathTable extends TableView<Point> {
 
         pathTableContextMenu.getItems().addAll(addPoint, removePoint);
         setContextMenu(pathTableContextMenu);
-
 
         setEditable(true);
         setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
