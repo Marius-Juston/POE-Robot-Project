@@ -197,7 +197,9 @@ public class CurveDrawerTabController implements Initializable {
     }
 
     @FXML
-    private void handleKeyPresses(KeyEvent event) {
+    private void handleKeyPresses(KeyEvent event) { //TODO make it so that you do not need to manually focus the vBox or tab to be able to get input from user
+        System.out.println(event.getCode());
+
         if (event.isControlDown()) {
             if ((event.getCode() == KeyCode.N)) {
                 createPath();
@@ -205,6 +207,9 @@ public class CurveDrawerTabController implements Initializable {
                 selectedPath.set(Math.max(selectedPath.getValue() - 1, 0));
             } else if (event.getCode() == KeyCode.DOWN) {
                 selectedPath.set(Math.min(selectedPath.getValue() + 1, pathsViewer.getPanes().size() - 1));
+            } else if (event.getCode() == KeyCode.DIGIT0) {
+                drawingPane.setScaleX(1);
+                drawingPane.setScaleY(1);
             }
         }
     }

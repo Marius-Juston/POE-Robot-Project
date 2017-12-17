@@ -9,12 +9,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/8"
-      fx:controller="org.curvedrawer.controller.CurveDrawerTabController">
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="vBox" alignment="CENTER" spacing="5.0"
+      xmlns="http://javafx.com/javafx/8"
+      fx:controller="org.curvedrawer.controller.CurveDrawerTabController" onKeyPressed="#handleKeyPresses">
     <padding>
         <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
     </padding>
-    <SplitPane dividerPositions="1.0" VBox.vgrow="ALWAYS" onKeyPressed="#handleKeyPresses">
+    <SplitPane dividerPositions="1.0" VBox.vgrow="ALWAYS">
         <Pane fx:id="pane" prefHeight="500.0" prefWidth="500.0" HBox.hgrow="ALWAYS" onMouseClicked="#createPoint"
               onMouseDragged="#pan" onMousePressed="#getMouseLocation">
             <Group fx:id="drawingPane"/>
