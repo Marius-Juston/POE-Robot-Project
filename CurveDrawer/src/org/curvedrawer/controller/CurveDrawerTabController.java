@@ -11,10 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import org.curvedrawer.Main;
 import org.curvedrawer.path.Path;
@@ -78,7 +75,11 @@ public class CurveDrawerTabController implements Initializable {
     @FXML
     private void createPoint(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY && !isDragging.get()) {
-            Point point = new Point(mouseEvent.getX() - drawingPane.getTranslateX(), mouseEvent.getY() - drawingPane.getTranslateY());
+
+            double x = (mouseEvent.getX() - drawingPane.getTranslateX()); //FIXME make it so that the x scale does not affect the x coordinate (position the x where it should be on the screen)
+            double y = (mouseEvent.getY() - drawingPane.getTranslateY()); //FIXME make it so that y scale does not affect the y coordinate (position the y where it should be on the screen)
+
+            Point point = new Point(x, y);
 
             if (selectedPath.get() == -1 || pathsViewer.getPanes().isEmpty()) {
 
@@ -105,7 +106,7 @@ public class CurveDrawerTabController implements Initializable {
     private void addPath(String pathName, Path path) {
         if ((path != null) || (pathName != null)) {
             assert path != null;
-            PathGroup pathGroup = new PathGroup(pathName, path);
+            PathGroup pathGroup = new PathGroup(pathName, path, drawingPane);
 
             pathsViewer.getPanes().add(pathGroup.getTitlePane());
             pathsViewer.setExpandedPane(pathGroup.getTitlePane());
@@ -171,6 +172,17 @@ public class CurveDrawerTabController implements Initializable {
         pathsViewer.setContextMenu(pathViewerContextMenu);
 
         pane.addEventFilter(MouseEvent.DRAG_DETECTED, e -> isDragging.set(true));
+        pane.addEventFilter(ScrollEvent.SCROLL, this::handleScroll);
+    }
+
+    private void handleScroll(ScrollEvent scrollEvent) {
+        double direction = Math.signum(scrollEvent.getDeltaY());
+        direction *= Main.ZOOM_FACTOR.get();
+
+
+        drawingPane.setScaleX(Math.max(Main.ZOOM_FACTOR.get(), drawingPane.getScaleX() + direction));
+        drawingPane.setScaleY(Math.max(Main.ZOOM_FACTOR.get(), drawingPane.getScaleY() + direction));
+
     }
 
     private void removePath(Path path) {

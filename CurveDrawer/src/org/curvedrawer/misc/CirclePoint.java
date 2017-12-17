@@ -14,7 +14,6 @@ public class CirclePoint extends Circle {
         super(5, Color.BLUE);
         this.pathGroup = pathGroup;
 
-
         centerXProperty().bind(point.xProperty());
         centerYProperty().bind(point.yProperty());
 
@@ -41,11 +40,14 @@ public class CirclePoint extends Circle {
 
     public void selected(boolean isSelected) {
         if (isSelected) {
-            setId("circle-selected");
+            setScaleX(getScaleX() * 2);
+            setScaleY(getScaleY() * 2);
             pathGroup.setHasPointSelected(true);
 
         } else {
-            setId("circle-unselected");
+            setScaleX(getScaleX() / 2);
+            setScaleY(getScaleY() / 2);
+
             pathGroup.setHasPointSelected(false);
         }
     }

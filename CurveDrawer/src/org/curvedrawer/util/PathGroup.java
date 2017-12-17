@@ -12,13 +12,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PathGroup extends Group {
+    private final Group drawingPane;
     private HashMap<Pose, CirclePoint> circlePoseHashMap;
     private HashMap<Point, CirclePoint> circlePointHashMap;
     private TitledPane titlePane;
 
     private SimpleBooleanProperty hasPointSelected = new SimpleBooleanProperty(false);
 
-    public PathGroup(String pathName, Path path) {
+    public PathGroup(String pathName, Path path, Group drawingPane) {
+        this.drawingPane = drawingPane;
         this.circlePointHashMap = new HashMap<>();
         this.circlePoseHashMap = new HashMap<>();
 
@@ -45,6 +47,11 @@ public class PathGroup extends Group {
         for (Point point : points) {
             CirclePoint circlePoint = new CirclePoint(point, this);
             circlePointHashMap.put(point, circlePoint);
+            circlePoint.setScaleX(1 / drawingPane.getScaleX());
+            circlePoint.setScaleY(1 / drawingPane.getScaleY());
+
+            drawingPane.scaleXProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleX(1 / newValue.doubleValue()));
+            drawingPane.scaleYProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleY(1 / newValue.doubleValue()));
 
             getChildren().add(0, circlePoint);
             circlePoint.toFront();
@@ -55,6 +62,13 @@ public class PathGroup extends Group {
         for (Pose pose : poses) {
             CirclePoint circlePoint = new CirclePoint(pose, this);
             circlePoseHashMap.put(pose, circlePoint);
+
+            circlePoint.setScaleX(1 / drawingPane.getScaleX());
+            circlePoint.setScaleY(1 / drawingPane.getScaleY());
+
+            drawingPane.scaleXProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleX(1 / newValue.doubleValue()));
+            drawingPane.scaleYProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleY(1 / newValue.doubleValue()));
+
 
             getChildren().add(Math.max(0, getChildren().size() - 1), circlePoint);
             circlePoint.toFront();

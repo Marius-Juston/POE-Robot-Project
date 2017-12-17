@@ -21,6 +21,7 @@ public class Main extends Application {
     public static final boolean IS_CLIENT = false;
     public static final String NETWORK_TABLE_TABLE_KEY = "SmartDashboard";
     public static final SimpleDoubleProperty SCALE_FACTOR = new SimpleDoubleProperty(100); // 10 px == 1 m
+    public static final SimpleDoubleProperty ZOOM_FACTOR = new SimpleDoubleProperty(.1);
     private static final int TEAM_NUMBER = 2974;
     public static NetworkTable networkTable;
     private TabPane tabPane;
