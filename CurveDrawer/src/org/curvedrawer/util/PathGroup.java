@@ -3,6 +3,7 @@ package org.curvedrawer.util;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.TitledPane;
 import org.curvedrawer.misc.CirclePoint;
 import org.curvedrawer.misc.PathTable;
@@ -12,14 +13,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PathGroup extends Group {
-    private final Group drawingPane;
+    private final Node drawingPane;
     private HashMap<Pose, CirclePoint> circlePoseHashMap;
     private HashMap<Point, CirclePoint> circlePointHashMap;
     private TitledPane titlePane;
 
     private SimpleBooleanProperty hasPointSelected = new SimpleBooleanProperty(false);
 
-    public PathGroup(String pathName, Path path, Group drawingPane) {
+    public PathGroup(String pathName, Path path, Node drawingPane) {
         this.drawingPane = drawingPane;
         this.circlePointHashMap = new HashMap<>();
         this.circlePoseHashMap = new HashMap<>();

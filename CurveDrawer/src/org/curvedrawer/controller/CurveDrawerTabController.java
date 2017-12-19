@@ -35,7 +35,7 @@ public class CurveDrawerTabController implements Initializable {
     @FXML
     private Pane pane;
     @FXML
-    private Group drawingPane;
+    private Pane drawingPane;
     @FXML
     private Accordion pathsViewer;
     @FXML
@@ -76,8 +76,8 @@ public class CurveDrawerTabController implements Initializable {
     private void createPoint(MouseEvent mouseEvent) {
         if (mouseEvent.getButton() == MouseButton.PRIMARY && !isDragging.get()) {
 
-            double x = (mouseEvent.getX() - drawingPane.getTranslateX()); //FIXME make it so that the x scale does not affect the x coordinate (position the x where it should be on the screen)
-            double y = (mouseEvent.getY() - drawingPane.getTranslateY()); //FIXME make it so that y scale does not affect the y coordinate (position the y where it should be on the screen)
+            double x = ((mouseEvent.getX() / drawingPane.getScaleX()) - drawingPane.getTranslateX()); //FIXME make it so that the x scale does not affect the x coordinate (position the x where it should be on the screen)
+            double y = ((mouseEvent.getY() / drawingPane.getScaleY()) - drawingPane.getTranslateY()); //FIXME make it so that y scale does not affect the y coordinate (position the y where it should be on the screen)
 
             Point point = new Point(x, y);
 
@@ -85,9 +85,9 @@ public class CurveDrawerTabController implements Initializable {
 
                 Path path = createPath();
 
-                if (path != null)
+                if (path != null) {
                     path.addPoints(point);
-
+                }
             } else {
                 Path path = pathHashMap.get(selectedPath.get());
                 path.addPoints(point);
@@ -173,6 +173,9 @@ public class CurveDrawerTabController implements Initializable {
 
         pane.addEventFilter(MouseEvent.DRAG_DETECTED, e -> isDragging.set(true));
         pane.addEventFilter(ScrollEvent.SCROLL, this::handleScroll);
+
+        drawingPane.setStyle("-fx-border-color: black");
+
     }
 
     private void handleScroll(ScrollEvent scrollEvent) {
