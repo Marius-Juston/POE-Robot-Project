@@ -5,27 +5,29 @@ import javafx.collections.ListChangeListener;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.TitledPane;
+import org.curvedrawer.Main;
 import org.curvedrawer.misc.CirclePoint;
 import org.curvedrawer.misc.PathTable;
 import org.curvedrawer.path.Path;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PathGroup extends Group {
     private final Node drawingPane;
-    private HashMap<Pose, CirclePoint> circlePoseHashMap;
-    private HashMap<Point, CirclePoint> circlePointHashMap;
-    private TitledPane titlePane;
+    private final Map<Pose, CirclePoint> circlePoseHashMap;
+    private final Map<Point, CirclePoint> circlePointHashMap;
+    private final TitledPane titlePane;
 
-    private SimpleBooleanProperty hasPointSelected = new SimpleBooleanProperty(false);
+    private final SimpleBooleanProperty hasPointSelected = new SimpleBooleanProperty(false);
 
     public PathGroup(String pathName, Path path, Node drawingPane) {
         this.drawingPane = drawingPane;
-        this.circlePointHashMap = new HashMap<>();
-        this.circlePoseHashMap = new HashMap<>();
+        circlePointHashMap = new HashMap<>(10);
+        circlePoseHashMap = new HashMap<>(Main.NUMBER_OF_STEPS);
 
-        PathTable pathTable = new PathTable(path);
+        PathTable pathTable = new PathTable(path.getPoints());
         pathTable.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Point>) event -> {
             if (event.next()) {
                 if (event.wasAdded()) {
@@ -44,31 +46,31 @@ public class PathGroup extends Group {
 
     }
 
-    public void addPoints(Point... points) {
+    public final void addPoints(Point... points) {
         for (Point point : points) {
             CirclePoint circlePoint = new CirclePoint(point, this);
             circlePointHashMap.put(point, circlePoint);
-            circlePoint.setScaleX(1 / drawingPane.getScaleX());
-            circlePoint.setScaleY(1 / drawingPane.getScaleY());
+            circlePoint.setScaleX(1.0 / drawingPane.getScaleX());
+            circlePoint.setScaleY(1.0 / drawingPane.getScaleY());
 
-            drawingPane.scaleXProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleX(1 / newValue.doubleValue()));
-            drawingPane.scaleYProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleY(1 / newValue.doubleValue()));
+            drawingPane.scaleXProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleX(1.0 / newValue.doubleValue()));
+            drawingPane.scaleYProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleY(1.0 / newValue.doubleValue()));
 
             getChildren().add(0, circlePoint);
             circlePoint.toFront();
         }
     }
 
-    public void addPoses(Pose... poses) {
+    public final void addPoses(Pose... poses) {
         for (Pose pose : poses) {
             CirclePoint circlePoint = new CirclePoint(pose, this);
             circlePoseHashMap.put(pose, circlePoint);
 
-            circlePoint.setScaleX(1 / drawingPane.getScaleX());
-            circlePoint.setScaleY(1 / drawingPane.getScaleY());
+            circlePoint.setScaleX(1.0 / drawingPane.getScaleX());
+            circlePoint.setScaleY(1.0 / drawingPane.getScaleY());
 
-            drawingPane.scaleXProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleX(1 / newValue.doubleValue()));
-            drawingPane.scaleYProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleY(1 / newValue.doubleValue()));
+            drawingPane.scaleXProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleX(1.0 / newValue.doubleValue()));
+            drawingPane.scaleYProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleY(1.0 / newValue.doubleValue()));
 
 
             getChildren().add(Math.max(0, getChildren().size() - 1), circlePoint);
@@ -76,48 +78,48 @@ public class PathGroup extends Group {
         }
     }
 
-    public CirclePoint getPoint(Point point) {
+    public final CirclePoint getPoint(Point point) {
         return circlePointHashMap.get(point);
     }
 
 
-    public CirclePoint getPose(Pose pose) {
+    public final CirclePoint getPose(Pose pose) {
         return circlePoseHashMap.get(pose);
     }
 
-    public void removePoses(Pose... poses) {
+    public final void removePoses(Pose... poses) {
         for (Pose pose : poses) {
             getChildren().remove(circlePoseHashMap.remove(pose));
         }
     }
 
-    public void removePoints(Point... points) {
+    public final void removePoints(Point... points) {
         for (Point point : points) {
             getChildren().remove(circlePointHashMap.remove(point));
         }
     }
 
-    public void removePoints(List<? extends Point> removed) {
+    public final void removePoints(List<? extends Point> removed) {
         removePoints(removed.toArray(new Point[removed.size()]));
     }
 
-    public void addPoints(List<? extends Point> addedSubList) {
+    public final void addPoints(List<? extends Point> addedSubList) {
         addPoints(addedSubList.toArray(new Point[addedSubList.size()]));
     }
 
-    public TitledPane getTitlePane() {
+    public final TitledPane getTitlePane() {
         return titlePane;
     }
 
-    public boolean isHasPointSelected() {
+    public final boolean isHasPointSelected() {
         return hasPointSelected.get();
     }
 
-    public void setHasPointSelected(boolean hasPointSelected) {
+    public final void setHasPointSelected(boolean hasPointSelected) {
         this.hasPointSelected.set(hasPointSelected);
     }
 
-    public SimpleBooleanProperty hasPointSelectedProperty() {
+    public final SimpleBooleanProperty hasPointSelectedProperty() {
         return hasPointSelected;
     }
 }

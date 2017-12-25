@@ -1,5 +1,6 @@
 package org.curvedrawer.misc;
 
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
@@ -7,18 +8,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.NumberStringConverter;
 import org.curvedrawer.Main;
-import org.curvedrawer.path.Path;
 import org.curvedrawer.util.Point;
 
 public class PathTable extends TableView<Point> {
 
-    public PathTable(Path path) {
+    public PathTable(ObservableList<Point> points) {
         ContextMenu pathTableContextMenu = new ContextMenu();
         MenuItem addPoint = new MenuItem("Add Point");
-        addPoint.setOnAction(event -> path.getPoints().add(new Point(0, 0)));
+        addPoint.setOnAction(event -> points.add(new Point(0, 0)));
 
         MenuItem removePoint = new MenuItem("Remove Points");
-        removePoint.setOnAction(event -> path.removePoints(getSelectionModel().getSelectedItems()));
+        removePoint.setOnAction(event -> points.removeAll(getSelectionModel().getSelectedItems()));
 
 
         pathTableContextMenu.getItems().addAll(addPoint, removePoint);
@@ -42,7 +42,7 @@ public class PathTable extends TableView<Point> {
                 cellEditEvent.getTablePosition().getRow())
                 .setName(cellEditEvent.getNewValue()));
 
-        setItems(path.getPoints());
+        setItems(points);
     }
 
     private void initializeNumberColumn(String columnName, String property,

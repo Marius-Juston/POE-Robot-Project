@@ -5,6 +5,9 @@ import org.curvedrawer.Main;
 import org.curvedrawer.util.Converter;
 import org.curvedrawer.util.Pose;
 
+/**
+ * This class is meant to visualize where the robot when when running a path
+ */
 public class RobotPathViewer {
 
     private final String pathKey;

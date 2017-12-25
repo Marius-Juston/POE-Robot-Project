@@ -1,8 +1,9 @@
 package org.curvedrawer.util;
 
-import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import org.curvedrawer.Main;
 
 public class Point {
@@ -18,11 +19,11 @@ public class Point {
         this.x = new SimpleDoubleProperty(x);
 
         scaledX = new SimpleDoubleProperty();
-        scaledX.bind(ReadOnlyDoubleWrapper.doubleExpression(this.x.divide(Main.SCALE_FACTOR)));
+        scaledX.bind(DoubleExpression.doubleExpression(this.x.divide(Main.SCALE_FACTOR)));
 
         this.y = new SimpleDoubleProperty(y);
         scaledY = new SimpleDoubleProperty();
-        scaledY.bind(ReadOnlyDoubleWrapper.doubleExpression(this.y.divide(Main.SCALE_FACTOR)));
+        scaledY.bind(DoubleExpression.doubleExpression(this.y.divide(Main.SCALE_FACTOR)));
 
         this.name = new SimpleStringProperty(name);
     }
@@ -31,61 +32,61 @@ public class Point {
         this(x, y, null);
     }
 
-    public double getScaledX() {
+    public final double getScaledX() {
         return scaledX.get();
     }
 
 
-    public SimpleDoubleProperty scaledXProperty() {
+    public final SimpleDoubleProperty scaledXProperty() {
         return scaledX;
     }
 
-    public double getScaledY() {
+    public final double getScaledY() {
         return scaledY.get();
     }
 
-    public SimpleDoubleProperty scaledYProperty() {
+    public final SimpleDoubleProperty scaledYProperty() {
         return scaledY;
     }
 
-    public final double getX() {
+    public double getX() {
         return x.get();
     }
 
-    public final void setX(double x) {
+    public void setX(double x) {
         this.x.set(x);
     }
 
-    public final SimpleDoubleProperty xProperty() {
+    public ObservableValue xProperty() {
         return x;
     }
 
-    public final double getY() {
+    public double getY() {
         return y.get();
     }
 
-    public final void setY(double y) {
+    public void setY(double y) {
         this.y.set(y);
     }
 
-    public final SimpleDoubleProperty yProperty() {
+    public ObservableValue yProperty() {
         return y;
     }
 
-    public final String getName() {
+    public String getName() {
         return name.get();
     }
 
-    public final void setName(String name) {
+    public void setName(String name) {
         this.name.set(name);
     }
 
-    public final SimpleStringProperty nameProperty() {
+    public SimpleStringProperty nameProperty() {
         return name;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return "Point{" +
                 "x=" + x +
                 ", y=" + y +

@@ -21,7 +21,7 @@ public enum PathType {
                 '}';
     }
 
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.NotSerializableException {
         throw new java.io.NotSerializableException("org.curvedrawer.path.PathType");
     }
 }

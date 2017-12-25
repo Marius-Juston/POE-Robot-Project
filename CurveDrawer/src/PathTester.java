@@ -1,7 +1,8 @@
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import org.curvedrawer.Main;
 
-public class PathTester {
+class PathTester {
+
     public static void main(String[] args) {
         NetworkTable.setClientMode();
         NetworkTable.setIPAddress(Main.IP_ADDRESS);
@@ -11,6 +12,6 @@ public class PathTester {
         networkTable.addTableListener("Curve", (iTable, s, o, b) -> System.out.println(s + '\t' + o), true);
 
         System.out.println("Started");
-        for (; ; ) ;
+        while (true) ;
     }
 }

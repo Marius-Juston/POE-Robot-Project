@@ -26,42 +26,42 @@ public abstract class Path {
     private static Pose[] offsetPosesPerpendicularly(Pose[] poses, double offsetDistance) {
         Pose[] offsetPoses = new Pose[poses.length];
 
-        for (int i = 0; i < offsetPoses.length; i++) {
+        for (int i = offsetPoses.length - 1; i >= 0; i--) {
             offsetPoses[i] = poses[i].offsetPerpendicular(offsetDistance);
         }
 
         return offsetPoses;
     }
 
-    public final int getNumberOfSteps() {
+    public int getNumberOfSteps() {
         return numberOfSteps.get();
     }
 
-    public final void setNumberOfSteps(int numberOfSteps) {
+    public void setNumberOfSteps(int numberOfSteps) {
         this.numberOfSteps.set(numberOfSteps);
     }
 
-    public final SimpleIntegerProperty numberOfStepsProperty() {
+    public SimpleIntegerProperty numberOfStepsProperty() {
         return numberOfSteps;
     }
 
-    public final ObservableList<Point> getPoints() {
+    public ObservableList<Point> getPoints() {
         return points.get();
     }
 
-    public final void setPoints(ObservableList<Point> points) {
+    public void setPoints(ObservableList<Point> points) {
         this.points.set(points);
     }
 
-    public final List<Point> pointsProperty() {
+    public List<Point> pointsProperty() {
         return Collections.unmodifiableList(points);
     }
 
-    public final void addPoints(Point... points) {
+    public void addPoints(Point... points) {
         getPoints().addAll(points);
     }
 
-    public final void removePoints(Point... points) {
+    private void removePoints(Point... points) {
         getPoints().removeAll(points);
     }
 
@@ -73,14 +73,14 @@ public abstract class Path {
     public abstract Pose[] createPathPoses();
 
     @Override
-    public final String toString() {
+    public String toString() {
         return "Path{" +
                 "points=" + points +
                 ", numberOfSteps=" + numberOfSteps +
                 '}';
     }
 
-    public void removePoints(ObservableList<Point> selectedItems) {
+    public final void removePoints(List<Point> selectedItems) {
         removePoints(selectedItems.toArray(new Point[selectedItems.size()]));
     }
 }

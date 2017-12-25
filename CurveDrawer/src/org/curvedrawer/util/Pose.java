@@ -1,8 +1,9 @@
 package org.curvedrawer.util;
 
-import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.SimpleDoubleProperty;
 import org.curvedrawer.Main;
+import org.curvedrawer.controller.SettingController;
 
 public class Pose {
     private final SimpleDoubleProperty x;
@@ -17,52 +18,52 @@ public class Pose {
         this.x = new SimpleDoubleProperty(x);
 
         scaledX = new SimpleDoubleProperty();
-        scaledX.bind(ReadOnlyDoubleWrapper.doubleExpression(this.x.divide(Main.SCALE_FACTOR)));
+        scaledX.bind(DoubleExpression.doubleExpression(this.x.divide(Main.SCALE_FACTOR)));
 
         this.y = new SimpleDoubleProperty(y);
         scaledY = new SimpleDoubleProperty();
-        scaledY.bind(ReadOnlyDoubleWrapper.doubleExpression(this.y.divide(Main.SCALE_FACTOR)));
+        scaledY.bind(DoubleExpression.doubleExpression(this.y.divide(Main.SCALE_FACTOR)));
 
         this.angle = new SimpleDoubleProperty(angle);
     }
 
-    public double getScaledX() {
+    public final double getScaledX() {
         return scaledX.get();
     }
 
-    public SimpleDoubleProperty scaledXProperty() {
+    public final SimpleDoubleProperty scaledXProperty() {
         return scaledX;
     }
 
-    public double getScaledY() {
+    public final double getScaledY() {
         return scaledY.get();
     }
 
-    public SimpleDoubleProperty scaledYProperty() {
+    public final SimpleDoubleProperty scaledYProperty() {
         return scaledY;
     }
 
-    public double getX() {
+    public final double getX() {
         return x.get();
     }
 
-    public SimpleDoubleProperty xProperty() {
+    public final SimpleDoubleProperty xProperty() {
         return x;
     }
 
-    public double getY() {
+    public final double getY() {
         return y.get();
     }
 
-    public SimpleDoubleProperty yProperty() {
+    public final SimpleDoubleProperty yProperty() {
         return y;
     }
 
-    public double getAngle() {
+    public final double getAngle() {
         return angle.get();
     }
 
-    public SimpleDoubleProperty angleProperty() {
+    public final SimpleDoubleProperty angleProperty() {
         return angle;
     }
 
@@ -72,17 +73,17 @@ public class Pose {
      * @param distance - the distance to offset the point by
      * @return the offset point
      */
-    public final Pose offsetPerpendicular(double distance) {
+    public Pose offsetPerpendicular(double distance) {
         double angleOfDT = StrictMath.atan(getAngle());
-        double offsetX = distance * StrictMath.cos(angleOfDT + (Math.PI / 2)); // Finds point at distance along perpendicular
+        double offsetX = distance * StrictMath.cos(angleOfDT + (Math.PI / 2.0)); // Finds point at distance along perpendicular
         // line
-        double offsetY = distance * StrictMath.sin(angleOfDT + (Math.PI / 2));
+        double offsetY = distance * StrictMath.sin(angleOfDT + (Math.PI / 2.0));
 
         return new Pose(getX() + offsetX, getY() + offsetY, angleOfDT);
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return "Pose{" +
                 "x=" + x +
                 ", y=" + y +

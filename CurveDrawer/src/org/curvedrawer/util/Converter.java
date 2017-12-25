@@ -3,9 +3,8 @@ package org.curvedrawer.util;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Converter {
-    private Converter() {
-    }
+public enum Converter {
+    ;
 
     public static Pose[] stringToPoses(String stringPoses) {
         String[] information = stringPoses.split(" ");
@@ -14,7 +13,7 @@ public final class Converter {
 
         List<Pose> poses = new ArrayList<>(information.length / 3);
 
-        for (int i = 0; i < information.length; i += 3) {
+        for (int i = information.length - 1; i >= 0; i -= 3) {
             double x = Double.parseDouble(information[i]);
             double y = Double.parseDouble(information[i + 1]);
             double angle = Double.parseDouble(information[i + 2]);

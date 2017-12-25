@@ -15,14 +15,14 @@
 </script>
 
 <script>
-    function javafxEmbedCurveDrawer_id() {
+    function javafxEmbed_CurveDrawer_id() {
         dtjava.embed(
             {
                 id : 'CurveDrawer_id',
                 url : 'CurveDrawer.jnlp',
                 placeholder : 'javafx-app-placeholder',
-                width : '640',
-                height : '480'
+                width : 640,
+                height : 480
             },
             {
                 javafx : '8.0+'
@@ -31,7 +31,7 @@
         );
     }
     <!-- Embed FX application into web page once page is loaded -->
-    dtjava.addOnloadCallback(javafxEmbedCurveDrawer_id);
+    dtjava.addOnloadCallback(javafxEmbed_CurveDrawer_id);
 </script>
 
 </head><body>

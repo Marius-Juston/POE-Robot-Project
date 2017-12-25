@@ -52,26 +52,26 @@ public class Spline extends Path {
 
             /* left most segment */
             a[0] = 0;
-            b[0] = 2;
-            c[0] = 1;
-            r_x[0] = getPoints().get(0).getX() + (2 * getPoints().get(1).getX());
-            r_y[0] = getPoints().get(0).getY() + (2 * getPoints().get(1).getY());
+            b[0] = 2.0;
+            c[0] = 1.0;
+            r_x[0] = getPoints().get(0).getX() + (2.0 * getPoints().get(1).getX());
+            r_y[0] = getPoints().get(0).getY() + (2.0 * getPoints().get(1).getY());
 
             /* internal segments */
             for (int i = 1; i < (degree - 1); i++) {
-                a[i] = 1;
-                b[i] = 4;
-                c[i] = 1;
-                r_x[i] = (4 * getPoints().get(i).getX()) + (2 * getPoints().get(i + 1).getX());
-                r_y[i] = (4 * getPoints().get(i).getY()) + (2 * getPoints().get(i + 1).getY());
+                a[i] = 1.0;
+                b[i] = 4.0;
+                c[i] = 1.0;
+                r_x[i] = (4.0 * getPoints().get(i).getX()) + (2.0 * getPoints().get(i + 1).getX());
+                r_y[i] = (4.0 * getPoints().get(i).getY()) + (2.0 * getPoints().get(i + 1).getY());
             }
 
             /* right segment */
-            a[degree - 1] = 2;
-            b[degree - 1] = 7;
+            a[degree - 1] = 2.0;
+            b[degree - 1] = 7.0;
             c[degree - 1] = 0;
-            r_x[degree - 1] = (8 * getPoints().get(degree - 1).getX()) + getPoints().get(degree).getX();
-            r_y[degree - 1] = (8 * getPoints().get(degree - 1).getY()) + getPoints().get(degree).getY();
+            r_x[degree - 1] = (8.0 * getPoints().get(degree - 1).getX()) + getPoints().get(degree).getX();
+            r_y[degree - 1] = (8.0 * getPoints().get(degree - 1).getY()) + getPoints().get(degree).getY();
 
             /* solves Ax=b with the Thomas algorithm */
             for (int i = 1; i < degree; i++) {
@@ -88,8 +88,8 @@ public class Spline extends Path {
 
             /* we have p1, now compute p2 */
             for (int i = 0; i < (degree - 1); i++) {
-                points2[i] = new Point((2 * getPoints().get(i + 1).getX()) - points1[i + 1].getX(),
-                        (2 * getPoints().get(i + 1).getY()) - points1[i + 1].getY());
+                points2[i] = new Point((2.0 * getPoints().get(i + 1).getX()) - points1[i + 1].getX(),
+                        (2.0 * getPoints().get(i + 1).getY()) - points1[i + 1].getY());
             }
 
             points2[degree - 1] = new Point(0.5 * (getPoints().get(degree).getX() + points1[degree - 1].getX()),
@@ -105,7 +105,7 @@ public class Spline extends Path {
 
             return controlPoints;
         } else {
-            return new ArrayList<>();
+            return new ArrayList<>(0);
         }
     }
 
@@ -115,20 +115,27 @@ public class Spline extends Path {
      * @param pathControlPoints - a List of Lists of control points for each curve that make up the spline
      */
     private Pose[] joinBezierCurves(List<List<Point>> pathControlPoints) {
-        List<Pose> pathPointsAdd = new ArrayList<>(pathControlPoints.size() * 4);
+        List<Pose> pathPointsAdd = new ArrayList<>(getNumberOfSteps());
 
-        for (List<Point> curveControlPoints : pathControlPoints) {
+        for (int i = 0; i < pathControlPoints.size(); i++) { //FIXME make it so that the spline returns exactly the correct number of points
+            List<Point> curveControlPoints = pathControlPoints.get(i);
             Point[] controlPoints = curveControlPoints.toArray(new Point[curveControlPoints.size()]);
-            BezierCurve curve = new BezierCurve(getNumberOfSteps(), controlPoints);
+            BezierCurve curve = new BezierCurve(Math.toIntExact(Math.round((double) getNumberOfSteps() / pathControlPoints.size())), controlPoints);
+
 
             Pose[] pathPoints = curve.createPathPoses();
-            Collections.addAll(pathPointsAdd, pathPoints);
+
+            Pose[] poses = new Pose[pathPoints.length - ((i == (pathControlPoints.size() - 1)) ? 1 : 0)]; //We do not want to repeat having the same last and first points for consecutive bezier curve so we need to trim off that point if it is not the last bezier curve
+            System.arraycopy(pathPoints, 0, poses, 0, poses.length);
+
+            Collections.addAll(pathPointsAdd, poses);
         }
+
         return pathPointsAdd.toArray(new Pose[pathPointsAdd.size()]);
     }
 
     @Override
-    public final Pose[] createPathPoses() {
+    public Pose[] createPathPoses() {
         return joinBezierCurves(computeControlPoints());
     }
 

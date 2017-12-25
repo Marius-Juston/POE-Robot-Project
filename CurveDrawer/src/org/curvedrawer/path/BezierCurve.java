@@ -44,10 +44,10 @@ public class BezierCurve extends Path {
      */
     private static double factorial(double d) {
         double d1 = d;
-        double r = (d1 - Math.floor(d1)) + 1;
-        while (d1 > 1) {
+        double r = (d1 - Math.floor(d1)) + 1.0;
+        while (d1 > 1.0) {
             r *= d1;
-            d1 -= 1;
+            d1 -= 1.0;
         }
         return r;
     }
@@ -56,11 +56,13 @@ public class BezierCurve extends Path {
      * @return an array of Points that define the curve
      */
     private Pose[] getCurvePoints() {
-        Pose[] poses = new Pose[getNumberOfSteps() + 1];
+        int numberOfSteps = getNumberOfSteps();
 
-        for (double i = 0; i <= getNumberOfSteps(); i++) {
+        Pose[] poses = new Pose[numberOfSteps];
+
+        for (double i = 0; i < numberOfSteps; i++) {
             javafx.collections.ObservableList<Point> var = getPoints();
-            poses[(int) i] = getPoint(i / ((double) getNumberOfSteps()), var.toArray(new Point[var.size()]));
+            poses[(int) i] = getPoint(i / (numberOfSteps - 1), var.toArray(new Point[var.size()]));
         }
 
         return poses;
@@ -72,7 +74,7 @@ public class BezierCurve extends Path {
     private void setCoefficients() {
         int n = getDegree();
         coefficients = new double[n + 1];
-        for (int i = 0; i < coefficients.length; i++) {
+        for (int i = coefficients.length - 1; i >= 0; i--) {
             coefficients[i] = findNumberOfCombination(n, i);
         }
     }
@@ -97,7 +99,7 @@ public class BezierCurve extends Path {
         for (double i = 0; i <= n; i++) {
             double coefficient = coefficients[(int) i];
 
-            double oneMinusT = StrictMath.pow(1 - percentage, n - i);
+            double oneMinusT = StrictMath.pow(1.0 - percentage, n - i);
 
             double powerOfT = StrictMath.pow(percentage, i);
 
@@ -107,7 +109,7 @@ public class BezierCurve extends Path {
             yCoordinateAtPercentage += (coefficient * oneMinusT * powerOfT * pointI.getY());
         }
 
-        return new Pose(xCoordinateAtPercentage, yCoordinateAtPercentage, getDT(percentage));
+        return new Pose(xCoordinateAtPercentage, yCoordinateAtPercentage, getDerivative(percentage));
     }
 
     /**
@@ -124,7 +126,7 @@ public class BezierCurve extends Path {
      * @param t - percent along curve
      * @return derivative at point
      */
-    private double getDT(double t) {
+    private double getDerivative(double t) {
         if ((t < 1) && !getPoints().isEmpty()) {
             int n = getDegree();
             double dx = 0;
@@ -139,7 +141,7 @@ public class BezierCurve extends Path {
             if (dx == 0)
                 return 0;
 
-            return dy / dx;  //FIXME what to do if dx == 0? it will return NaN
+            return dy / dx;
         } else if (getPoints().size() > 1) {
 
             return (getPoints().get(getPoints().size() - 1).getY() - getPoints().get(getPoints().size() - 2).getY()) / (getPoints().get(getPoints().size() - 1).getX() - getPoints().get(getPoints().size() - 2).getX());
@@ -151,7 +153,7 @@ public class BezierCurve extends Path {
 
 
     @Override
-    public final Pose[] createPathPoses() {
+    public Pose[] createPathPoses() {
         return getCurvePoints();
     }
 

@@ -26,7 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 public class PathSelectorController implements Initializable { //TODO make this better and more efficient
@@ -42,7 +42,10 @@ public class PathSelectorController implements Initializable { //TODO make this 
     @FXML
     private Button cancelButton;
 
-    public static Map.Entry<String, Path> getPathChoice(String[] existingPathNames) {
+    public PathSelectorController() {
+    }
+
+    public static Entry<String, Path> getPathChoice(String[] existingPathNames) {
         PathSelectorController.existingPathNames = existingPathNames.clone();
 
         try {
@@ -67,8 +70,12 @@ public class PathSelectorController implements Initializable { //TODO make this 
         return null;
     }
 
+    private static void closeWindow(Event event) {
+        ((Node) (event.getSource())).getScene().getWindow().hide();
+    }
+
     @Override
-    public final void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources) {
         if (PathType.values().length > 0) {
 
             pathTypeSelection.getItems().addAll(Arrays.stream(PathType.values()).map(PathType::name).toArray(String[]::new));
@@ -78,7 +85,7 @@ public class PathSelectorController implements Initializable { //TODO make this 
                             newValue));
         }
 
-        cancelButton.setOnAction(this::closeWindow);
+        cancelButton.setOnAction(PathSelectorController::closeWindow);
     }
 
     @FXML
@@ -93,11 +100,6 @@ public class PathSelectorController implements Initializable { //TODO make this 
 
         closeWindow(event);
     }
-
-    private void closeWindow(Event event) {
-        ((Node) (event.getSource())).getScene().getWindow().hide();
-    }
-
 
     private void allowOkButtonToChangeState(String fieldText, String pathType) {
         if (fieldText.isEmpty() || (pathType == null)) {

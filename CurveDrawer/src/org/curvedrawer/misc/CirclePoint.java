@@ -11,7 +11,7 @@ public class CirclePoint extends Circle {
     private final PathGroup pathGroup;
 
     public CirclePoint(Point point, PathGroup pathGroup) {
-        super(5, Color.BLUE);
+        super(5.0, Color.BLUE);
         this.pathGroup = pathGroup;
 
         centerXProperty().bind(point.xProperty());
@@ -29,8 +29,8 @@ public class CirclePoint extends Circle {
         hoverProperty().addListener((observable, oldValue, newValue) -> selected(newValue));
     }
 
-    public CirclePoint(double centerX, double centerY, PathGroup pathGroup) {
-        super(centerX, centerY, 2, Color.RED);
+    private CirclePoint(double centerX, double centerY, PathGroup pathGroup) {
+        super(centerX, centerY, 2.0, Color.RED);
         this.pathGroup = pathGroup;
     }
 
@@ -38,15 +38,15 @@ public class CirclePoint extends Circle {
         this(pose.getX(), pose.getY(), pathGroup);
     }
 
-    public void selected(boolean isSelected) {
+    public final void selected(boolean isSelected) {
         if (isSelected) {
-            setScaleX(getScaleX() * 2);
-            setScaleY(getScaleY() * 2);
+            setScaleX(getScaleX() * 2.0);
+            setScaleY(getScaleY() * 2.0);
             pathGroup.setHasPointSelected(true);
 
         } else {
-            setScaleX(getScaleX() / 2);
-            setScaleY(getScaleY() / 2);
+            setScaleX(getScaleX() / 2.0);
+            setScaleY(getScaleY() / 2.0);
 
             pathGroup.setHasPointSelected(false);
         }

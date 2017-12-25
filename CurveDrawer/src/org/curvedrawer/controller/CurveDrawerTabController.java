@@ -9,9 +9,12 @@ import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.*;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import org.curvedrawer.Main;
 import org.curvedrawer.path.Path;
@@ -29,9 +32,11 @@ import java.util.ResourceBundle;
 public class CurveDrawerTabController implements Initializable {
     private final ObservableMap<Path, Pose[]> pathPoints = FXCollections.observableHashMap();
     private final Map<Integer, Path> pathHashMap = new HashMap<>(10);
-    private final Map<Path, PathGroup> pathGroupHashMap = new HashMap<>();
+    private final Map<Path, PathGroup> pathGroupHashMap = new HashMap<>(1);
     private final SimpleDoubleProperty pressedX = new SimpleDoubleProperty();
     private final SimpleDoubleProperty pressedY = new SimpleDoubleProperty();
+    private final SimpleIntegerProperty selectedPath = new SimpleIntegerProperty(-1);
+    private final SimpleBooleanProperty isDragging = new SimpleBooleanProperty(false);
     @FXML
     private Pane pane;
     @FXML
@@ -40,23 +45,24 @@ public class CurveDrawerTabController implements Initializable {
     private Accordion pathsViewer;
     @FXML
     private Button sendButton;
-    private SimpleIntegerProperty selectedPath;
-    private SimpleBooleanProperty isDragging = new SimpleBooleanProperty(false);
+
+    public CurveDrawerTabController() {
+    }
+
+    private static double getTranslationX(Node node) {
+        return node.getLocalToParentTransform().getTx();
+    }
+
+    private static double getTranslationY(Node node) {
+        return node.getLocalToParentTransform().getTy();
+    }
 
     @FXML
     private void sendCurveToSmartDashboard() {
         Path path = getSelectedPaths();
-
         Pose[] poses = pathPoints.get(path);
-
         String converted = Converter.posesToString(poses);
-
-        System.out.println(converted);
-
         String nameOfPath = pathsViewer.getPanes().get(selectedPath.get()).getText();
-
-        System.out.println('\'' + nameOfPath + '\'');
-
         Main.networkTable.putString(nameOfPath, converted);
     }
 
@@ -74,14 +80,16 @@ public class CurveDrawerTabController implements Initializable {
 
     @FXML
     private void createPoint(MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() == MouseButton.PRIMARY && !isDragging.get()) {
+        if ((mouseEvent.getButton() == MouseButton.PRIMARY) && !isDragging.get()) {
 
-            double x = ((mouseEvent.getX() / drawingPane.getScaleX()) - drawingPane.getTranslateX()); //FIXME make it so that the x scale does not affect the x coordinate (position the x where it should be on the screen)
-            double y = ((mouseEvent.getY() / drawingPane.getScaleY()) - drawingPane.getTranslateY()); //FIXME make it so that y scale does not affect the y coordinate (position the y where it should be on the screen)
+
+            double x = ((mouseEvent.getX()) - getTranslationX(drawingPane)) / drawingPane.getScaleX();
+            double y = ((mouseEvent.getY()) - getTranslationY(drawingPane)) / drawingPane.getScaleY();
+
 
             Point point = new Point(x, y);
 
-            if (selectedPath.get() == -1 || pathsViewer.getPanes().isEmpty()) {
+            if ((selectedPath.get() == -1) || pathsViewer.getPanes().isEmpty()) {
 
                 Path path = createPath();
 
@@ -119,6 +127,8 @@ public class CurveDrawerTabController implements Initializable {
             sendButton.setDisable(false);
 
             pathPoints.put(path, path.createPathPoses());
+            System.out.println(pathPoints.get(path).length + "\t" + path.getNumberOfSteps());
+
             pathGroupHashMap.put(path, pathGroup);
             drawingPane.getChildren().add(pathGroup);
 
@@ -132,18 +142,16 @@ public class CurveDrawerTabController implements Initializable {
                     }
 
                     pathPoints.put(path, path.createPathPoses());
+                    System.out.println(pathPoints.get(path).length + "\t" + path.getNumberOfSteps());
                 }
             });
         }
     }
 
     @Override
-    public final void initialize(URL location, ResourceBundle resources) {
-        selectedPath = new SimpleIntegerProperty(-1);
-
+    public void initialize(URL location, ResourceBundle resources) {
         pathPoints.addListener((MapChangeListener<Path, Pose[]>) c -> {
             if (c.wasAdded()) {
-
                 if (pathGroupHashMap.containsKey(c.getKey())) {
                     PathGroup pathGroup = pathGroupHashMap.get(c.getKey());
                     Pose[] poses = c.getValueAdded();
@@ -185,7 +193,6 @@ public class CurveDrawerTabController implements Initializable {
 
         drawingPane.setScaleX(Math.max(Main.ZOOM_FACTOR.get(), drawingPane.getScaleX() + direction));
         drawingPane.setScaleY(Math.max(Main.ZOOM_FACTOR.get(), drawingPane.getScaleY() + direction));
-
     }
 
     private void removePath(Path path) {
@@ -201,18 +208,21 @@ public class CurveDrawerTabController implements Initializable {
 
     @FXML
     private void handleKeyPresses(KeyEvent event) { //TODO make it so that you do not need to manually focus the vBox or tab to be able to get input from user
-        System.out.println(event.getCode());
-
         if (event.isControlDown()) {
-            if ((event.getCode() == KeyCode.N)) {
-                createPath();
-            } else if (event.getCode() == KeyCode.UP) {
-                selectedPath.set(Math.max(selectedPath.getValue() - 1, 0));
-            } else if (event.getCode() == KeyCode.DOWN) {
-                selectedPath.set(Math.min(selectedPath.getValue() + 1, pathsViewer.getPanes().size() - 1));
-            } else if (event.getCode() == KeyCode.DIGIT0) {
-                drawingPane.setScaleX(1);
-                drawingPane.setScaleY(1);
+            switch (event.getCode()) {
+                case N:
+                    createPath();
+                    break;
+                case UP:
+                    selectedPath.set(Math.max(selectedPath.getValue() - 1, 0));
+                    break;
+                case DOWN:
+                    selectedPath.set(Math.min(selectedPath.getValue() + 1, pathsViewer.getPanes().size() - 1));
+                    break;
+                case DIGIT0:
+                    drawingPane.setScaleX(1);
+                    drawingPane.setScaleY(1);
+                    break;
             }
         }
     }
@@ -224,9 +234,9 @@ public class CurveDrawerTabController implements Initializable {
 
     @FXML
     private void pan(MouseEvent event) {
-        if (!anyPointIsSelected()) {
-            drawingPane.setTranslateX(drawingPane.getTranslateX() + event.getX() - pressedX.get());
-            drawingPane.setTranslateY(drawingPane.getTranslateY() + event.getY() - pressedY.get());
+        if (event.getButton() == MouseButton.PRIMARY && !anyPointIsSelected()) {
+            drawingPane.setTranslateX((drawingPane.getTranslateX() + event.getX()) - pressedX.get());
+            drawingPane.setTranslateY((drawingPane.getTranslateY() + event.getY()) - pressedY.get());
 
             pressedX.set(event.getX());
             pressedY.set(event.getY());
