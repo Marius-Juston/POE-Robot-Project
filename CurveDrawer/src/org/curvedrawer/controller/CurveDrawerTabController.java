@@ -83,11 +83,10 @@ public class CurveDrawerTabController implements Initializable {
         if ((mouseEvent.getButton() == MouseButton.PRIMARY) && !isDragging.get()) {
 
 
-            double x = ((mouseEvent.getX()) - getTranslationX(drawingPane)) / drawingPane.getScaleX();
-            double y = ((mouseEvent.getY()) - getTranslationY(drawingPane)) / drawingPane.getScaleY();
+//            double x = ((mouseEvent.getX()) - getTranslationX(drawingPane)) / drawingPane.getScaleX();
+//            double y = ((mouseEvent.getY()) - getTranslationY(drawingPane)) / drawingPane.getScaleY();
 
-
-            Point point = new Point(x, y);
+            Point point = new Point(drawingPane.parentToLocal(mouseEvent.getX(), mouseEvent.getY()));
 
             if ((selectedPath.get() == -1) || pathsViewer.getPanes().isEmpty()) {
 

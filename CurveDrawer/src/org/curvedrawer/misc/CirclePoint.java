@@ -10,8 +10,12 @@ import org.curvedrawer.util.Pose;
 public class CirclePoint extends Circle {
     private final PathGroup pathGroup;
 
+    private final double RADIUS;
+
     public CirclePoint(Point point, PathGroup pathGroup) {
         super(5.0, Color.BLUE);
+        RADIUS =getRadius();
+
         this.pathGroup = pathGroup;
 
         centerXProperty().bind(point.xProperty());
@@ -31,6 +35,8 @@ public class CirclePoint extends Circle {
 
     private CirclePoint(double centerX, double centerY, PathGroup pathGroup) {
         super(centerX, centerY, 2.0, Color.RED);
+        RADIUS = getRadius();
+
         this.pathGroup = pathGroup;
     }
 
@@ -40,13 +46,12 @@ public class CirclePoint extends Circle {
 
     public final void selected(boolean isSelected) {
         if (isSelected) {
-            setScaleX(getScaleX() * 2.0);
-            setScaleY(getScaleY() * 2.0);
+
+            setRadius(RADIUS * 2.0);
             pathGroup.setHasPointSelected(true);
 
         } else {
-            setScaleX(getScaleX() / 2.0);
-            setScaleY(getScaleY() / 2.0);
+            setRadius(RADIUS / 2.0);
 
             pathGroup.setHasPointSelected(false);
         }

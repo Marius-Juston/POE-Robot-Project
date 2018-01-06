@@ -4,6 +4,7 @@ import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Point2D;
 import org.curvedrawer.Main;
 
 public class Point {
@@ -30,6 +31,10 @@ public class Point {
 
     public Point(double x, double y) {
         this(x, y, null);
+    }
+
+    public Point(Point2D point2D) {
+        this(point2D.getX(), point2D.getY());
     }
 
     public final double getScaledX() {

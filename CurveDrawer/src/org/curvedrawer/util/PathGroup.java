@@ -1,6 +1,8 @@
 package org.curvedrawer.util;
 
+import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -21,6 +23,11 @@ public class PathGroup extends Group {
     private final TitledPane titlePane;
 
     private final SimpleBooleanProperty hasPointSelected = new SimpleBooleanProperty(false);
+
+    private final DoubleExpression X_SCALE;
+    private final DoubleExpression Y_SCALE;
+
+    private static final SimpleDoubleProperty ONE = new SimpleDoubleProperty(1.0);
 
     public PathGroup(String pathName, Path path, Node drawingPane) {
         this.drawingPane = drawingPane;
@@ -44,17 +51,23 @@ public class PathGroup extends Group {
 
         titlePane = new TitledPane(pathName, pathTable);
 
+        X_SCALE = DoubleExpression.doubleExpression(ONE.divide(drawingPane.scaleXProperty()));
+        Y_SCALE = DoubleExpression.doubleExpression(ONE.divide(drawingPane.scaleYProperty()));
     }
 
     public final void addPoints(Point... points) {
         for (Point point : points) {
             CirclePoint circlePoint = new CirclePoint(point, this);
             circlePointHashMap.put(point, circlePoint);
-            circlePoint.setScaleX(1.0 / drawingPane.getScaleX());
-            circlePoint.setScaleY(1.0 / drawingPane.getScaleY());
 
-            drawingPane.scaleXProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleX(1.0 / newValue.doubleValue()));
-            drawingPane.scaleYProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleY(1.0 / newValue.doubleValue()));
+            circlePoint.scaleXProperty().bind(X_SCALE);
+            circlePoint.scaleYProperty().bind(Y_SCALE);
+
+//            circlePoint.setScaleX(1.0 / drawingPane.getScaleX());
+//            circlePoint.setScaleY(1.0 / drawingPane.getScaleY());
+
+//            drawingPane.scaleXProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleX(1.0 / newValue.doubleValue()));
+//            drawingPane.scaleYProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleY(1.0 / newValue.doubleValue()));
 
             getChildren().add(0, circlePoint);
             circlePoint.toFront();
@@ -66,11 +79,14 @@ public class PathGroup extends Group {
             CirclePoint circlePoint = new CirclePoint(pose, this);
             circlePoseHashMap.put(pose, circlePoint);
 
-            circlePoint.setScaleX(1.0 / drawingPane.getScaleX());
-            circlePoint.setScaleY(1.0 / drawingPane.getScaleY());
+            circlePoint.scaleXProperty().bind(X_SCALE);
+            circlePoint.scaleYProperty().bind(Y_SCALE);
 
-            drawingPane.scaleXProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleX(1.0 / newValue.doubleValue()));
-            drawingPane.scaleYProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleY(1.0 / newValue.doubleValue()));
+//            circlePoint.setScaleX(1.0 / drawingPane.getScaleX());
+//            circlePoint.setScaleY(1.0 / drawingPane.getScaleY());
+
+//            drawingPane.scaleXProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleX(1.0 / newValue.doubleValue()));
+//            drawingPane.scaleYProperty().addListener((observable, oldValue, newValue) -> circlePoint.setScaleY(1.0 / newValue.doubleValue()));
 
 
             getChildren().add(Math.max(0, getChildren().size() - 1), circlePoint);
