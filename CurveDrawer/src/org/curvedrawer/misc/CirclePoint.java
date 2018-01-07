@@ -51,7 +51,7 @@ public class CirclePoint extends Circle {
             pathGroup.setHasPointSelected(true);
 
         } else {
-            setRadius(RADIUS / 2.0);
+            setRadius(RADIUS);
 
             pathGroup.setHasPointSelected(false);
         }

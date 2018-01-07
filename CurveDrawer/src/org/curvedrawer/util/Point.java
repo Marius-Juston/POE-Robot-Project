@@ -62,7 +62,7 @@ public class Point {
         this.x.set(x);
     }
 
-    public ObservableValue xProperty() {
+    public SimpleDoubleProperty xProperty() {
         return x;
     }
 
@@ -74,7 +74,7 @@ public class Point {
         this.y.set(y);
     }
 
-    public ObservableValue yProperty() {
+    public SimpleDoubleProperty yProperty() {
         return y;
     }
 
