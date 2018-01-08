@@ -42,9 +42,6 @@ public class PathSelectorController implements Initializable { //TODO make this 
     @FXML
     private Button cancelButton;
 
-    public PathSelectorController() {
-    }
-
     public static Entry<String, Path> getPathChoice(String[] existingPathNames) {
         PathSelectorController.existingPathNames = existingPathNames.clone();
 
@@ -75,7 +72,7 @@ public class PathSelectorController implements Initializable { //TODO make this 
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public final void initialize(URL location, ResourceBundle resources) {
         if (PathType.values().length > 0) {
 
             pathTypeSelection.getItems().addAll(Arrays.stream(PathType.values()).map(PathType::name).toArray(String[]::new));
@@ -113,8 +110,8 @@ public class PathSelectorController implements Initializable { //TODO make this 
     @FXML
     private void handleInput(KeyEvent event) {
         String text =
-                pathName.getText() + (Character.isAlphabetic(event.getCharacter().charAt(0)) ? event
-                        .getCharacter() : event.getText());
+                pathName.getText().concat((Character.isAlphabetic(event.getCharacter().charAt(0)) ? event
+                        .getCharacter() : event.getText()));
 
         String finalText = text;
         if (Arrays.stream(existingPathNames).anyMatch(s -> s.equals(finalText))) {
@@ -126,5 +123,15 @@ public class PathSelectorController implements Initializable { //TODO make this 
 
         allowOkButtonToChangeState(text, pathTypeSelection.getValue());
 
+    }
+
+    @Override
+    public String toString() {
+        return "PathSelectorController{" +
+                "pathName=" + pathName +
+                ", pathTypeSelection=" + pathTypeSelection +
+                ", okButton=" + okButton +
+                ", cancelButton=" + cancelButton +
+                '}';
     }
 }

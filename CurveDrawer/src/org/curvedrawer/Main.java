@@ -22,14 +22,13 @@ import java.io.IOException;
 
 public class Main extends Application {
 
-    public static final String IP_ADDRESS = "10.0.0.24";
-    public static final String NETWORK_TABLE_TABLE_KEY = "SmartDashboard";
-    private static final boolean IS_CLIENT = false;
-        public static final int NUMBER_OF_STEPS = 50;
-        private static final int TEAM_NUMBER = 2974;
-        public static final ObservableDoubleValue ZOOM_FACTOR = new SimpleDoubleProperty(0.1);
-        public static final ObservableDoubleValue SCALE_FACTOR = new SimpleDoubleProperty(100.0); // 10 px == 1 m
-
+    public static final String IP_ADDRESS = "10.0.0.24"; //IP address to connect to when in server mode
+    public static final String NETWORK_TABLE_TABLE_KEY = "SmartDashboard"; //network table to send the data to
+    public static final int NUMBER_OF_STEPS = 50; // default resolution of paths
+    public static final ObservableDoubleValue ZOOM_FACTOR = new SimpleDoubleProperty(0.1); // how much scaling changes by
+    public static final ObservableDoubleValue SCALE_FACTOR = new SimpleDoubleProperty(100.0); // 10 px == 1 m
+    private static final boolean IS_CLIENT = false; // if the program will send to robotRIO or not
+    private static final int TEAM_NUMBER = 2974; // team number
     public static NetworkTable networkTable;
 
     static {
@@ -44,19 +43,22 @@ public class Main extends Application {
         SettingController.addSpecialSetting(new SimpleValue<Integer>("Hello", 3) {
             @Override
             protected Integer handleTextChange(KeyEvent keyEvent) {
-                return null;
+                return null; //TODO
             }
 
         });
 
     }
 
-    private TabPane tabPane = new TabPane();
+    private final TabPane tabPane = new TabPane();
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Initializes the network table with ip address settings etc...
+     */
     private static void initNetworkTable() {
 //        SettingController.addNumber("TEAM_NUMBER", 2974, NumberType.INTEGER);
 //        SettingController.<Integer>getValue("TEAM_NUMBER").addListener((observable, oldValue, newValue) -> {
@@ -78,8 +80,10 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public final void start(Stage primaryStage) throws IOException {
         initNetworkTable();
+
+        //////////////////////  TAB PANE SETUP   //////////////////////////////
 
         tabPane.setMaxSize(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
         tabPane.setMinSize(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
@@ -102,10 +106,11 @@ public class Main extends Application {
 
         tabPane.setContextMenu(contextMenu);
 
+        ////////////////////////////////////////////////////////////////////////////
 
-        addTab(createDrawingTab("Curve Drawer"));
+        addTab(createDrawingTab("Curve Drawer")); //adds a pane to the TabPane
 
-        primaryStage.setTitle("Bezier Curve Creator");
+        primaryStage.setTitle("Bezier Curve Creator"); //sets title
         primaryStage.setScene(new Scene(tabPane));
         primaryStage.getScene().getStylesheets().add("/assets/css/stylesheet.css");
 
@@ -114,6 +119,11 @@ public class Main extends Application {
         primaryStage.setOnCloseRequest(event -> NetworkTable.shutdown());
     }
 
+    /**
+     * Adds a Tab to the TabPane and sets the tab closing policy (if > 1 tab then you can close tabs otherwise no)
+     *
+     * @param tab tab to add to tab pane
+     */
     private void addTab(Tab tab) {
         tabPane.getTabs().add(tab);
 
@@ -122,6 +132,13 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Creates and sets up a tab that will be used for drawing curves
+     *
+     * @param name the name of the tab to be displayed
+     * @return the configured tab
+     * @throws IOException if it cannot find a the "curve_drawing_tab.fxml" file
+     */
     private Tab createDrawingTab(String name) throws IOException {
         Parent tabContentController = FXMLLoader.load(getClass().getResource("/assets/fxml/curve_drawing_tab.fxml")); //TODO improve upon this
 
@@ -133,8 +150,13 @@ public class Main extends Application {
             }
         });
 
-
         return tab;
     }
 
+    @Override
+    public String toString() {
+        return "Main{" +
+                "tabPane=" + tabPane +
+                '}';
+    }
 }

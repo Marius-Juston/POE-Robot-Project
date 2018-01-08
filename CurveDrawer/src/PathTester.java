@@ -1,7 +1,11 @@
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import org.curvedrawer.Main;
 
-class PathTester {
+
+/**
+ * Test class for retrieving what would be sent to the robotRIO
+ */
+final class PathTester {
 
     public static void main(String[] args) {
         NetworkTable.setClientMode();

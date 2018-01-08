@@ -135,7 +135,7 @@ public class Spline extends Path {
     }
 
     @Override
-    public Pose[] createPathPoses() {
+    public final Pose[] createPathPoses() {
         return joinBezierCurves(computeControlPoints());
     }
 

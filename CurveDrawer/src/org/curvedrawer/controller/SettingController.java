@@ -7,7 +7,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -16,23 +15,24 @@ import org.curvedrawer.setting.SettingValue;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 
-public class SettingController {
-    private static final List<SettingValue> SETTING_VALUES = new ArrayList<>();
+public final class SettingController {
+    private static final Collection<SettingValue> SETTING_VALUES = new ArrayList<>(15);
 
     private static final Parent PARENT;
     private static final Stage STAGE = new Stage();
     private static final VBox V_BOX;
 
-    static {VBox V_BOX1;
+    static {
+        VBox V_BOX1;
         Parent parent1;
         try {
             parent1 = FXMLLoader
                     .load(PathSelectorController.class.getResource("/assets/fxml/settings.fxml"));
 
-            V_BOX1 =((VBox) ((ScrollPane) parent1.getChildrenUnmodifiable().get(0)).getContent());
+            V_BOX1 = ((VBox) ((ScrollPane) parent1.getChildrenUnmodifiable().get(0)).getContent());
         } catch (IOException e) {
             e.printStackTrace();
             parent1 = null;

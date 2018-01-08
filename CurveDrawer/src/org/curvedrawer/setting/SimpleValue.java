@@ -1,32 +1,34 @@
 package org.curvedrawer.setting;
 
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 
 import java.awt.event.KeyEvent;
 
-public abstract class SimpleValue <T> extends SettingValue<T> {
+public abstract class SimpleValue<T> extends SettingValue<T> {
 
 
     private final TextField textField = new TextField();
 
-    public SimpleValue(String name, SimpleObjectProperty<T> value) {
+    protected SimpleValue(String name, SimpleObjectProperty<T> value) {
         super(name, value);
 
 //        textField.setOnAction(this::handleTextChange);
 //        textField.setOnKeyPressed(this::handleTextChange);
     }
 
+    protected SimpleValue(String name, T value) {
+        this(name, new SimpleObjectProperty<>(value));
+    }
+
     @Override
-    public Node createSettingNode() {
+    public final Node createSettingNode() {
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER);
 
@@ -42,13 +44,16 @@ public abstract class SimpleValue <T> extends SettingValue<T> {
         return hBox;
     }
 
-    protected SimpleValue(String name, T value) {
-        this(name, new SimpleObjectProperty<>(value));
-    }
-
     protected abstract T handleTextChange(KeyEvent keyEvent);
 
-    public TextField getTextField() {
+    public final TextField getTextField() {
         return textField;
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleValue{" +
+                "textField=" + textField +
+                "} " + super.toString();
     }
 }
