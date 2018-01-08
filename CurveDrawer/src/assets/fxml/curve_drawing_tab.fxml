@@ -23,5 +23,5 @@
         </ScrollPane>
     </SplitPane>
     <Button fx:id="sendButton" defaultButton="true" disable="true" mnemonicParsing="false"
-            onAction="#sendCurveToSmartDashboard" text="Send to SmartDashboard"/>
+            onAction="#sendCurveToNetworkTable" text="Send to SmartDashboard"/>
 </VBox>

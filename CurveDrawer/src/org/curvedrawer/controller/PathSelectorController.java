@@ -42,6 +42,12 @@ public class PathSelectorController implements Initializable { //TODO make this 
     @FXML
     private Button cancelButton;
 
+    /**
+     * Creates a popup for selecting the path and the path name
+     *
+     * @param existingPathNames existing path name in the tabbed panes in the table view
+     * @return a HashMap entry with as key the name of the path and as key the associated path
+     */
     public static Entry<String, Path> getPathChoice(String[] existingPathNames) {
         PathSelectorController.existingPathNames = existingPathNames.clone();
 
@@ -67,9 +73,15 @@ public class PathSelectorController implements Initializable { //TODO make this 
         return null;
     }
 
+    /**
+     * Closes a window given an event
+     *
+     * @param event event source window to close
+     */
     private static void closeWindow(Event event) {
         ((Node) (event.getSource())).getScene().getWindow().hide();
     }
+
 
     @Override
     public final void initialize(URL location, ResourceBundle resources) {
@@ -85,6 +97,11 @@ public class PathSelectorController implements Initializable { //TODO make this 
         cancelButton.setOnAction(PathSelectorController::closeWindow);
     }
 
+    /**
+     * Converts the String selected path to a path type and creates an instance of the Path from that. closes the window after that
+     *
+     * @param event action event executed when pressing the ok button
+     */
     @FXML
     private void getPathAndClose(ActionEvent event) {
         try {
@@ -98,6 +115,12 @@ public class PathSelectorController implements Initializable { //TODO make this 
         closeWindow(event);
     }
 
+    /**
+     * Method to turn the ok button to be disabled or enabled given the current text in the TextField and the path type selected.
+     *
+     * @param fieldText current text in displayed in the TextField
+     * @param pathType  path type selected by the dropdown
+     */
     private void allowOkButtonToChangeState(String fieldText, String pathType) {
         if (fieldText.isEmpty() || (pathType == null)) {
             okButton.setDisable(true);
@@ -107,6 +130,11 @@ public class PathSelectorController implements Initializable { //TODO make this 
 
     }
 
+    /**
+     * Handles key event for the TextField. Checks if the new word has already been used already or not if it has already been used the TextField text will change to be red.
+     *
+     * @param event the textField key event
+     */
     @FXML
     private void handleInput(KeyEvent event) {
         String text =

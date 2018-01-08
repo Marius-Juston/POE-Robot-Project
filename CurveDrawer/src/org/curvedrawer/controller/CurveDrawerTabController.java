@@ -45,8 +45,11 @@ public class CurveDrawerTabController implements Initializable {
     @FXML
     private Button sendButton;
 
+    /**
+     * Sends the selected paths to Main.networktable NetworkTable instance as a converted string of poses.
+     */
     @FXML
-    private void sendCurveToSmartDashboard() {
+    private void sendCurveToNetworkTable() {
         Path path = getSelectedPaths();
         Pose[] poses = pathPoints.get(path);
         String converted = Converter.posesToString(poses);
@@ -54,6 +57,12 @@ public class CurveDrawerTabController implements Initializable {
         Main.networkTable.putString(nameOfPath, converted);
     }
 
+
+    /**
+     * Creates a path by asking for the path selector popup and adds it using the addPath method. If no path is selected for any reason it will return null.
+     *
+     * @return the created path
+     */
     private Path createPath() {
         Entry<String, Path> path = askForPath();
 
@@ -66,6 +75,11 @@ public class CurveDrawerTabController implements Initializable {
         return null;
     }
 
+    /**
+     * Handles mouse clicked event. If the mouse is right clicking and is not dragging then if it is the first point ever it will ask to create a new path if not it will just add to the selected path the current mouse position as a path point
+     *
+     * @param mouseEvent mouse clicked event
+     */
     @FXML
     private void createPoint(MouseEvent mouseEvent) {
         if ((mouseEvent.getButton() == MouseButton.PRIMARY) && !isDragging.get()) {
@@ -86,17 +100,32 @@ public class CurveDrawerTabController implements Initializable {
         }
     }
 
+    /**
+     * Opens up the Path selector popup to ask for what type of path is wanted and what name it should by referred by.
+     *
+     * @return a HashMap entry with as key the name of the path and as key the associated path
+     */
     private Entry<String, Path> askForPath() {
         return PathSelectorController.getPathChoice(getUsedPathNames());
     }
 
+    /**
+     * Converts to an array all the TitledPane titles in the path viewer
+     *
+     * @return an array of the TitlePane titles
+     */
     private String[] getUsedPathNames() {
         return pathsViewer.getPanes().stream().map(TitledPane::getText).toArray(String[]::new);
     }
 
+    /**
+     * If the pathName and the path are not null then it will create a pathgroup and add its titlepane to the path view and make that the expaneded node. It will also make the selected path to be the added path and finally it will add the PathGroup to the drawing pane.
+     *
+     * @param pathName name of the path to be added
+     * @param path     path to be added
+     */
     private void addPath(String pathName, Path path) {
-        if ((path != null) || (pathName != null)) {
-            assert path != null;
+        if ((path != null) && (pathName != null)) {
             PathGroup pathGroup = new PathGroup(pathName, path, drawingPane);
 
             pathsViewer.getPanes().add(pathGroup.getTitlePane());
@@ -166,32 +195,66 @@ public class CurveDrawerTabController implements Initializable {
         pane.addEventFilter(ScrollEvent.SCROLL, this::handleScroll);
     }
 
+    /**
+     * This method handles scrolling event. This scrolling event handles the zooming.
+     *
+     * @param scrollEvent a scrolling event
+     */
     private void handleScroll(ScrollEvent scrollEvent) {
         zoom(scrollEvent.getDeltaY());
     }
 
+
+    /**
+     * Scales the drawing pane given its direction and the default Main.ZOOM_FACTOR variable value. Negative direction means zoom out, positive direction means zoom in and 0 direction does not change the scaling.
+     *
+     * @param direction zoom in (+) or zoom out (-)
+     */
     private void zoom(double direction) {
         zoom(direction, Main.ZOOM_FACTOR.get());
     }
 
+    /**
+     * Scales the drawing pane given its direction and amount. Negative direction means zoom out, positive direction means zoom in and 0 direction does not change the scaling.
+     *
+     * @param direction zoom in (+) or zoom out (-)
+     * @param amount    by how much the scaling should change by
+     */
     private void zoom(double direction, double amount) {
+        System.out.println(direction);
         double direction1 = Math.signum(direction) * amount;
 
         drawingPane.setScaleX(Math.max(amount, drawingPane.getScaleX() + direction1));
         drawingPane.setScaleY(Math.max(amount, drawingPane.getScaleY() + direction1));
     }
 
+    /**
+     * Removes the wanted Path by retrieving its associated PathGroup and removing the path group title pane from the path viewer and from the drawing pane
+     *
+     * @param path path to remove
+     */
     private void removePath(Path path) {
         PathGroup pathGroup = pathGroupHashMap.get(path);
         pathsViewer.getPanes().remove(pathGroup.getTitlePane());
         drawingPane.getChildren().remove(pathGroup);
     }
 
+
+    /**
+     * Removes the wanted Path by retrieving its associated PathGroup and removing the path group title pane from the path viewer and from the drawing pane
+     *
+     * @param paths paths to remove
+     */
     private void removePaths(Path... paths) {
         for (Path path : paths)
             removePath(path);
     }
 
+    /**
+     * Handles keyboad input such as Ctrl+N, Ctrl+UP, Ctrl+DOWN, Ctrl+0
+     *
+     * @param event a key pressed key event
+     */
     @FXML
     private void handleKeyPresses(KeyEvent event) { //TODO make it so that you do not need to manually focus the vBox or tab to be able to get input from user
         if (event.isControlDown()) {
@@ -213,11 +276,21 @@ public class CurveDrawerTabController implements Initializable {
         }
     }
 
+    /**
+     * Returns the current selected paths
+     *
+     * @return returns the current selected paths
+     */
     private Path getSelectedPaths() //TODO make it so that you can select many paths
     {
         return pathHashMap.get(selectedPath.get());
     }
 
+    /**
+     * Pans the drawing pane given the current mouse location and the location that it was pressed first
+     *
+     * @param event mouse drag event
+     */
     @FXML
     private void pan(MouseEvent event) {
         if ((event.getButton() == MouseButton.PRIMARY) && !anyPointIsSelected()) {
@@ -231,10 +304,20 @@ public class CurveDrawerTabController implements Initializable {
         }
     }
 
+    /**
+     * Checks if any of the PathGroups have a point that is currently selected
+     *
+     * @return true if a point is being selected false otherwise
+     */
     private boolean anyPointIsSelected() {
         return pathGroupHashMap.values().stream().anyMatch(PathGroup::isHasPointSelected);
     }
 
+    /**
+     * Sets the where the mouse was pressed and stops dragging flag
+     *
+     * @param event mouse pressed event
+     */
     @FXML
     private void getMouseLocation(MouseEvent event) {
         pressedX.set(event.getX());
