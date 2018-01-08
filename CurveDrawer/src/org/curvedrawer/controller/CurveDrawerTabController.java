@@ -181,17 +181,26 @@ public class CurveDrawerTabController implements Initializable {
         pane.addEventFilter(MouseEvent.DRAG_DETECTED, e -> isDragging.set(true));
         pane.addEventFilter(ScrollEvent.SCROLL, this::handleScroll);
 
-        drawingPane.setStyle("-fx-border-color: black");
+//        drawingPane.setStyle("-fx-border-color: black");
 
     }
 
     private void handleScroll(ScrollEvent scrollEvent) {
-        double direction = Math.signum(scrollEvent.getDeltaY());
-        direction *= Main.ZOOM_FACTOR.get();
+        zoom(scrollEvent.getDeltaY());
+    }
 
+    private void zoom(double direction)
+    {
+        zoom(direction, Main.ZOOM_FACTOR.get());
+    }
 
-        drawingPane.setScaleX(Math.max(Main.ZOOM_FACTOR.get(), drawingPane.getScaleX() + direction));
-        drawingPane.setScaleY(Math.max(Main.ZOOM_FACTOR.get(), drawingPane.getScaleY() + direction));
+    private void zoom(double direction, double amount)
+    {
+        direction = Math.signum(direction);
+        direction *= amount;
+
+        drawingPane.setScaleX(Math.max(amount, drawingPane.getScaleX() + direction));
+        drawingPane.setScaleY(Math.max(amount, drawingPane.getScaleY() + direction));
     }
 
     private void removePath(Path path) {
