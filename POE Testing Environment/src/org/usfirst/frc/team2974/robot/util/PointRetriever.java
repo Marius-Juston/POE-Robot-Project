@@ -11,13 +11,15 @@ public class PointRetriever {
         .getTable(RobotConfiguration.PATH_NETWORKTABLE);
 
     public static Pose[] retrievePoses(String smartDashboardKey) {
-        String[] stringPoses = networkTable.getString(smartDashboardKey, "").split(" ");
+        
+      System.out.println(smartDashboardKey + "\t" + networkTable.getString(smartDashboardKey, ""));
+      String[] stringPoses = networkTable.getString(smartDashboardKey, "").split(" ");
 
-        if (stringPoses.length % 3 != 0) {
-            throw new RobotRuntimeException(
-                "The key " + smartDashboardKey + " does not contain valid pose: " + Arrays
-                    .toString(stringPoses));
-        }
+//        if (stringPoses.length % 3 != 0) {
+//            throw new RobotRuntimeException(
+//                "The key " + smartDashboardKey + " does not contain valid pose: " + Arrays
+//                    .toString(stringPoses));
+//        }
 
         Pose[] pose = new Pose[stringPoses.length / 3];
 

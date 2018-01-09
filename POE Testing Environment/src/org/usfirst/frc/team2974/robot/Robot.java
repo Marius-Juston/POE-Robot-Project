@@ -49,7 +49,10 @@ public class Robot extends IterativeRobot {
 
         SmartDashboardManager.addBind("Move to points",
             new PathFollowerCommand(3, 0.5, false, Robot.driveTrain.getPose(),
-                new Pose(Robot.driveTrain.getPose().offsetPoint(1), 0)));
+                new Pose(Robot.driveTrain.getPose().offsetPoint(2), 0)));
+
+        SmartDashboardManager.addBind("Move to points SmartDashboard",
+            new PathFollowerCommand(3, 0.5, false, "curve"));
 
         SmartDashboardManager.addDebug("Left Encoder Rate", 0, RobotMap.leftEncoder::getRate);
         SmartDashboardManager.addDebug("Right Encoder Rate", 0, RobotMap.rightEncoder::getRate);
