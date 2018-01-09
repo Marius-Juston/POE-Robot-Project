@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="CurveDrawer.jar" size="45211" download="eager" />
+    <jar href="CurveDrawer.jar" size="44305" download="eager" />
     <jar href="SmartDashboard.jar" size="4381529" download="eager" />
   </resources>
   <jfx:javafx-desc  width="640" height="480" main-class="org.curvedrawer.Main"  name="CurveDrawer" />
