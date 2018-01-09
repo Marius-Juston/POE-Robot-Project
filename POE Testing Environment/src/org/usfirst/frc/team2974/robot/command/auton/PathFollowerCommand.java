@@ -13,6 +13,7 @@ import org.usfirst.frc.team2974.robot.util.Pose;
 
 public class PathFollowerCommand extends Command {
 
+    private String[] smartDashboardPaths;
     private MotionProvider pathFollower; // the motion that will be executed
     private double vCruise; // the velocity of the robot to go at
     private double aMax; // the constant acceleration/deceleration to use
@@ -32,20 +33,8 @@ public class PathFollowerCommand extends Command {
      */
     public PathFollowerCommand(double vCruise, double aMax, boolean isForwards,
         String... smartDashboardPaths) {
-        this(vCruise, aMax, isForwards,
-            Arrays.stream(smartDashboardPaths)              // loops through smartdashboard keys
-                .map(
-                    PointRetriever::retrievePoses)         // uses the retrievePoses to convert the key into a Pose[]
-                .reduce(
-                    new ArrayList<>(), (poses23, poses2) -> {   //
-                        Collections
-                            .addAll(poses23, poses2);    // adds elements of one array to a list
-                        return poses23;
-                    },
-                    (poses22, poses2) -> {                   // joins the lists created by the stream into one
-                        poses22.addAll(poses2);
-                        return poses22;
-                    }).toArray(new Pose[0]));                   // converts the stream into an array
+        this(vCruise, aMax, isForwards, new Pose[0]);                   // converts the stream into an array
+        this.smartDashboardPaths = smartDashboardPaths;
     }
 
     /**
@@ -62,18 +51,58 @@ public class PathFollowerCommand extends Command {
         this.isForwards = isForwards;
         this.poses = poses;
 
+
         requires(driveTrain); // tells the command that it will use the drivetrain subsystem
     }
+
+
+    private boolean run = false;
 
     /**
      * creates and starts the motion
      */
     @Override
     protected void initialize() {
-        this.pathFollower = new MotionPathFollower(vCruise, aMax, isForwards, poses);
+        findAndRun();
+    }
 
-        driveTrain.addControllerMotion(pathFollower);
-        driveTrain.startMotion();
+    private void findAndRun()
+    {
+
+        try {
+            poses =
+                    Arrays.stream(smartDashboardPaths)              // loops through smartdashboard keys
+                            .map(
+                                    PointRetriever::retrievePoses)         // uses the retrievePoses to convert the key into a Pose[]
+                            .reduce(
+                                    new ArrayList<>(), (poses23, poses2) -> {   //
+                                        Collections
+                                                .addAll(poses23, poses2);    // adds elements of one array to a list
+                                        return poses23;
+                                    },
+                                    (poses22, poses2) -> {                   // joins the lists created by the stream into one
+                                        poses22.addAll(poses2);
+                                        return poses22;
+                                    }).toArray(new Pose[0]);
+            this.pathFollower = new MotionPathFollower(vCruise, aMax, isForwards, poses);
+
+            driveTrain.addControllerMotion(pathFollower);
+            driveTrain.startMotion();
+
+
+            run = true;
+        }catch (Exception e)
+        {
+          e.printStackTrace();
+            run = false;
+        }
+    }
+
+    @Override
+    protected void execute() {
+      System.out.println(run);
+        if (!run)
+        findAndRun();
     }
 
     /**
@@ -83,9 +112,9 @@ public class PathFollowerCommand extends Command {
      */
     @Override
     protected boolean isFinished() {
-        return driveTrain.isControllerFinished() || (
+        return run && (driveTrain.isControllerFinished() || (
             driveTrain.getCurrentMotion().equals(pathFollower) && driveTrain
-                .isCurrentMotionFinished());
+                .isCurrentMotionFinished()));
     }
 
     @Override
