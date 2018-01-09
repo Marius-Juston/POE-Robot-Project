@@ -15,7 +15,9 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.curvedrawer.controller.SettingController;
+import org.curvedrawer.path.Spline;
 import org.curvedrawer.setting.SimpleValue;
+import org.curvedrawer.util.Point;
 
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -27,7 +29,7 @@ public class Main extends Application {
     public static final int NUMBER_OF_STEPS = 50; // default resolution of paths
     public static final ObservableDoubleValue ZOOM_FACTOR = new SimpleDoubleProperty(0.1); // how much scaling changes by
     public static final ObservableDoubleValue SCALE_FACTOR = new SimpleDoubleProperty(100.0); // 10 px == 1 m
-    private static final boolean IS_CLIENT = false; // if the program will send to robotRIO or not
+    private static final boolean IS_CLIENT = true; // if the program will send to robotRIO or not
     private static final int TEAM_NUMBER = 2974; // team number
     public static NetworkTable networkTable;
 
@@ -40,13 +42,13 @@ public class Main extends Application {
 //        SettingController.addBoolean("IS_CLIENT", IS_CLIENT);
 
 
-        SettingController.addSpecialSetting(new SimpleValue<Integer>("Hello", 3) {
-            @Override
-            protected Integer handleTextChange(KeyEvent keyEvent) {
-                return null; //TODO
-            }
-
-        });
+//        SettingController.addSpecialSetting(new SimpleValue<Integer>("Hello", 3) {
+//            @Override
+//            protected Integer handleTextChange(KeyEvent keyEvent) {
+//                return null; //TODO
+//            }
+//
+//        });
 
     }
 
@@ -70,7 +72,7 @@ public class Main extends Application {
 
         if (IS_CLIENT) {
             NetworkTable.setClientMode();
-            NetworkTable.setTeam(SettingController.<Integer>getValue("TEAM_NUMBER").get());
+            NetworkTable.setTeam(TEAM_NUMBER);
         } else {
             NetworkTable.setServerMode();
             NetworkTable.setIPAddress(IP_ADDRESS);

@@ -221,7 +221,6 @@ public class CurveDrawerTabController implements Initializable {
      * @param amount    by how much the scaling should change by
      */
     private void zoom(double direction, double amount) {
-        System.out.println(direction);
         double direction1 = Math.signum(direction) * amount;
 
         drawingPane.setScaleX(Math.max(amount, drawingPane.getScaleX() + direction1));
@@ -271,6 +270,8 @@ public class CurveDrawerTabController implements Initializable {
                 case DIGIT0:
                     drawingPane.setScaleX(1.0);
                     drawingPane.setScaleY(1.0);
+                    drawingPane.setTranslateX(0);
+                    drawingPane.setTranslateY(0);
                     break;
             }
         }

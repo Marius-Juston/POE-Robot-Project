@@ -4,6 +4,7 @@ import org.curvedrawer.util.Point;
 import org.curvedrawer.util.Pose;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -117,20 +118,39 @@ public class Spline extends Path {
     private Pose[] joinBezierCurves(List<List<Point>> pathControlPoints) {
         List<Pose> pathPointsAdd = new ArrayList<>(getNumberOfSteps());
 
+        double decimal = 0.0;
+
         for (int i = 0; i < pathControlPoints.size(); i++) { //FIXME make it so that the spline returns exactly the correct number of points
             List<Point> curveControlPoints = pathControlPoints.get(i);
             Point[] controlPoints = curveControlPoints.toArray(new Point[curveControlPoints.size()]);
-            BezierCurve curve = new BezierCurve(Math.toIntExact(Math.round((double) getNumberOfSteps() / pathControlPoints.size())), controlPoints);
+            Pose[] poses;
 
+            int numberOfSteps = getNumberOfSteps() / pathControlPoints.size();
 
-            Pose[] pathPoints = curve.createPathPoses();
+            decimal = (decimal % 1) + (numberOfSteps-(int)numberOfSteps);
 
-            Pose[] poses = new Pose[pathPoints.length - ((i == (pathControlPoints.size() - 1)) ? 1 : 0)]; //We do not want to repeat having the same last and first points for consecutive bezier curve so we need to trim off that point if it is not the last bezier curve
-            System.arraycopy(pathPoints, 0, poses, 0, poses.length);
+            if(i == 0) {
+                BezierCurve curve = new BezierCurve(numberOfSteps, controlPoints);
+
+                poses = curve.createPathPoses();
+            }
+            else{
+                BezierCurve curve = new BezierCurve(numberOfSteps + 1, controlPoints);
+
+                Pose[] temp = curve.createPathPoses();
+
+                poses = Arrays.copyOfRange(temp, 1, temp.length);
+            }
+
+            for (Pose pose: poses)
+                System.out.println(pose.getX() + "\t" + pose.getY());
 
             Collections.addAll(pathPointsAdd, poses);
         }
 
+        System.out.println(pathPointsAdd.size());
+
+        System.out.println("----------------");
         return pathPointsAdd.toArray(new Pose[pathPointsAdd.size()]);
     }
 
