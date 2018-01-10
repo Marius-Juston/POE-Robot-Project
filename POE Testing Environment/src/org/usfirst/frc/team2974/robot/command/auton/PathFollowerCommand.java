@@ -3,9 +3,9 @@ package org.usfirst.frc.team2974.robot.command.auton;
 import static org.usfirst.frc.team2974.robot.Robot.driveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import java.util.ArrayList;
+
 import java.util.Arrays;
-import java.util.Collections;
+
 import org.usfirst.frc.team2974.robot.motion.MotionPathFollower;
 import org.usfirst.frc.team2974.robot.util.MotionProvider;
 import org.usfirst.frc.team2974.robot.util.PointRetriever;

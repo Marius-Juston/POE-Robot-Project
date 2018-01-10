@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2974.robot.smartdashboard;
 
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,13 +11,13 @@ import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
 
 public final class SmartDashboardManager {
 
-    private static final NetworkTable TABLE;
+    private static final edu.wpi.first.networktables.NetworkTable TABLE;
 
     // Properties list where all the SmartDashboard  Properties are stored
     private static final List<SmartDashboardProperty> PROPERTIES;
 
     static {
-        TABLE = NetworkTable.getTable("SmartDashboard");
+        TABLE = NetworkTableInstance.getDefault().getTable("SmartDashboard");
         PROPERTIES = new ArrayList<>(10);
 
         TABLE.getKeys().forEach(TABLE::delete);
@@ -100,7 +101,7 @@ public final class SmartDashboardManager {
         for (int i = 0; i < PROPERTIES.size(); i++) {
             if (PROPERTIES.get(i).getKey().equals(key)) {
                 PROPERTIES.remove(i--);
-                TABLE.delete(key);
+                TABLE.getEntry(key).delete();
             }
         }
     }

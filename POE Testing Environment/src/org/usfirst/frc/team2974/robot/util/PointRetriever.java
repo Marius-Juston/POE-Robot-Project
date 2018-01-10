@@ -1,19 +1,16 @@
 package org.usfirst.frc.team2974.robot.util;
 
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import java.util.Arrays;
-import org.usfirst.frc.team2974.robot.RobotConfiguration;
-import org.usfirst.frc.team2974.robot.exception.RobotRuntimeException;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class PointRetriever {
 
-    private static NetworkTable networkTable = NetworkTable
-        .getTable(RobotConfiguration.PATH_NETWORKTABLE);
+    private static NetworkTable networkTable = NetworkTableInstance.getDefault().getTable("SmartDashboard");
 
     
     public static Pose[] retieveSmartDashboardPoses(String smartDashboardKey)
     {
-      return retrievePoses(networkTable.getString(smartDashboardKey, ""));
+      return retrievePoses(networkTable.getEntry(smartDashboardKey).getString(""));
     }
     
     public static Pose[] retrievePoses(String string) {

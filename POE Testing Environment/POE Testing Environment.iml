@@ -9,7 +9,8 @@
     <varelement var="file://$opencv.sources$" kind="src:" value="opencv.sources" />
     <varelement var="file://$cscore$" value="cscore" />
     <varelement var="file://$cscore.sources$" kind="src:" value="cscore.sources" />
-    <varelement var="file://$USERLIBS_DIR$/CTRLib.jar" value="USERLIBS_DIR/CTRLib.jar" />
+    <varelement var="file://$wpiutil$" value="wpiutil" />
+    <varelement var="file://$wpiutil.sources$" kind="src:" value="wpiutil.sources" />
     <src_description expected_position="0">
       <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
     </src_description>
@@ -67,12 +68,14 @@
     </orderEntry>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="module-library">
-      <library name="CTRLib.jar">
+      <library name="wpiutil">
         <CLASSES>
-          <root url="file://$USERLIBS_DIR$/CTRLib.jar" />
+          <root url="file://$wpiutil$" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="file://$wpiutil.sources$" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="library" name="lib" level="project" />
