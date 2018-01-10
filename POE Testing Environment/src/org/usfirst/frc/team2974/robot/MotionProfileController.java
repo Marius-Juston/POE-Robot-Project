@@ -62,9 +62,12 @@ public class MotionProfileController {
      */
     public final synchronized void enable() {
         MotionProvider newMotion = motions.poll();
+        
         if (newMotion != null) {
             currentKinematics = new Kinematics(newMotion, poseProvider.getWheelPositions(),
                 Timer.getFPGATimestamp(), 0, 0);
+
+            System.out.println(currentKinematics);
             isEnabled = true;
         }
     }
