@@ -77,7 +77,7 @@ public final class SmartDashboardManager {
     }
 
     /**
-     * Creates a debug bind which will update if isDebug is true.
+     * Creates a debug bind which will update if IS_DEBUG is true.
      *
      * @see #addBind(String, Object, Supplier) its basically the same
      */

@@ -2,14 +2,17 @@ package org.usfirst.frc.team2974.robot.command.auton;
 
 import static org.usfirst.frc.team2974.robot.Robot.driveTrain;
 
-import edu.wpi.first.wpilibj.command.Command;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+
 import org.usfirst.frc.team2974.robot.motion.MotionPathFollower;
 import org.usfirst.frc.team2974.robot.util.MotionProvider;
 import org.usfirst.frc.team2974.robot.util.PointRetriever;
 import org.usfirst.frc.team2974.robot.util.Pose;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 public class PathFollowerCommand extends Command {
 
@@ -17,8 +20,9 @@ public class PathFollowerCommand extends Command {
     private double vCruise; // the velocity of the robot to go at
     private double aMax; // the constant acceleration/deceleration to use
     private boolean isForwards; // whether the robot is facing forwards or not when executing the spline
-    private Pose[] poses; // the robot path points that the robot has to pass through
-
+  private final String[] smartDashboardPaths;
+  private Pose[] poses; // the robot path points that the robot has to pass through
+    private final boolean usesSmartDashboard;
 
     /**
      * Instantiates the instance variables
@@ -32,20 +36,16 @@ public class PathFollowerCommand extends Command {
      */
     public PathFollowerCommand(double vCruise, double aMax, boolean isForwards,
         String... smartDashboardPaths) {
-        this(vCruise, aMax, isForwards,
-            Arrays.stream(smartDashboardPaths)              // loops through smartdashboard keys
-                .map(
-                    PointRetriever::retrievePoses)         // uses the retrievePoses to convert the key into a Pose[]
-                .reduce(
-                    new ArrayList<>(), (poses23, poses2) -> {   //
-                        Collections
-                            .addAll(poses23, poses2);    // adds elements of one array to a list
-                        return poses23;
-                    },
-                    (poses22, poses2) -> {                   // joins the lists created by the stream into one
-                        poses22.addAll(poses2);
-                        return poses22;
-                    }).toArray(new Pose[0]));                   // converts the stream into an array
+    	this.vCruise = vCruise;
+    	this.aMax = aMax;
+    	this.isForwards = isForwards;
+      this.smartDashboardPaths = smartDashboardPaths;
+
+      this.usesSmartDashboard = true;
+    
+    	
+    	
+    	requires(driveTrain);
     }
 
     /**
@@ -61,6 +61,9 @@ public class PathFollowerCommand extends Command {
         this.aMax = aMax;
         this.isForwards = isForwards;
         this.poses = poses;
+        
+        usesSmartDashboard = false;
+        smartDashboardPaths = new String[0];
 
         requires(driveTrain); // tells the command that it will use the drivetrain subsystem
     }
@@ -69,11 +72,36 @@ public class PathFollowerCommand extends Command {
      * creates and starts the motion
      */
     @Override
-    protected void initialize() {
+    public void start() {
+    	if(usesSmartDashboard) {
+    		List<Pose> poses = new ArrayList<>();
+    		
+    		for(String key: smartDashboardPaths)
+    		{
+    			try {
+    		  Pose[] pathPoses = PointRetriever.retrievePoses(key);
+
+          Collections.addAll(poses, pathPoses);
+    			}catch(NumberFormatException e)
+    			{
+    				e.printStackTrace();
+    			}
+    		}
+
+        System.out.println(poses);
+
+        this.pathFollower = new MotionPathFollower(vCruise, aMax, isForwards, poses.toArray(new Pose[0]));
+
+        driveTrain.addControllerMotion(pathFollower);
+        driveTrain.startMotion();
+    	}else {
         this.pathFollower = new MotionPathFollower(vCruise, aMax, isForwards, poses);
 
         driveTrain.addControllerMotion(pathFollower);
         driveTrain.startMotion();
+    	}
+
+      System.out.println("hellooooooooooooooooooooo");
     }
 
     /**

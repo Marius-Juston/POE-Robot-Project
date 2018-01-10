@@ -40,16 +40,15 @@ public final class RobotMap {
         rightMotor = new Talon(0);
         leftMotor = new Talon(1);
 
-        RobotMap.leftMotor.setInverted(true);
+        leftMotor.setInverted(true);
 
-        leftEncoder = new Encoder(new DigitalInput(0), new DigitalInput(1));
-        rightEncoder = new Encoder(new DigitalInput(2), new DigitalInput(3));
+        leftEncoder = new Encoder(new DigitalInput(0), new DigitalInput(1)); // comp: 0, 1 prac: same
+        rightEncoder = new Encoder(new DigitalInput(2), new DigitalInput(3)); // comp: 2, 3 prac: same
 
-        RobotMap.rightEncoder.setReverseDirection(true);
+        rightEncoder.setReverseDirection(true);
 
-        RobotMap.leftEncoder.setDistancePerPulse(
-            DISTANCE_PER_PULSE); // check what this is and how it works, comment it afterwards
-        RobotMap.rightEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
+        leftEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
+        rightEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
 
         pneumaticsShifter = new Solenoid(0);
         gearIntakeSolenoid = new Solenoid(2);

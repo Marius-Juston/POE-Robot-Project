@@ -1,13 +1,13 @@
 package org.usfirst.frc.team2974.robot.smartdashboard;
 
-import static org.usfirst.frc.team2974.robot.RobotConfiguration.isDebug;
+import static org.usfirst.frc.team2974.robot.RobotConfiguration.IS_DEBUG;
 
 import java.util.function.Supplier;
 
 public class DebugSmartDashboardProperty<T> extends SmartDashboardProperty<T> {
 
     /**
-     * This creates a SmartDashboard value to show only when SmartDashboardManager.isDebug is true.
+     * This creates a SmartDashboard value to show only when SmartDashboardManager.IS_DEBUG is true.
      */
     public DebugSmartDashboardProperty(String key, T defaultValue, Supplier<T> valueSupplier) {
         super(key, defaultValue, valueSupplier);
@@ -15,7 +15,7 @@ public class DebugSmartDashboardProperty<T> extends SmartDashboardProperty<T> {
 
     @Override
     protected final void updateSmartDashboard() {
-        if (isDebug) {
+        if (IS_DEBUG) {
             super.updateSmartDashboard();
         } else if (SmartDashboardManager.containsBind(getKey())) {
             // why dost thou do this to me smartdashboard
