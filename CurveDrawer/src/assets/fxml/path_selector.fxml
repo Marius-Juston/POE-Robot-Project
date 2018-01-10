@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.51"
+      fx:controller="org.curvedrawer.controller.PathSelectorController">
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+    </padding>
+    <HBox alignment="CENTER" spacing="5.0">
+        <TextField promptText="Path name" fx:id="pathName" onKeyTyped="#handleInput"/>
+        <ChoiceBox prefWidth="150.0" fx:id="pathTypeSelection"/>
+    </HBox>
+    <HBox VBox.vgrow="ALWAYS" alignment="CENTER" spacing="80.0">
+        <Button defaultButton="true" disable="true" mnemonicParsing="false" text="Ok" fx:id="okButton"
+                onAction="#getPathAndClose"/>
+        <Button cancelButton="true" mnemonicParsing="false" text="Cancel" fx:id="cancelButton"/>
+    </HBox>
+</VBox>

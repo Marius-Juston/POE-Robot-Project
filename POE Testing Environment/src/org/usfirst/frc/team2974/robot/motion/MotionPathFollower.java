@@ -58,6 +58,8 @@ public class MotionPathFollower extends MotionProvider {
 
         double localPercent = (s - index / (robotPoses.length - 1)) * (robotPoses.length - 1);
 
+        System.out.println(s);
+        
         return Pose.interpolate(last, 1 - localPercent, next, localPercent);
     }
 
