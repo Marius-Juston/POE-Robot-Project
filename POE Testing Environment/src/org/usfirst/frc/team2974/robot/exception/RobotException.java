@@ -5,9 +5,9 @@ package org.usfirst.frc.team2974.robot.exception;
  */
 public class RobotException extends Exception {
 
-    private static final long serialVersionUID = -6607692947811100039L;
+	private static final long serialVersionUID = -6607692947811100039L;
 
-    public RobotException(String message) {
-        super(message);
-    }
+	public RobotException(String message) {
+		super(message);
+	}
 }

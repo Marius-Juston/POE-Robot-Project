@@ -26,7 +26,7 @@ public class Main extends Application {
 
     public static final String IP_ADDRESS = "10.0.0.24"; //IP address to connect to when in server mode
     public static final String NETWORK_TABLE_TABLE_KEY = "SmartDashboard"; //network table to send the data to
-    public static final int NUMBER_OF_STEPS = 50; // default resolution of paths
+    public static final int NUMBER_OF_STEPS = 200; // default resolution of paths
     public static final ObservableDoubleValue ZOOM_FACTOR = new SimpleDoubleProperty(0.1); // how much scaling changes by
     public static final ObservableDoubleValue SCALE_FACTOR = new SimpleDoubleProperty(100.0); // 10 px == 1 m
     private static final boolean IS_CLIENT = true; // if the program will send to robotRIO or not

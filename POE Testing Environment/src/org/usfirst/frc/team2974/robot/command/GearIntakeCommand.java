@@ -11,21 +11,21 @@ import org.usfirst.frc.team2974.robot.io.logitech.GamepadButton;
  */
 public class GearIntakeCommand extends Command {
 
-    public GearIntakeCommand() {
-        requires(gearIntake);
-    }
+	public GearIntakeCommand() {
+		requires(gearIntake);
+	}
 
-    @Override
-    protected final void execute() {
-        if (Input.gamepad.buttonPressed(GamepadButton._1)) {
-            gearIntake.setDeployed(true);
-        } else if (Input.gamepad.buttonPressed(GamepadButton._2)) {
-            gearIntake.setDeployed(false);
-        }
-    }
+	@Override
+	protected final void execute() {
+		if (Input.gamepad.buttonPressed(GamepadButton._1)) {
+			gearIntake.setDeployed(true);
+		} else if (Input.gamepad.buttonPressed(GamepadButton._2)) {
+			gearIntake.setDeployed(false);
+		}
+	}
 
-    @Override
-    protected final boolean isFinished() {
-        return false;
-    }
+	@Override
+	protected final boolean isFinished() {
+		return false;
+	}
 }

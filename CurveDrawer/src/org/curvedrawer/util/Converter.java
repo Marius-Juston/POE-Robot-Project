@@ -40,11 +40,11 @@ public enum Converter {
         StringBuilder stringBuilder = new StringBuilder(poses.length * 6);
 
         for (Pose pose : poses) {
-            stringBuilder.append(pose.getScaledX());
+            stringBuilder.append(String.format("%.4f",pose.getScaledX()));
             stringBuilder.append(' ');
-            stringBuilder.append(pose.getScaledY());
+            stringBuilder.append(String.format("%.4f",pose.getScaledY()));
             stringBuilder.append(' ');
-            stringBuilder.append(pose.getAngle());
+            stringBuilder.append(String.format("%.4f",pose.getAngle()));
             stringBuilder.append(' ');
         }
 
