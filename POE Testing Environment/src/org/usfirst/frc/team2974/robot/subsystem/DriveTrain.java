@@ -166,6 +166,16 @@ public class DriveTrain extends Subsystem implements PoseProvider {
 	}
 
 	/**
+     * Terminates the MotionProfileControl Timer.
+     *
+     * @see java.util.Timer#cancel()
+	 */
+	public final void free()
+	{
+		motionProfileController.free();
+	}
+
+	/**
 	 * Gets the current motion being run from the current kinematic
 	 *
 	 * @return current motion
