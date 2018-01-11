@@ -118,6 +118,10 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
     }
 
+    @Override
+    public void disabledPeriodic() {
+        driveTrain.cancelMotion();
+    }
 
     @Override
     public void testInit() {

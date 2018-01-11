@@ -56,6 +56,7 @@ public final class RobotMap {
         climberMotor = new Talon(4);
 
         compressor = new Compressor();
+        compressor.stop();
 
         // gyro is trash, but it is there.
         gyroscope = new AnalogGyro(1);
