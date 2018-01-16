@@ -55,6 +55,8 @@ public class CurveDrawerTabController implements Initializable {
         String converted = Converter.posesToString(poses);
         String nameOfPath = pathsViewer.getPanes().get(selectedPath.get()).getText();
         Main.networkTable.putString(nameOfPath, converted);
+
+        System.out.println(converted);
     }
 
 

@@ -199,6 +199,8 @@ public class Kinematics {
 		}
 
 		while (t > nextPose.t) {
+			System.out.println(t + "\t" + nextPose.t) ;
+
 			evaluateNextPose(1.0 / nPoints);
 			if (lastPose.isFinished) {
 				return lastPose;

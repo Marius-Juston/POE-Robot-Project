@@ -152,10 +152,10 @@ public class BezierCurve extends Path {
             if (dx == 0)
                 return 0;
 
-            return Math.atan(dy / dx);
+            return (Math.atan2(dy , dx));
         } else if (getPoints().size() > 1) {
 
-            return Math.atan((getPoints().get(getPoints().size() - 1).getY() - getPoints().get(getPoints().size() - 2).getY()) / (getPoints().get(getPoints().size() - 1).getX() - getPoints().get(getPoints().size() - 2).getX()));
+            return (Math.atan2((getPoints().get(getPoints().size() - 1).getY() - getPoints().get(getPoints().size() - 2).getY()) , (getPoints().get(getPoints().size() - 1).getX() - getPoints().get(getPoints().size() - 2).getX())));
         } else {
             return 0;
         }
